@@ -31,9 +31,14 @@ Key points are listed below-
 #### 1.5 Developer’s Info
  
 * [Sudipto Chandra Das Dipu](https://github.com/dipu-bd)   
-Registration No: 2012331019   
-* [Bishwajit Purkyastha](https://github.com/bishwa420)      
-Registration No: 2012331013    
+*Registration No*: 2012331019   
+* [Bishwajit Purkaystha](https://github.com/bishwa420)      
+*Registration No*: 2012331013    
+
+#### 1.6 Submitted To   
+
+* **Mr. Biswapriyo Chakrabarty**    
+**Lecturer**, *Department of Computer Science and Engineering*, Shahjalal University of Science and Technology.    
 
 
 
