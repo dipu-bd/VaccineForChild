@@ -1,6 +1,6 @@
 # VaccineForChild     
-** Database cource project. **    
-* Shahjalal University of Science and Technology. *     
+**Database cource project.**    
+*Shahjalal University of Science and Technology.*     
 
 ## 1) General Information    
 #### 1.1 Purpose     
