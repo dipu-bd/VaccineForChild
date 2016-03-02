@@ -9,7 +9,7 @@ class User(db.Entity):
     uname = Required(str, 35, unique=True)
     email = Required(str, 50, unique=True)
     password = Required(str, 25)
-    confirmed = Required(bool, default=0)
+    confirmed = Optional(bool, default=0)
     access = Optional(int, default=0)
     name = Required("Name")
     phones = Set("Phone")

@@ -22,8 +22,8 @@ To design a Database System that will:
 
 #### 1.4 System Overview    
 
-* Back-End: NodeJS, EJS
-* Front-End: HTML5, CSS3, Bootstrap, AngularJS, JQuery 
+* Back-End: Jade, NodeJS Express 4.13.1
+* Front-End: HTML 5.0, CSS 3.0, Bootstrap 3.3.6, AngularJS
 * Targeted platform: Cross platform   
 * Testing: XAMPP in windows 32bit   
 
