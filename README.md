@@ -2,7 +2,8 @@
 **Database cource project.**    
 *Shahjalal University of Science and Technology.*     
 
-## 1) General Information    
+## 1) General Information      
+
 #### 1.1 Purpose     
 Design a Database System to notify parents about the schedule to vaccinate their children.  
 
@@ -20,25 +21,35 @@ To design a Database System that will:
 * Notify child care center if a child does not get vaccine in time or any irregularities.   
 
 #### 1.4 System Overview    
-Key points are listed below-   
 
-* Website design language: Java Spring or JSP   
-* Database system: My SQL, phpMyAdmin.   
+* Back-End: NodeJS, EJS
+* Front-End: HTML5, CSS3, Bootstrap, AngularJS, JQuery 
 * Targeted platform: Cross platform   
-* Web technology: HTML5, CSS3   
 * Testing: XAMPP in windows 32bit   
 
-#### 1.5 Developer’s Info
+#### 1.5 Database Overview
+
+* Engine: MySQL    
+* Database: VaccineDB    
+* Database Design: [Pony ORM Editor : VaccineDB](https://editor.ponyorm.com/user/sdipu/VaccineDB)     
+* Database Schema: [Database SQL](_database/db.sql)   
+
+#### 1.6 Developers
  
 * [Sudipto Chandra Das Dipu](https://github.com/dipu-bd)   
 *Registration No*: 2012331019   
 * [Bishwajit Purkaystha](https://github.com/bishwa420)      
 *Registration No*: 2012331013    
 
-#### 1.6 Submitted To   
+#### 1.7 Supervisor 
 
 * **Mr. Biswapriyo Chakrabarty**    
 **Lecturer**, *Department of Computer Science and Engineering*, Shahjalal University of Science and Technology.    
+   
+   
+## 2) Database Diagram
 
+#### 2.1 E-R Diagram    
 
+![E-R Diagram](_plans/database.png)
 
