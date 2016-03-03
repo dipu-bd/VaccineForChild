@@ -1,8 +1,18 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.width-padding {
+  padding: 0 5px 0 5px;
 }
-
-a {
-  color: #00B7FF;
+.height-padding {
+  padding: 5px 0 5px 0;
+}
+.top-pad {
+  padding-top: 10px;
+}
+.right-pad {
+  padding-right: 10px;
+}
+.bottom-pad {
+  padding-bottom: 10px;
+}
+.left-pad {
+  padding-left: 10px;
 }

@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html ng-app="VaccineApp">
+<html lang="en" ng-app="VaccineApp" ng-controller="AppController as appCtrl">
 <head>
-    <title>Vaccine for your Child</title>
+    <title>{{appCtrl.property.pageTitle}}</title>
 
     <link rel='stylesheet' href='styles/style.css'/>
-    <link rel='stylesheet' href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel='stylesheet' href="bower_components/bootstrap/dist/css/bootstrap.css"/>
 </head>
 <body>
 
-<script type="javascript" src="bower_components/jquery/dist/jquery.js"></script>
-<script type="javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script type="javascript" src="bower_components/angular/angular.js"></script>
-<script type="javascript" src="scripts/main.js"></script>
+<home-page></home-page>
+
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="scripts/main.js"></script>
 
 </body>
 </html>
