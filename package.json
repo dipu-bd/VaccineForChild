@@ -1,10 +1,12 @@
 {
   "name": "VaccineForChild",
+  "description": "Never forget to give vaccine to your child and keep him healthy and happy.",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
+  "license": "Apache 2.0",
   "dependencies": {
     "body-parser": "~1.13.2",
     "cookie-parser": "~1.3.5",
