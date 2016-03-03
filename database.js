@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var debug = require('debug')('VaccineForChild:server');
+var debug = require('debug')('VaccineForChild:database');
 
 var options = {
     connectionLimit: 100,   // important - limit the number of simultaneous connection
@@ -7,7 +7,7 @@ var options = {
     port: "3306",   // port of the database
     user: "root",   // username
     password: "",   // password
-    database: "",   // name of the database
+    database: "vaccinedb",   // name of the database
     //charset: "",  // charset of the database
     debug: false    // true to show all output
 };
@@ -26,9 +26,11 @@ pool.on('error', function (err) {
  * @param callback (err, result) : if no error then error is null, otherwise result is null
  */
 var runQuery = function (sql, callback) {
+    debug(sql);
     pool.getConnection(function (err, connection) {
         if (err) {
-            callback(err);
+            debug(err);
+            callback('Failed to connect with database!');
         } else {
             connection.query(sql, function (err, res) {
                 connection.release();
@@ -40,47 +42,100 @@ var runQuery = function (sql, callback) {
 
 /**
  * Gets an user.
- * @param userId ID of the user.
+ * @param id ID of the user.
+ * @param uname Username of the user.
+ * @param email Email of the user.
  * @param callback (err, result) : if no error then error is null, otherwise result is null
  */
-var getUser = function (userId, callback) {
+var getUser = function (id, uname, email, callback) {
+    var insert = ['user'];
+    var cnt = 0;
+    if (id) {
+        ++cnt;
+        insert.push('id', id);
+    }
+    if (uname) {
+        ++cnt;
+        insert.push('uname', uname)
+    }
+    if (email) {
+        ++cnt;
+        insert.push('email', email);
+    }
+
+    if (cnt === 0) {
+        callback("Invalid input");
+        return;
+    }
+
     var sql = "SELECT * FROM ?? WHERE ?? = ?";
-    var inserts = ['user', 'id', userId];
-    sql = mysql.format(sql, inserts);
+    for (var i = 1; i < cnt; ++i) sql += " OR ?? = ?";
+    sql = mysql.format(sql, insert);
+
     runQuery(sql, function (err, res) {
         if (err) {
             callback(err);
         } else if (!res || res.length === 0) {
-            callback("Not found");
+            callback('User not found');
         }
         else {
             callback(null, res[0]);
+            if (res.length > 1) {
+                debug('Multiple user found. Database Error!');
+            }
         }
     });
 };
 
 /**
- * Adds a new student to the database. In callback, result =  the updated student object.
- * @param student_name
- * @param regno
- * @param cgpa
+ * Gets an user by her id.
+ * @param userId ID of the user.
  * @param callback (err, result) : if no error then error is null, otherwise result is null
  */
-var addStudent = function (student_name, regno, cgpa, callback) {
-    getStudent(regno, function (err, res) {
+var getUserById = function (userId, callback) {
+    getUser(userId, null, null, callback);
+};
+
+/**
+ * Gets an user by her name.
+ * @param userName Username of the user.
+ * @param callback (err, result) : if no error then error is null, otherwise result is null
+ */
+var getUserByName = function (userName, callback) {
+    getUser(null, userName, null, callback);
+};
+
+
+/**
+ * Gets an user by her email.
+ * @param email Email of the user.
+ * @param callback (err, result) : if no error then error is null, otherwise result is null
+ */
+var getUserByEmail = function (email, callback) {
+    getUser(null, null, email, callback);
+};
+
+/**
+ * Creates a new user. In callback, result =  the updated user.
+ * @param uname
+ * @param email
+ * @param password
+ * @param callback (err, result) : if no error then error is null, otherwise result is null
+ */
+var createUser = function (uname, email, password, callback) {
+    getUser(null, uname, email, function (err, res) {
         if (res) {
-            callback("Another student with same registration number already exists", null);
+            callback("Another user exists with same username or email");
         } else {
+            var inserts = ['user', 'uname', 'email', 'password', uname, email, password];
             var sql = "INSERT INTO ?? (??, ??, ??) VALUES (?, ?, ?); ";
-            var inserts = ['student', 'student_name', 'regno', 'cgpa', student_name, regno, cgpa];
             sql = mysql.format(sql, inserts);
             runQuery(sql, function (err) {
                 if (err) {
                     callback(err);
                 }
                 else {
-                    getStudent(regno, callback);
-
+                    getUserByName(uname, callback);
                 }
             });
         }
@@ -88,64 +143,19 @@ var addStudent = function (student_name, regno, cgpa, callback) {
 };
 
 /**
- * Updates a students information. In callback, result =  the updated student object.
- * @param student_id
- * @param student_name
- * @param regno
- * @param cgpa
- * @param callback (err, result) : if no error then error is null, otherwise result is null
+ * Marks an email address as confirmed
+ * @param id
+ * @param callback
  */
-var updateStudent = function (student_id, student_name, regno, cgpa, callback) {
-    getStudent(regno, function (err, res) {
-        if (res && res.student_id != student_id) {
-            callback("Another student with same registration number already exists", null);
-        } else {
-            var sql = "UPDATE ?? SET ??=?, ??=?, ??=? WHERE ??=?;";
-            var inserts = ['student', 'student_name', student_name, 'regno', regno, 'cgpa', cgpa, 'student_id', student_id];
-            sql = mysql.format(sql, inserts);
-            runQuery(sql, function (err) {
-                if (err) {
-                    callback(err);
-                }
-                else {
-                    getStudent(regno, callback);
-                }
-            });
-        }
-    });
-};
-
-
-/**
- * Deletes a students information permanently. In callback, result =  the updated student object.
- * @param student_id
- * @param callback (err, result) : if no error then error is null, otherwise result is null
- */
-var deleteStudent = function (student_id, callback) {
-    var sql = "DELETE FROM ?? WHERE ??=?;";
-    var inserts = ['student', 'student_id', student_id];
-    sql = mysql.format(sql, inserts);
-    runQuery(sql, function (err) {
-        if (err) {
-            callback(err);
-        }
-        else {
-            callback(null, true);
-        }
-    });
-};
-
-var allStudents = function (callback) {
-    var sql = "SELECT * FROM ??";
-    var inserts = ['student'];
+var confirmEmail = function (email, callback) {
+    var sql = "UPDATE ?? SET ??=? WHERE ??=?;";
+    var inserts = ['user', 'confirm', 1, 'email', email];
     sql = mysql.format(sql, inserts);
     runQuery(sql, callback);
 };
 
-module.exports.runQuery = runQuery;
-module.exports.getUser = getUser;
-
-module.exports.addStudent = addStudent;
-module.exports.updateStudent = updateStudent;
-module.exports.deleteStudent = deleteStudent;
-module.exports.allStudents = allStudents;
+module.exports.getUserById = getUserById;
+module.exports.getUserByName = getUserByName;
+module.exports.getUserByEmail = getUserByEmail;
+module.exports.createUser = createUser;
+module.exports.confirmEmail = confirmEmail;

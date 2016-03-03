@@ -4,16 +4,24 @@
     <title>{{appCtrl.property.pageTitle}}</title>
 
     <link rel='stylesheet' href='styles/style.css'/>
-    <link rel='stylesheet' href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel='stylesheet' href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 </head>
 <body>
 
 <home-page></home-page>
 
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="bower_components/angular/angular.js"></script>
+<div id="access-modal"
+     class="modal fade"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modalContainer"></div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="scripts/home-directive.js"></script>
 <script src="scripts/main.js"></script>
+<script src="scripts/script.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,43 @@
+<!-- Register form modal -->
+<div class="modal-dialog" role="document" ng-controller="RegisterController as registerCtrl">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="modalTitle">Register</h4>
+        </div>
+        <div class="modal-body">
+            <!-- create register form -->
+            <form name="registerForm" ng-submit="registerCtrl.register()" novalidate>
+                <div class="form-group">
+                    <label for="user-name" class="control-label">Username:</label>
+                    <input type="text" maxlength="34" class="form-control" ng-model="registerCtrl.user.uname"
+                           id="user-name" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label">Email address:</label>
+                    <input type="text" maxlength="49" class="form-control" ng-model="registerCtrl.user.email"
+                           id="email" placeholder="Your email">
+                </div>
+                <div class="form-group">
+                    <label for="passwd" class="control-label">Password:</label>
+                    <input type="password" maxlength="24" class="form-control" ng-model="registerCtrl.user.password"
+                           id="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="passwd" class="control-label">Retype Password:</label>
+                    <input type="password" maxlength="24" class="form-control" ng-model="registerCtrl.user.passwd"
+                           id="passwd" placeholder="Retype Password">
+                </div>
+                <div class="modal-footer">
+                    <!-- form output -->
+                    <div class="text-center text-info well" ng-show="registerCtrl.error"><b>{{registerCtrl.error}}</b></div>
+                    <!-- modal buttons -->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary" value="Register" id="register-user-button"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

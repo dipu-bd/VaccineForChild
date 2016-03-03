@@ -1,18 +1,41 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    background: #0f0f0f url("/images/pattern2.jpg");
+}
+
+/*
+ * Padding
+ */
 .width-padding {
-  padding: 0 5px 0 5px;
+    padding: 0 5px 0 5px;
 }
 .height-padding {
-  padding: 5px 0 5px 0;
+    padding: 5px 0 5px 0;
 }
 .top-pad {
-  padding-top: 10px;
+    padding-top: 10px;
 }
 .right-pad {
-  padding-right: 10px;
+    padding-right: 10px;
 }
 .bottom-pad {
-  padding-bottom: 10px;
+    padding-bottom: 10px;
 }
 .left-pad {
-  padding-left: 10px;
+    padding-left: 10px;
+}
+
+#home-default {
+    height: 100%;
+}
+#content-wrapper {
+    margin: 0;
+    height: 85%;
+    padding: 0 15px 0 15px;
+}
+#bottom-panel {
+    margin: 0;
+    padding: 15px;
+    background: #8c8c9c;
 }
