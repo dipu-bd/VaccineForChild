@@ -32,7 +32,7 @@ router.post('/login', function (req, res, next) {
             var data = {};
             if (user.remember) data.maxAge = 30 * 24 * 3600;
             res.cookie('SessionID', result.id, data);
-            res.send(200);
+            res.sendStatus(200);
         }
     });
 });
@@ -48,7 +48,22 @@ router.post('/register', function (req, res, next) {
         }
         else {
             res.cookie('SessionID', result.id, null);
-            res.send(200);
+            res.sendStatus(200);
+        }
+    });
+});
+
+/* Change password */
+router.post('/change-pass', function (req, res, next) {
+    var user = req.body;
+    database.changePassword(user.id, user.old, user.password, function (err, result) {
+        if (err) {
+            res.send(JSON.stringify({
+                error: err
+            }));
+        }
+        else {
+            res.sendStatus(200);
         }
     });
 });
@@ -63,7 +78,7 @@ router.post('/confirm', function (req, res, next) {
                     error: "Error connecting database"
                 }));
             } else {
-                res.send(200);
+                res.sendStatus(200);
             }
         });
     }

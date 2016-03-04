@@ -4,22 +4,32 @@ var debug = require('debug')('VaccineForChild:home');
 
 var router = express.Router();
 
-// Property table as resource
-var resource = require('../resource/property')();
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
     database.getUserById(req.cookies['SessionID'], function (err, result) {
         if (result) { // logged in
-            resource.user = result;
             if (result.access > 0) { // access type : administrators
-                res.render('home-admin', resource);
+                res.render('home/admin');
             } else {    // access type: general user.
-                res.render('home-general', resource);
+                res.render('home/general');
             }
         } else { // not logged in
-            resource.user = null;
-            res.render('home-default', resource);
+            res.render('home/default');
+        }
+    });
+});
+
+/* GET navbar page. */
+router.get('/navbar', function (req, res, next) {
+    database.getUserById(req.cookies['SessionID'], function (err, result) {
+        if (result) { // logged in
+            if (result.access > 0) { // access type : administrators
+                res.render('navbar/admin');
+            } else {    // access type: general user.
+                res.render('navbar/general');
+            }
+        } else { // not logged in
+            res.render('navbar/default');
         }
     });
 });

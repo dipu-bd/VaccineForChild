@@ -1,27 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="VaccineApp" ng-controller="AppController as appCtrl">
 <head>
-    <title>{{appCtrl.property.pageTitle}}</title>
+    <title>{{property.pageTitle}}</title>
 
     <link rel='stylesheet' href='styles/style.css'/>
     <link rel='stylesheet' href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 </head>
 <body>
 
-<home-page></home-page>
+<!-- navivation bar -->
+<nav-bar></nav-bar>
 
-<div id="access-modal"
-     class="modal fade"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="modalContainer"></div>
+<!-- home-body -->
+<div id="home-page-container">
+    <home-page></home-page>
+</div>
 
+<!-- bottom bar -->
+<bottom-bar></bottom-bar>
+
+<!-- Load scripts -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
-<script src="scripts/home-directive.js"></script>
+<script src="scripts/directives/home-directive.js"></script>
+<script src="scripts/directives/form-directive.js"></script>
 <script src="scripts/main.js"></script>
 <script src="scripts/script.js"></script>
+
+<!-- Modal Form -->
+<div id="access-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalContainer">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Please wait...</h4>
+            </div>
+            <div class="modal-body">
+                <img src="/images/loading_spinner.gif" alt="...loading...">
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

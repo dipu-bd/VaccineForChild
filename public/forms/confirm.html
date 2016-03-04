@@ -1,0 +1,28 @@
+<!-- Confirm form  -->
+<form name="confirmForm"
+      ng-controller="ConfirmController as confirmCtrl"
+      ng-submit="confirmCtrl.checkCode()" novalidate>
+    <div class="form-group">
+        <label for="code" class="control-label">Confirmation code:</label>
+        <input type="text" maxlength="10" class="form-control" ng-model="confirmCtrl.user.code"
+               id="code" placeholder="Code">
+    </div>
+    <!-- code send button -->
+    <div class="form-group">
+        <button type="button"
+                class="btn btn-danger btn-block"
+                id="send-confirm-code-button"
+                ng-click="confirmCtrl.sendCode()">
+            Send Code!
+        </button>
+    </div>
+    <div class="modal-footer">
+        <!-- form status -->
+        <div class="text-center text-info well" ng-show="confirmCtrl.error">
+            <b>{{confirmCtrl.error}}</b>
+        </div>
+        <!-- modal buttons -->
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <input type="submit" class="btn btn-primary" value="Check" id="confirm-check-button"/>
+    </div>
+</form>

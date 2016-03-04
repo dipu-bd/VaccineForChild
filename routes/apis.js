@@ -16,7 +16,7 @@ router.get('/user', function (req, res, next) {
     var id = req.cookies['SessionID'];
     database.getUserById(id, function (err, result) {
         if (result == null)
-            res.send(404);
+            res.sendStatus(200);
         else {
             result.password = null;
             res.send(JSON.stringify(result));

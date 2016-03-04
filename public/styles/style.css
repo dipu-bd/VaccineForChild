@@ -39,3 +39,10 @@ html, body {
     padding: 15px;
     background: #8c8c9c;
 }
+
+.modal-body#loading-image{
+    width: 48px;
+    height: 48px;
+    display: block;
+    margin: 10px auto 10px auto;
+}

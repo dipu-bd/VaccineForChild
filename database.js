@@ -143,6 +143,30 @@ var createUser = function (uname, email, password, callback) {
 };
 
 /**
+ * Change password of an user
+ * @param id
+ * @param old
+ * @param password New password
+ * @param callback (err, result) => err is null if success
+ */
+var changePassword = function (id, old, password, callback) {
+    getUser(id, null, null, function (err, res) {
+        if (err) {
+            callback(err);
+        }
+        else if (res.password !== old) {
+            callback("Invalid old password");
+        }
+        else {
+            var sql = "UPDATE ?? SET ??=? WHERE ??=?;";
+            var inserts = ['user', 'password', password, 'id', id];
+            sql = mysql.format(sql, inserts);
+            runQuery(sql, callback);
+        }
+    });
+};
+
+/**
  * Marks an email address as confirmed
  * @param id
  * @param callback
@@ -159,3 +183,4 @@ module.exports.getUserByName = getUserByName;
 module.exports.getUserByEmail = getUserByEmail;
 module.exports.createUser = createUser;
 module.exports.confirmEmail = confirmEmail;
+module.exports.changePassword = changePassword;

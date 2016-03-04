@@ -1,5 +1,5 @@
 module.exports = function () {
     return {
-        pageTitle: 'Vaccine for Child'
+        pageTitle: 'Vaccine For Child'
     };
 };
