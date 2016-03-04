@@ -49,7 +49,7 @@
                     document.showModal(loginForm, "Change Password", true);
                 });
             }
-            if ($location.hash() != 'login') $location.hash('login');
+            $location.hash('login');
         };
         $this.showRegister = function () {
             document.showModal(registerForm, "Register", true);
@@ -59,7 +59,7 @@
                     document.showModal(registerForm, "Change Password", true);
                 });
             }
-            if ($location.hash() != 'register') $location.hash('register');
+            $location.hash('register');
         };
         $this.showConfirm = function () {
             document.showModal(confirmForm, "Confirm Email", true);
@@ -69,7 +69,7 @@
                     document.showModal(confirmForm, "Change Password", true);
                 });
             }
-            if ($location.hash() != 'confirm') $location.hash('confirm');
+            $location.hash('confirm');
         };
         $this.showChangePass = function () {
             document.showModal(changePassForm, "Change Password", true);
@@ -79,7 +79,7 @@
                     document.showModal(changePassForm, "Change Password", true);
                 });
             }
-            if ($location.hash() != 'change-pass') $location.hash('change-pass');
+            $location.hash('change-pass');
         };
         $this.responseToHash = function () {
             switch ($location.hash()) {
