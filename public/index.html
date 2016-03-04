@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="VaccineApp" ng-controller="AppController as appCtrl">
 <head>
+    <meta charset="utf-8">
+
     <title>{{property.pageTitle}}</title>
 
     <link rel='stylesheet' href='styles/style.css'/>
@@ -20,9 +22,9 @@
 <bottom-bar></bottom-bar>
 
 <!-- Load scripts -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular/angular.js"></script>
 <script src="scripts/directives/home-directive.js"></script>
 <script src="scripts/directives/form-directive.js"></script>
 <script src="scripts/main.js"></script>
@@ -39,7 +41,7 @@
                 <h4 class="modal-title">Please wait...</h4>
             </div>
             <div class="modal-body">
-                <img src="/images/loading_spinner.gif" alt="...loading...">
+                <!-- body here -->
             </div>
         </div>
     </div>

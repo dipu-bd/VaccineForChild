@@ -11,7 +11,7 @@ var resource = require('../resource/property')();
 /* POST logout request. */
 router.get('/logout', function (req, res, next) {
     res.clearCookie('SessionID', null);
-    res.redirect('/');
+    res.redirect('/#');
 });
 
 /* POST login request. */

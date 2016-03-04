@@ -4,7 +4,7 @@
     app.directive('navBar', function () {
         return {
             restrict: 'E',
-            templateUrl: '/home/navbar'
+            templateUrl: '/component/nav-bar.html'
         }
     });
     app.directive('homePage', function () {

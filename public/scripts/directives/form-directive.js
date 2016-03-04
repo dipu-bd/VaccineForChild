@@ -1,7 +1,7 @@
 (function () {
     var app = angular.module('form-directive', []);
 
-    app.controller('LoginController', function ($http, $window) {
+    app.controller('LoginController', function ($http, $rootScope) {
         var $this = this;
         $this.error = null;
         $this.user = {uname: '', passwd: '', remember: false};
@@ -19,7 +19,10 @@
                 var req = $http.post('/auth/login', $this.user);
                 req.success(function (res) {
                     $this.error = res.error;
-                    if (!res.error) $window.location.href = '/';
+                    if (!res.error) {
+                        $rootScope.loadUserInfo();
+                        document.hideModal();
+                    }
                     submitButton.attr("disabled", false);
                 });
                 req.error(function (err) {
@@ -30,7 +33,7 @@
         };
     });
 
-    app.controller('RegisterController', function ($http, $window) {
+    app.controller('RegisterController', function ($http, $rootScope) {
         var $this = this;
         $this.error = null;
         $this.user = {uname: '', email: '', passwd: '', password: ''};
@@ -56,7 +59,10 @@
                 var req = $http.post('/auth/register', $this.user);
                 req.success(function (res) {
                     $this.error = res.error;
-                    if (!res.error) $window.location.href = '/';
+                    if (!res.error) {
+                        $rootScope.loadUserInfo();
+                        document.hideModal();
+                    }
                     regButton.attr('disabled', false);
                 });
                 req.error(function (err) {
@@ -81,11 +87,11 @@
         var checkButton = $("#confirm-check-button");
         var cofirmButton = $("#send-confirm-code-button");
 
-        var handleError = function() {
+        var handleError = function () {
             $this.error = "Connection failed!";
             cofirmButton.attr("disabled", false);
             checkButton.attr('disabled', false);
-        }
+        };
         $this.checkCode = function () {
             $this.error = null;
             if ($this.user.code == $this.user.scode) {
@@ -97,8 +103,8 @@
                     checkButton.attr('disabled', false);
                     if (res.error) $this.error = res.error;
                     else {
-                        app.user.confirmed = true;
-                        $("#access-modal").modal('hide');
+                        user.confirmed = true;
+                        document.hideModal();
                     }
                 });
                 req.error(handleError());
@@ -141,7 +147,7 @@
                 var req = $http.post('/auth/change-pass', $this.user);
                 req.success(function (res) {
                     $this.error = res.error;
-                    if (!res.error) $("#access-modal").modal('hide');
+                    if (!res.error) document.hideModal();
                     changePassButton.attr("disabled", false);
                 });
                 req.error(function (err) {

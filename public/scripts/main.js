@@ -1,29 +1,46 @@
 (function () {
     var app = angular.module('VaccineApp', ['home-directive', 'form-directive']);
 
+    app.run(function ($rootScope, $http) {
+        // load properties
+        $rootScope.loadProperties = function () {
+            $rootScope.property = {pageTitle: "Vaccine For Child"};
+            $http.get("api/property").success(function (res) {
+                $rootScope.property = res;
+            });
+        };
+        // load user info
+        $rootScope.loadUserInfo = function () {
+            $rootScope.user = {uname: '...'};
+            $http.get("api/user").success(function (res) {
+                $rootScope.user = res;
+            })
+        };
+        // refresh page
+        $rootScope.refreshPage = function () {
+            $rootScope.loadProperties();
+            $rootScope.loadUserInfo();
+        };
+
+        // pre-load
+        $rootScope.refreshPage();
+    });
+
     //
     // CONTROLLERS
     //
-    app.controller('AppController', function ($http, $compile, $rootScope) {
+    app.controller('AppController', function ($http, $compile, $rootScope, $location) {
+
+        $('#access-modal').on('hide.bs.modal', function () {
+            window.location.hash = '';
+        });
+
         var $this = this;
-
-        // load properties
-        $rootScope.property = {pageTitle: "Vaccine For Child"};
-        $http.get("api/property").success(function (res) {
-            $rootScope.property = res;
-        });
-
-        // load user info
-        $rootScope.user = {uname: '...'};
-        $http.get("api/user").success(function (res) {
-            $rootScope.user = res;
-        });
-
-        // create modal forms
         var loginForm = null;
         var registerForm = null;
         var confirmForm = null;
         var changePassForm = null;
+        // show modal forms
         $this.showLogin = function () {
             document.showModal(loginForm, "Login", true);
             if (!loginForm) {
@@ -32,6 +49,7 @@
                     document.showModal(loginForm, "Change Password", true);
                 });
             }
+            if ($location.hash() != 'login') $location.hash('login');
         };
         $this.showRegister = function () {
             document.showModal(registerForm, "Register", true);
@@ -41,6 +59,7 @@
                     document.showModal(registerForm, "Change Password", true);
                 });
             }
+            if ($location.hash() != 'register') $location.hash('register');
         };
         $this.showConfirm = function () {
             document.showModal(confirmForm, "Confirm Email", true);
@@ -50,6 +69,7 @@
                     document.showModal(confirmForm, "Change Password", true);
                 });
             }
+            if ($location.hash() != 'confirm') $location.hash('confirm');
         };
         $this.showChangePass = function () {
             document.showModal(changePassForm, "Change Password", true);
@@ -59,7 +79,27 @@
                     document.showModal(changePassForm, "Change Password", true);
                 });
             }
+            if ($location.hash() != 'change-pass') $location.hash('change-pass');
         };
+        $this.responseToHash = function () {
+            switch ($location.hash()) {
+                case 'login':
+                    $this.showLogin();
+                    break;
+                case 'register':
+                    $this.showRegister();
+                    break;
+                case 'confirm':
+                    $this.showConfirm();
+                    break;
+                case 'change-pass':
+                    $this.showChangePass();
+                    break;
+                default:
+                    break;
+            }
+        };
+        $this.responseToHash();
     });
 
 })();
