@@ -1,0 +1,62 @@
+<style>
+    #loginForm .error {
+        color: #a94442;
+        font-style: normal;
+        font-size: .8em;
+    }
+</style>
+
+<form id="loginForm" method="post" action="javascript:null;">
+    <div class="form-group">
+        <label class="control-label">Username:</label>
+        <input type="text" class="form-control" name="uname" placeholder="Username">
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Password:</label>
+        <input type="password" class="form-control" name="passwd" placeholder="Password">
+    </div>
+
+    <div class="form-group">
+        <label><input type="checkbox" name="remember" checked> Remember me</label>
+    </div>
+
+    <div class="modal-footer">
+        <!-- form output -->
+        <div class="text-center text-info well" id="error-box"></div>
+        <!-- submit buttons -->
+        <button type="submit" class="btn btn-primary btn-block" id="submit-button">Sign in</button>
+        <!-- forgot pass method -->
+        <a href='#' target="_self" onclick="return;//TODO">Forgot user name or password?</a>
+    </div>
+</form>
+
+<script>
+    $('#loginForm').validate({
+        rules: {
+            uname: {
+                required: true,
+                minlength: 3,
+                maxlength: 35
+            },
+            passwd: {
+                required: true,
+                minlength: 6,
+                maxlength: 25
+            }
+        },
+        messages: {
+            uname: {
+                required: "The username is required",
+                minlength: "Username should be at least 3 characters long",
+                maxlength: "Username should not have more than 35 characters"
+            },
+            passwd: {
+                required: "The password is required",
+                minlength: "Password should have at least 6 characters",
+                maxlength: "Password should not have more than 25 characters"
+            }
+        },
+        submitHandler: handleLogin
+    })
+</script>

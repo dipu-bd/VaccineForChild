@@ -1,105 +1,121 @@
-(function () {
-    var app = angular.module('VaccineApp', ['home-directive', 'form-directive']);
-
-    app.run(function ($rootScope, $http) {
-        // load properties
-        $rootScope.loadProperties = function () {
-            $rootScope.property = {pageTitle: "Vaccine For Child"};
-            $http.get("api/property").success(function (res) {
-                $rootScope.property = res;
-            });
-        };
-        // load user info
-        $rootScope.loadUserInfo = function () {
-            $rootScope.user = {uname: '...'};
-            $http.get("api/user").success(function (res) {
-                $rootScope.user = res;
-            })
-        };
-        // refresh page
-        $rootScope.refreshPage = function () {
-            $rootScope.loadProperties();
-            $rootScope.loadUserInfo();
-        };
-
-        // pre-load
-        $rootScope.refreshPage();
-    });
+$(document).ready(function () {
 
     //
-    // CONTROLLERS
+    // Load Navigation bar
     //
-    app.controller('AppController', function ($http, $compile, $rootScope, $location) {
+    $('#nav-bar').load('/nav-bar', function (data, status) {
+        if(status !== 'success') {
+            console.log(data);
+        }
 
-        $('#access-modal').on('hide.bs.modal', function () {
-            window.location.hash = '';
+        $('#login-button').click(function () {
+            showForm('login', '/forms/login', 'Login', true);
         });
+        $('#register-button').click(function () {
 
-        var $this = this;
-        var loginForm = null;
-        var registerForm = null;
-        var confirmForm = null;
-        var changePassForm = null;
-        // show modal forms
-        $this.showLogin = function () {
-            document.showModal(loginForm, "Login", true);
-            if (!loginForm) {
-                $http.get('/forms/login.html').success(function (res) {
-                    loginForm = $compile(res)($rootScope);
-                    document.showModal(loginForm, "Change Password", true);
-                });
-            }
-            $location.hash('login');
-        };
-        $this.showRegister = function () {
-            document.showModal(registerForm, "Register", true);
-            if (!registerForm) {
-                $http.get('/forms/register.html').success(function (res) {
-                    registerForm = $compile(res)($rootScope);
-                    document.showModal(registerForm, "Change Password", true);
-                });
-            }
-            $location.hash('register');
-        };
-        $this.showConfirm = function () {
-            document.showModal(confirmForm, "Confirm Email", true);
-            if (!confirmForm) {
-                $http.get('/forms/confirm.html').success(function (res) {
-                    confirmForm = $compile(res)($rootScope);
-                    document.showModal(confirmForm, "Change Password", true);
-                });
-            }
-            $location.hash('confirm');
-        };
-        $this.showChangePass = function () {
-            document.showModal(changePassForm, "Change Password", true);
-            if (!changePassForm) {
-                $http.get('/forms/change-pass.html').success(function (res) {
-                    changePassForm = $compile(res)($rootScope);
-                    document.showModal(changePassForm, "Change Password", true);
-                });
-            }
-            $location.hash('change-pass');
-        };
-        $this.responseToHash = function () {
-            switch ($location.hash()) {
-                case 'login':
-                    $this.showLogin();
-                    break;
-                case 'register':
-                    $this.showRegister();
-                    break;
-                case 'confirm':
-                    $this.showConfirm();
-                    break;
-                case 'change-pass':
-                    $this.showChangePass();
-                    break;
-                default:
-                    break;
-            }
-        };
-        $this.responseToHash();
+        });
+        $('#confirm-button').click(function () {
+
+        });
+        $('#user-button').click(function () {
+
+        });
+        $('#change-pass-button').click(function () {
+
+        });
     });
 
-})();
+    //
+    // Load Home Page
+    //
+    $('#home-page').load('/home-page');
+
+    //
+    // Load Bottom Bar
+    //
+    $('#bottom-bar').load('/bottom-bar');
+
+});
+
+
+//
+// Show Modal Form
+//
+var allForms = {};
+var DEFAULT_MODAL_BODY = '<img src="/images/loading_spinner.gif" alt="Loading..." id="loading-image">';
+
+var hideForm = function () {
+    $("#access-modal").modal('hide');
+};
+
+var showForm = function (id, getUrl, title, small) {
+    // set modal size
+    if (small) $('.modal-dialog').addClass("modal-sm");
+    else $('.modal-dialog').removeClass("modal-sm");
+    // set modal title
+    $('.modal-title').html(title);
+    // show modal
+    $('#access-modal').modal('show');
+    // set modal body
+    var body = $('.modal-body');
+    if (allForms[id]) { // body is loaded
+        body.html(allForms[id]);
+    }
+    else { // load body from server
+        body.html(DEFAULT_MODAL_BODY);
+        body.load(getUrl, function (data, status) {
+            if (status === 'success') {
+                allForms[id] = data;
+            } else {
+                console.log(data);
+            }
+        });
+    }
+};
+
+var showFormError = function (err) {
+    var errBox = $('#error-box');
+    errBox.text(err);
+    if (err) errBox.fadeIn();
+    else errBox.fadeOut();
+};
+
+var handleLogin = function () {
+    $.post('/auth/login',
+        $('#loginForm').serialize(),
+        function (result, status, jqXHR) {
+            if (status === 'success') {
+                if (result === 'OK') {
+                    window.location.href = '/';
+                } else {
+                    showFormError(result);
+                }
+            }
+            else {
+                showFormError('Connection Failed');
+            }
+        });
+};
+
+//
+// Verify Forms
+//
+var EMAIL_REGEXP = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+
+var verifyPass = function (pass) {
+    if (!pass || pass.length < 6)
+        return "Password length should be greater than 6";
+    for (var i = 0; i < pass.length; ++i) {
+        if (pass[i] <= 30 && pass[i] >= 128)
+            return "Password contains invalid characters";
+    }
+    return false;
+};
+
+var verifyEmail = function (email) {
+    if (!email || email.length < 5)
+        return "Email should not be empty!";
+    if (!EMAIL_REGEXP.test(email))
+        return "Email format is not valid";
+    return null;
+};

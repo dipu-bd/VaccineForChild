@@ -4,6 +4,18 @@ html, body {
     background: #0f0f0f url("/images/pattern2.jpg");
 }
 
+#error-box {
+    display: none;
+    text-align: center;
+}
+
+.modal-body#loading-image{
+    width: 48px;
+    height: 48px;
+    display: block;
+    margin: 10px auto 10px auto;
+}
+
 /*
  * Padding
  */
@@ -40,9 +52,3 @@ html, body {
     background: #8c8c9c;
 }
 
-.modal-body#loading-image{
-    width: 48px;
-    height: 48px;
-    display: block;
-    margin: 10px auto 10px auto;
-}

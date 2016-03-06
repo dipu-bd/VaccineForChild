@@ -1,0 +1,55 @@
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <!-- title -->
+        <a class="navbar-brand right-pad" href="/" target="_self">
+            <%= pageTitle %>
+        </a>
+        <% if (!user) { %>
+        <!-- defult user buttons -->
+        <div class="navbar-right navbar-btn btn-group right-pad">
+            <a type="button" class="btn btn-default" id="login-button">
+                <span class="glyphicon glyphicon-log-in"></span> Login
+            </a>
+            <a type="button" class="btn btn-primary" id="register-button">
+                <span class="glyphicon glyphicon-user"></span> Create Account
+            </a>
+        </div>
+        <% } else { %>
+        <!-- general user buttons -->
+        <div class="navbar-right navbar-btn btn-group right-pad">
+            <% if(!user.confirmed) { %>
+            <a type="button" class="btn btn-danger" id='confirm-button'>
+                <span class="glyphicon glyphicon-warning-sign"></span> Verify your Email
+            </a>
+            <% } %>
+
+            <a type="button" class="btn btn-default" id="user-button">
+                <% if (user.avatar) { %>
+                <img href="<%= user.avatar %>" alt="avatar">
+                <% } else { %>
+                <span class="glyphicon glyphicon-user"></span>
+                <% } %>
+                <b><%= user.uname %></b>
+            </a>
+            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    class="btn btn-default dropdown-toggle">
+                <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a id="change-pass-button">
+                        <span class="glyphicon glyphicon-edit"></span> Change Password
+                    </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="/auth/logout" id="logout-button">
+                        <span class="glyphicon glyphicon-log-out"></span> Logout
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <% } %>
+</div>

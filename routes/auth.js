@@ -1,37 +1,60 @@
-var express = require('express');
-var database = require('../database');
-var mailer = require('../resource/mailer');
 var debug = require('debug')('VaccineForChild:auth');
+var express = require('express');
+var mailer = require('../resource/mailer');
+var session = require('../resource/session');
+var database = require('../resource/database');
 
 var router = express.Router();
 
-// Property table as resource
-var resource = require('../resource/property')();
+var REMEMBER_PERIOD = 30 * 24 * 3600 * 1000; // 30 days
+var DEFAULT_REMEMBER_PERIOD = 30 * 60 * 1000; // 30 seconds
+
+function mailConfirmCode(res) {
+    var confirmCode = Math.floor((Math.random() * 10000) + 1);
+    mailer.sendConfirmCode(data.email, confirmCode, function (err, info) {
+        if (err) {
+            debug(err);
+            res.send(JSON.stringify({
+                error: 'Could not send mail'
+            }));
+        }
+        else {
+            debug(info.message);
+            res.send(JSON.stringify({
+                code: confirmCode
+            }));
+        }
+    });
+}
 
 /* POST logout request. */
 router.get('/logout', function (req, res, next) {
+    var id = req.cookies['SessionID'];
     res.clearCookie('SessionID', null);
-    res.redirect('/#');
+    session.removeSession(id);
+    res.redirect('/');
 });
 
 /* POST login request. */
 router.post('/login', function (req, res, next) {
-    var user = req.body;
+    var user = req.body || {};
     database.getUserByName(user.uname, function (err, result) {
         if (err) {
-            res.send(JSON.stringify({
-                error: err
-            }));
+            res.send(err);
         }
         else if (user.passwd !== result.password) {
-            res.send(JSON.stringify({
-                error: "Password did not match"
-            }));
+            res.send("Password did not match");
         }
         else {
-            var data = {};
-            if (user.remember) data.maxAge = 30 * 24 * 3600;
-            res.cookie('SessionID', result.id, data);
+            // remove password for security
+            delete result.password;
+            // set age of session
+            var age = user.remember ? REMEMBER_PERIOD : DEFAULT_REMEMBER_PERIOD;
+            // create session
+            var id = session.addSession(result, age);
+            // add cookie
+            res.cookie('SessionID', id, {maxAge: age});
+            // send OK
             res.sendStatus(200);
         }
     });
@@ -39,7 +62,7 @@ router.post('/login', function (req, res, next) {
 
 /* POST register request. */
 router.post('/register', function (req, res, next) {
-    var user = req.body;
+    var user = req.body || {};
     database.createUser(user.uname, user.email, user.password, function (err, result) {
         if (err) {
             res.send(JSON.stringify({
@@ -47,8 +70,16 @@ router.post('/register', function (req, res, next) {
             }));
         }
         else {
-            res.cookie('SessionID', result.id, null);
-            res.sendStatus(200);
+            // remove password for security
+            delete result.password;
+            // set age of session
+            var age = user.remember ? REMEMBER_PERIOD : DEFAULT_REMEMBER_PERIOD;
+            // create session
+            var id = session.addSession(result, age);
+            // add cookie
+            res.cookie('SessionID', id, {maxAge: age});
+            // send OK
+            res.redirect('/');
         }
     });
 });
@@ -83,22 +114,7 @@ router.post('/confirm', function (req, res, next) {
         });
     }
     else {
-        var scode = Math.floor((Math.random() * 10000) + 1);
-        mailer.sendConfirmCode(data.email, scode, function (err, info) {
-            if (err) {
-                debug(err);
-                res.send(JSON.stringify({
-                    error: 'Could not send mail'
-                }));
-            }
-            else {
-                debug(info.message);
-                res.send(JSON.stringify({
-                    error: null,
-                    code: scode
-                }));
-            }
-        })
+        mailConfirmCode(res);
     }
 });
 
