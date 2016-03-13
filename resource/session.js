@@ -1,44 +1,40 @@
 var debug = require('debug')('VaccineForChild:session');
 var crypto = require('crypto');
 
+var KEY_LENGTH = 16;
+
 var allSession = {};
 
-var getId = function () {
-    var id = null;
-    while (allSession.hasOwnProperty(id) || !id)
-        id = crypto.randomBytes(16).toString('hex');
+var getKey = function () {
+    var key = null;
+    while (!key || allSession.hasOwnProperty(key))
+        key = crypto.randomBytes(KEY_LENGTH).toString('hex');
+    return key;
 };
 
-var addSession = function (data, ageInMin) {
-    var id = getId();
-    allSession[id] = {
-        key: id,
+var addSession = function (data) {
+    var key = getKey();
+    allSession[key] = {
+        key: key,
         data: data,
         creationTime: (new Date()).getTime(),
-        lastAccessTime: (new Date()).getTime(),
-        age: ageInMin ? ageInMin * 60000 : -1
+        lastAccessTime: (new Date()).getTime()
     };
-    return id;
+    return key;
 };
 
-var getSession = function (id) {
-    if (allSession.hasOwnProperty(id)) {
-        var session = allSession[id];
-        var t = session.creationTime + session.age;
-        if (t < (new Date()).getTime()) {
-            delete allSession[id];
-        }
-        else {
-            session.lastAccessTime = (new Date()).getTime();
-            return session;
-        }
+var getSession = function (key) {
+    if (allSession.hasOwnProperty(key)) {
+        var session = allSession[key];
+        session.lastAccessTime = (new Date()).getTime();
+        return session;
     }
     return null;
 };
 
-var removeSession = function (id) {
-    if (allSession.hasOwnProperty(id)) {
-        delete allSession[id];
+var removeSession = function (key) {
+    if (allSession.hasOwnProperty(key)) {
+        delete allSession[key];
     }
 };
 

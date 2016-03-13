@@ -1,10 +1,13 @@
+/*
+ After document is ready
+ */
 $(document).ready(function () {
 
     //
     // Load Navigation bar
     //
     $('#nav-bar').load('/nav-bar', function (data, status) {
-        if(status !== 'success') {
+        if (status !== 'success') {
             console.log(data);
         }
 
@@ -12,15 +15,15 @@ $(document).ready(function () {
             showForm('login', '/forms/login', 'Login', true);
         });
         $('#register-button').click(function () {
-
+            showForm('register', 'forms/register', 'Register', true);
         });
         $('#confirm-button').click(function () {
-
-        });
-        $('#user-button').click(function () {
-
+            showForm('confirm', 'forms/confirm', 'Confirm Email', true);
         });
         $('#change-pass-button').click(function () {
+            showForm('change-pass', 'forms/change-pass', 'Change Password', true);
+        });
+        $('#user-button').click(function () {
 
         });
     });
@@ -42,11 +45,8 @@ $(document).ready(function () {
 // Show Modal Form
 //
 var allForms = {};
-var DEFAULT_MODAL_BODY = '<img src="/images/loading_spinner.gif" alt="Loading..." id="loading-image">';
+var DEFAULT_MODAL_BODY = '<span class="glyphicon glyphicon-hourglass" style="font-size:72px;"></span>';
 
-var hideForm = function () {
-    $("#access-modal").modal('hide');
-};
 
 var showForm = function (id, getUrl, title, small) {
     // set modal size
@@ -73,49 +73,12 @@ var showForm = function (id, getUrl, title, small) {
     }
 };
 
+var hideForm = function () {
+    $("#access-modal").modal('hide');
+};
+
 var showFormError = function (err) {
-    var errBox = $('#error-box');
-    errBox.text(err);
-    if (err) errBox.fadeIn();
-    else errBox.fadeOut();
+    $('#error-box').text(err);
 };
 
-var handleLogin = function () {
-    $.post('/auth/login',
-        $('#loginForm').serialize(),
-        function (result, status, jqXHR) {
-            if (status === 'success') {
-                if (result === 'OK') {
-                    window.location.href = '/';
-                } else {
-                    showFormError(result);
-                }
-            }
-            else {
-                showFormError('Connection Failed');
-            }
-        });
-};
 
-//
-// Verify Forms
-//
-var EMAIL_REGEXP = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
-
-var verifyPass = function (pass) {
-    if (!pass || pass.length < 6)
-        return "Password length should be greater than 6";
-    for (var i = 0; i < pass.length; ++i) {
-        if (pass[i] <= 30 && pass[i] >= 128)
-            return "Password contains invalid characters";
-    }
-    return false;
-};
-
-var verifyEmail = function (email) {
-    if (!email || email.length < 5)
-        return "Email should not be empty!";
-    if (!EMAIL_REGEXP.test(email))
-        return "Email format is not valid";
-    return null;
-};

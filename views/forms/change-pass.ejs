@@ -1,0 +1,88 @@
+<form id="changePassForm" method="post" action="javascript:null;">
+    <div class="form-group">
+        <label for="old" class="control-label">Old Password:</label>
+        <input type="password" class="form-control" name="old" placeholder="Old Password">
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="control-label">New Password:</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="New Password">
+    </div>
+    <div class="form-group">
+        <label for="passwd" class="control-label">Confirm Password:</label>
+        <input type="password" class="form-control" name="passwd" placeholder="Confirm new Password">
+    </div>
+
+    <div class="modal-footer">
+        <!-- form output -->
+        <div class="text-center text-info well" id="error-box"></div>
+        <!-- modal buttons -->
+        <input type="submit" class="btn btn-primary btn-block" value="Change It!"/>
+    </div>
+</form>
+
+<script>
+    (function () {
+        var submitButton = $('#changePassForm input[type="submit"]');
+        $('#changePassForm').validate({
+            submitHandler: function () {
+                submitButton.attr('disabled', true);
+                $.post('/auth/change-pass', $('#changePassForm').serialize())
+                        .done(function (result, status, jqXHR) {
+                            if (result === 'OK') {
+                                hideForm();
+                                alert("Password Changed");
+                            } else {
+                                showFormError(result);
+                            }
+                        })
+                        .error(function (result, status) {
+                            console.log(result);
+                            showFormError('Connection Failed');
+                        })
+                        .always(function () {
+                            submitButton.attr('disabled', false);
+                        });
+            },
+            errorPlacement: function (error, element) {
+                $('#error-box').html(error);
+            },
+            rules: {
+                old: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 25
+                },
+                password: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 25
+                },
+                passwd: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 25,
+                    equalTo: "#password"
+                }
+            },
+            messages: {
+                old: {
+                    required: "The old password is required",
+                    minlength: "Password should have at least 5 characters",
+                    maxlength: "Password should not have more than 25 characters"
+                },
+                password: {
+                    required: "The new password is required",
+                    minlength: "Password should have at least 5 characters",
+                    maxlength: "Password should not have more than 25 characters"
+                },
+                passwd: {
+                    required: "The confirmation is required",
+                    minlength: "Password should have at least 5 characters",
+                    maxlength: "Password should not have more than 25 characters",
+                    equalTo: "Please enter the same password as above"
+                }
+            }
+        });
+    })();
+</script>

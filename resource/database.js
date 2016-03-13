@@ -150,7 +150,8 @@ var createUser = function (uname, email, password, callback) {
  * @param callback (err, result) => err is null if success
  */
 var changePassword = function (id, old, password, callback) {
-    getUser(id, null, null, function (err, res) {
+    getUserById(id, function (err, res) {
+        console.log(id);
         if (err) {
             callback(err);
         }
