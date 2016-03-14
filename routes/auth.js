@@ -8,7 +8,7 @@ var router = express.Router();
 
 var SESSION_ID_COOKIE = 'SessionID';
 var REMEMBER_PERIOD = 30 * 24 * 3600 * 1000; // 30 days
-var DEFAULT_REMEMBER_PERIOD = 30 * 60 * 1000; // 30 seconds
+var DEFAULT_REMEMBER_PERIOD = 30 * 3600 * 1000; // 30 seconds
 
 /* POST logout request. */
 router.get('/logout', function (req, res, next) {
