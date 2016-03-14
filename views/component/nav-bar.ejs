@@ -2,19 +2,29 @@
     <div class="container">
         <!-- title -->
         <a class="navbar-brand right-pad" href="/" target="_self">
+            <img src="/images/baby_white_lg.png" alt="baby" width="24px" height="24px" style="display: inline"/>
             <%= pageTitle %>
         </a>
         <% if (!user) { %>
         <!-- defult user buttons -->
         <div class="navbar-right navbar-btn btn-group right-pad">
             <a type="button" class="btn btn-default" id="login-button">
-                <span class="glyphicon glyphicon-log-in"></span> Login
+                <span class="glyphicon glyphicon-log-in"></span> Sign In
             </a>
-            <a type="button" class="btn btn-primary" id="register-button">
+            <!--a type="button" class="btn btn-primary" id="register-button">
                 <span class="glyphicon glyphicon-user"></span> Create Account
-            </a>
+            </a-->
         </div>
         <% } else { %>
+        <!-- menu bar -->
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="#" id="add-child-button">
+                    <span class="glyphicon glyphicon-plus"></span> Add Child
+                </a>
+            </li>
+        </ul>
+
         <!-- general user buttons -->
         <div class="navbar-right navbar-btn btn-group right-pad">
             <% if(!user.confirmed) { %>

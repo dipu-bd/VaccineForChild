@@ -43,6 +43,7 @@ router.post('/register', function (req, res, next) {
         }
         else {
             sendSessionId(res, result, user.remember);
+            mailer.sendConfirmCode(user.email, getConfirmCode);
         }
     });
 });
@@ -64,9 +65,9 @@ function sendSessionId(res, data, remember) {
 router.post('/change-pass', function (req, res, next) {
     var user = req.body;
     var key = req.cookies[SESSION_ID_COOKIE];
-    if (session.getSession(key)) {
-        var data = session.getSession(key);
-        database.changePassword(data.id, user.old, user.password, function (err, result) {
+    var sdata = session.getSession(key);
+    if (sdat) {
+        database.changePassword(sdat.data.id, user.old, user.password, function (err, result) {
             if (err) {
                 res.send(err);
             }
@@ -79,37 +80,51 @@ router.post('/change-pass', function (req, res, next) {
 
 /* POST confirm request. */
 router.post('/confirm', function (req, res, next) {
-    var data = req.body;
+    var code = req.body.code;
     var key = req.cookies[SESSION_ID_COOKIE];
-    if (session.getSession(key)) {
-        database.confirmEmail(data.email, function (err, result) {
-            if (err) {
-                res.status(503).send("Error connecting database");
-            } else {
-                res.status(204);
-            }
-        });
+    var sdat = session.getSession(key);
+    if (sdat) {
+        if (sdat.confirmCode == code) {
+            database.confirmEmail(sdat.data.email, function (err, result) {
+                if (err) {
+                    res.send("Error connecting to database");
+                } else {
+                    debug(sdat.data.email + " confirmed.");
+                    sdat.data.confirmed = true;
+                    res.sendStatus(200);
+                }
+            });
+        } else {
+            debug(sdat.confirmCode + " != " + code);
+            res.send('The code is invalid.');
+        }
     }
 });
 
 /* POST confirm email. */
 router.post('/mail-confirm', function (req, res, next) {
-    // generate confirm code : 5 digits
-    var confirmCode = Math.floor((Math.random() * 899999) + 100000);
+    var confirmCode = getConfirmCode();
     var key = req.cookies[SESSION_ID_COOKIE];
-    if (session.getSession(key)) {
+    var sdat = session.getSession(key);
+    if (sdat) {
         // mail code
-        mailer.sendConfirmCode(data.email, confirmCode, function (err, info) {
+        mailer.sendConfirmCode(sdat.data.email, confirmCode, function (err, info) {
             if (err) {
                 debug(err);
-                res.send('Could not send an email');
+                res.send('Could not send an Email.');
             }
             else {
                 debug(info);
-                res.send(confirmCode);
+                res.sendStatus(200);
+                sdat.confirmCode = confirmCode;
             }
         });
     }
 });
+
+function getConfirmCode() {
+// generate confirm code : 5 digits
+    return Math.floor((Math.random() * 899999) + 100000);
+}
 
 module.exports = router;

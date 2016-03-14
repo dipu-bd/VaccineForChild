@@ -169,12 +169,12 @@ var changePassword = function (id, old, password, callback) {
 
 /**
  * Marks an email address as confirmed
- * @param id
+ * @param email
  * @param callback
  */
 var confirmEmail = function (email, callback) {
     var sql = "UPDATE ?? SET ??=? WHERE ??=?;";
-    var inserts = ['user', 'confirm', 1, 'email', email];
+    var inserts = ['user', 'confirmed', 1, 'email', email];
     sql = mysql.format(sql, inserts);
     runQuery(sql, callback);
 };

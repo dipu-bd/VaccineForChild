@@ -12,10 +12,7 @@ $(document).ready(function () {
         }
 
         $('#login-button').click(function () {
-            showForm('login', '/forms/login', 'Login', true);
-        });
-        $('#register-button').click(function () {
-            showForm('register', 'forms/register', 'Register', true);
+            showForm('login', '/forms/login', 'Sign In', true);
         });
         $('#confirm-button').click(function () {
             showForm('confirm', 'forms/confirm', 'Confirm Email', true);
@@ -31,7 +28,11 @@ $(document).ready(function () {
     //
     // Load Home Page
     //
-    $('#home-page').load('/home-page');
+    $('#home-page').load('/home-page', function (data, status) {
+        if (status === 'success') {
+            $('#register-form-wrapper').load('/forms/register');
+        }
+    });
 
     //
     // Load Bottom Bar
