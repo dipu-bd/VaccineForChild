@@ -47,4 +47,34 @@ router.get('/bottom-bar', function (req, res, next) {
     res.render('component/bottom-bar', property);
 });
 
+/* GET profile page. */
+router.get('/profile', function (req, res, next) {
+    var id = req.cookies['SessionID'];
+    var result = session.getSession(id);
+    if (result) { // logged in
+        property.user = result.data;
+        property.admin = (result.access > 0);
+        res.render('profile', property);
+    } else { // not logged in
+        property.user = null;
+        res.clearCookie('SessionID', null);
+        res.render('invalid', property);
+    }
+});
+
+/* GET profile page. */
+router.get('/add-child', function (req, res, next) {
+    var id = req.cookies['SessionID'];
+    var result = session.getSession(id);
+    if (result) { // logged in
+        property.user = result.data;
+        property.admin = (result.access > 0);
+        res.render('add-child', property);
+    } else { // not logged in
+        property.user = null;
+        res.clearCookie('SessionID', null);
+        res.render('invalid', property);
+    }
+});
+
 module.exports = router;

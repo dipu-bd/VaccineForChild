@@ -14,7 +14,7 @@ router.get('/login', function (req, res, next) {
     if (!session.getSession(id)) {
         res.render('forms/login', property);
     } else {
-        res.render('forms/invalid', property);
+        res.render('invalid', property);
     }
 });
 
@@ -24,7 +24,7 @@ router.get('/register', function (req, res, next) {
     if (!session.getSession(id)) {
         res.render('forms/register', property);
     } else {
-        res.render('forms/invalid', property);
+        res.render('invalid', property);
     }
 });
 /* GET confirm form. */
@@ -34,7 +34,7 @@ router.get('/confirm', function (req, res, next) {
         property.user = session.getSession(id);
         res.render('forms/confirm', property);
     } else {
-        res.render('forms/invalid', property);
+        res.render('invalid', property);
     }
 });
 /* GET change-pass form. */
@@ -44,7 +44,7 @@ router.get('/change-pass', function (req, res, next) {
         property.user = session.getSession(id);
         res.render('forms/change-pass', property);
     } else {
-        res.render('forms/invalid', property);
+        res.render('invalid', property);
     }
 });
 

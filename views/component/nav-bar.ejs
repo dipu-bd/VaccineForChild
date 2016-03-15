@@ -2,7 +2,6 @@
     <div class="container">
         <!-- title -->
         <a class="navbar-brand right-pad" href="/" target="_self">
-            <img src="/images/baby_white_lg.png" alt="baby" width="24px" height="24px" style="display: inline"/>
             <%= pageTitle %>
         </a>
         <% if (!user) { %>
@@ -24,7 +23,6 @@
                 </a>
             </li>
         </ul>
-
         <!-- general user buttons -->
         <div class="navbar-right navbar-btn btn-group right-pad">
             <% if(!user.confirmed) { %>

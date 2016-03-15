@@ -2,44 +2,65 @@
  After document is ready
  */
 $(document).ready(function () {
+    // clear hash on modal hide
+    $('#access-modal').on('hidden.bs.modal', function () {
+        window.location.hash = "";
+    });
 
-    //
+    // Bind the hash change event.
+    $(window).bind('hashchange', handleHashChange);
+
     // Load Navigation bar
-    //
     $('#nav-bar').load('/nav-bar', function (data, status) {
         if (status !== 'success') {
             console.log(data);
         }
-        $('#login-button').click(function () {
-            showForm('login', '/forms/login', 'Sign In', true);
-        });
-        $('#confirm-button').click(function () {
-            showForm('confirm', 'forms/confirm', 'Confirm Email', true);
-        });
-        $('#change-pass-button').click(function () {
-            showForm('change-pass', 'forms/change-pass', 'Change Password', true);
-        });
-        $('#user-button').click(function () {
-
-        });
     });
 
-    //
-    // Load Home Page
-    //
-    $('#home-page').load('/home-page', function (data, status) {
-        if (status === 'success') {
-            $('#register-form-wrapper').load('/forms/register');
+    // Load Bottom Bar
+    $('#bottom-bar').load('/bottom-bar', function (data, status) {
+        if (status !== 'success') {
+            console.log(data);
         }
     });
 
-    //
-    // Load Bottom Bar
-    //
-    $('#bottom-bar').load('/bottom-bar');
-
+    handleHashChange();
 });
 
+var loadHomePage = function (url) {
+    $('#home-page').load(url, function (data, status) {
+        if (status === 'success') {
+            var regForm = $('#register-form-wrapper');
+            if (regForm) regForm.load('/forms/register');
+        } else {
+            console.log(data);
+        }
+    });
+};
+
+var handleHashChange = function () {
+    var anchor = window.location.hash;
+    switch (anchor) {
+        case '#login':
+            showForm('login', '/forms/login', 'Sign In', true);
+            break;
+        case '#confirm':
+            showForm('confirm', 'forms/confirm', 'Confirm Email', true);
+            break;
+        case '#change-pass':
+            showForm('change-pass', 'forms/change-pass', 'Change Password', true);
+            break;
+        case '#profile':
+            loadHomePage('/profile');
+            break;
+        case '#add-child':
+            loadHomePage('/add-child');
+            break;
+        default:
+            loadHomePage('/home-page');
+            break;
+    }
+};
 
 //
 // Show Modal Form
@@ -48,15 +69,19 @@ var allForms = {};
 var DEFAULT_MODAL_BODY = '<span class="glyphicon glyphicon-hourglass" style="font-size:72px;"></span>';
 
 var showForm = function (id, getUrl, title, small) {
+    // select elements
+    var mmain = $('#access-modal');
+    var dialog = $('#access-modal .modal-dialog');
+    var mtitle = $('#access-modal .modal-title');
+    var body = $('#access-modal .modal-body');
     // set modal size
-    if (small) $('.modal-dialog').addClass("modal-sm");
-    else $('.modal-dialog').removeClass("modal-sm");
+    if (small) dialog.addClass("modal-sm");
+    else dialog.removeClass("modal-sm");
     // set modal title
-    $('.modal-title').html(title);
+    mtitle.html(title);
     // show modal
-    $('#access-modal').modal('show');
+    mmain.modal('show');
     // set modal body
-    var body = $('.modal-body');
     if (allForms[id]) { // body is loaded
         body.html(allForms[id]);
     }
