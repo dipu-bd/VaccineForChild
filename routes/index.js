@@ -1,7 +1,7 @@
 var debug = require('debug')('VaccineForChild:index');
 var express = require('express');
-var session = require('../resource/session');
-var property = require('../resource/property')();
+var session = require('./session');
+var property = require('./property')();
 
 var router = express.Router();
 
@@ -23,7 +23,6 @@ router.get('/home-page', function (req, res, next) {
         }
     } else { // not logged in
         property.user = null;
-        res.clearCookie('SessionID', null);
         res.render('home/default', property);
     }
 });
@@ -37,7 +36,6 @@ router.get('/nav-bar', function (req, res, next) {
         property.admin = (result.access > 0);
     } else { // not logged in
         property.user = null;
-        res.clearCookie('SessionID', null);
     }
     res.render('component/nav-bar', property);
 });
@@ -57,12 +55,11 @@ router.get('/profile', function (req, res, next) {
         res.render('profile', property);
     } else { // not logged in
         property.user = null;
-        res.clearCookie('SessionID', null);
         res.render('invalid', property);
     }
 });
 
-/* GET profile page. */
+/* GET add-child page. */
 router.get('/add-child', function (req, res, next) {
     var id = req.cookies['SessionID'];
     var result = session.getSession(id);
@@ -72,7 +69,34 @@ router.get('/add-child', function (req, res, next) {
         res.render('add-child', property);
     } else { // not logged in
         property.user = null;
-        res.clearCookie('SessionID', null);
+        res.render('invalid', property);
+    }
+});
+
+/* GET vaccine page. */
+router.get('/vaccines', function (req, res, next) {
+    var id = req.cookies['SessionID'];
+    var result = session.getSession(id);
+    if (result) { // logged in
+        property.user = result.data;
+        property.admin = (result.access > 0);
+        res.render('vaccine', property);
+    } else { // not logged in
+        property.user = null;
+        res.render('invalid', property);
+    }
+});
+
+/* GET centers page. */
+router.get('/centers', function (req, res, next) {
+    var id = req.cookies['SessionID'];
+    var result = session.getSession(id);
+    if (result) { // logged in
+        property.user = result.data;
+        property.admin = (result.access > 0);
+        res.render('centers', property);
+    } else { // not logged in
+        property.user = null;
         res.render('invalid', property);
     }
 });

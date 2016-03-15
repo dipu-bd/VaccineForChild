@@ -1,7 +1,7 @@
 var debug = require('debug')('VaccineForChild:apis');
 var express = require('express');
-var session = require('../resource/session');
-var property = require('../resource/property')();
+var session = require('./session');
+var property = require('./property')();
 
 var router = express.Router();
 

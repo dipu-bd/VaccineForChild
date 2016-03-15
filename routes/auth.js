@@ -1,8 +1,8 @@
 var debug = require('debug')('VaccineForChild:auth');
 var express = require('express');
-var mailer = require('../resource/mailer');
-var session = require('../resource/session');
-var database = require('../resource/database');
+var mailer = require('./mailer');
+var session = require('./session');
+var database = require('./database');
 
 var router = express.Router();
 

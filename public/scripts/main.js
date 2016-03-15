@@ -31,6 +31,11 @@ $(document).ready(function () {
 // Show Home page
 //
 var allPages = {};
+
+/**
+ * Load home page
+ * @param id Id, as well as the address to get home page
+ */
 var loadHomePage = function (id) {
     var home = $('#home-page');
     if (allPages[id]) {

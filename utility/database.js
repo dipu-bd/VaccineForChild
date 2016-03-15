@@ -179,9 +179,114 @@ var confirmEmail = function (email, callback) {
     runQuery(sql, callback);
 };
 
+/**
+ * Retrieve the avatar image of an user
+ * @param id ID of the user
+ * @param callback
+ */
+var getAvatar = function (id, callback) {
+
+};
+
+
+/**
+ * Set the avatar image of an user
+ * @param id ID of the user
+ * @param callback (err, res)
+ */
+var setAvatar = function (id, callback) {
+
+};
+
+
+/**
+ * Retrieve the list of phone numbers of an user.
+ * @param id ID of the user
+ * @param callback (err, res) where res=list of objects
+ */
+var getPhones = function (id, callback) {
+
+};
+
+/**
+ * Add a phone number to an user. Number must be verified before adding.
+ * @param id ID of the user
+ * @param number Phone number to add
+ * @param callback (err, res) where res = newly added phone object.
+ */
+var addPhone = function (id, number, callback) {
+
+};
+
+/**
+ * Add a phone number to an user.
+ * @param id ID of the user
+ * @param number Phone number to delete
+ * @param callback (err) => if no error, err=null
+ */
+var removePhone = function (id, number, callback) {
+
+};
+
+/**
+ * Adds an address
+ * @param state State name
+ * @param city City name
+ * @param region Region name
+ * @param postcode Postal code
+ * @param callback (err, res) where res = newly added address object.
+ */
+var addAddress = function(state, city, region, postcode, callback) {
+
+};
+
+/**
+ * Gets an address
+ * @param state State name
+ * @param city City name
+ * @param region Region name
+ * @param postcode Postal code
+ * @param callback (err, res) where res = address object or null if none.
+ */
+var getAddress = function(state, city, region, postcode, callback) {
+
+};
+
+/**
+ * Creates a new user
+ * @param dob Date of birth
+ * @param user ID of user this child belongs to
+ * @param name Name of the child
+ * @param height Height of the child
+ * @param weight Weight of the child
+ * @param address Address id of the child
+ * @param callback (err, res) => res = newly created child object
+ */
+var createChild = function (dob, user, name, height, weight, address, callback) {
+    
+};
+
+/**
+ * Gets all child under the user
+ * @param id ID of the user
+ * @param callback (err, res) => array of child objects
+ */
+var allChilds = function (id, callback) {
+
+};
+
 module.exports.getUserById = getUserById;
 module.exports.getUserByName = getUserByName;
 module.exports.getUserByEmail = getUserByEmail;
 module.exports.createUser = createUser;
 module.exports.confirmEmail = confirmEmail;
 module.exports.changePassword = changePassword;
+module.exports.getAvatar = getAvatar;
+module.exports.setAvatar = setAvatar;
+module.exports.getPhones = getPhones;
+module.exports.addPhone = addPhone;
+module.exports.removePhone = removePhone;
+module.exports.addAddress = addAddress;
+module.exports.getAddress = getAddress;
+module.exports.createChild = createChild;
+module.exports.allChilds = allChilds;
