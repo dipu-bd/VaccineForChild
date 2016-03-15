@@ -182,7 +182,7 @@ var confirmEmail = function (email, callback) {
 /**
  * Retrieve the avatar image of an user
  * @param id ID of the user
- * @param callback
+ * @param callback (err, path) => path = image path of the avatar, null if none.
  */
 var getAvatar = function (id, callback) {
 
@@ -192,39 +192,39 @@ var getAvatar = function (id, callback) {
 /**
  * Set the avatar image of an user
  * @param id ID of the user
+ * @param path Image path of the avatar
  * @param callback (err, res)
  */
-var setAvatar = function (id, callback) {
+var setAvatar = function (id, path, callback) {
 
 };
 
 
 /**
  * Retrieve the list of phone numbers of an user.
- * @param id ID of the user
+ * @param user ID of the user
  * @param callback (err, res) where res=list of objects
  */
-var getPhones = function (id, callback) {
+var getPhones = function (user, callback) {
 
 };
 
 /**
  * Add a phone number to an user. Number must be verified before adding.
- * @param id ID of the user
+ * @param user ID of the user
  * @param number Phone number to add
  * @param callback (err, res) where res = newly added phone object.
  */
-var addPhone = function (id, number, callback) {
+var addPhone = function (user, number, callback) {
 
 };
 
 /**
- * Add a phone number to an user.
- * @param id ID of the user
- * @param number Phone number to delete
+ * Removes a phone number.
+ * @param id ID of the phone
  * @param callback (err) => if no error, err=null
  */
-var removePhone = function (id, number, callback) {
+var removePhone = function (id, callback) {
 
 };
 
@@ -236,7 +236,7 @@ var removePhone = function (id, number, callback) {
  * @param postcode Postal code
  * @param callback (err, res) where res = newly added address object.
  */
-var addAddress = function(state, city, region, postcode, callback) {
+var addAddress = function (state, city, region, postcode, callback) {
 
 };
 
@@ -248,7 +248,7 @@ var addAddress = function(state, city, region, postcode, callback) {
  * @param postcode Postal code
  * @param callback (err, res) where res = address object or null if none.
  */
-var getAddress = function(state, city, region, postcode, callback) {
+var getAddress = function (state, city, region, postcode, callback) {
 
 };
 
@@ -263,7 +263,7 @@ var getAddress = function(state, city, region, postcode, callback) {
  * @param callback (err, res) => res = newly created child object
  */
 var createChild = function (dob, user, name, height, weight, address, callback) {
-    
+
 };
 
 /**
@@ -271,7 +271,7 @@ var createChild = function (dob, user, name, height, weight, address, callback) 
  * @param id ID of the user
  * @param callback (err, res) => array of child objects
  */
-var allChilds = function (id, callback) {
+var getAllChilds = function (id, callback) {
 
 };
 
@@ -289,4 +289,4 @@ module.exports.removePhone = removePhone;
 module.exports.addAddress = addAddress;
 module.exports.getAddress = getAddress;
 module.exports.createChild = createChild;
-module.exports.allChilds = allChilds;
+module.exports.getAllChilds = getAllChilds;
