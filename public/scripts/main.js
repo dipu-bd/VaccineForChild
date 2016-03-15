@@ -27,37 +27,70 @@ $(document).ready(function () {
     handleHashChange();
 });
 
-var loadHomePage = function (url) {
-    $('#home-page').load(url, function (data, status) {
-        if (status === 'success') {
-            var regForm = $('#register-form-wrapper');
-            if (regForm) regForm.load('/forms/register');
-        } else {
-            console.log(data);
-        }
-    });
+//
+// Show Home page
+//
+var allPages = {};
+var loadHomePage = function (id) {
+    var home = $('#home-page');
+    if (allPages[id]) {
+        home.html(allPages[id]);
+        loadRegForm();
+    }
+    else {
+        home.load('/' + id, function (data, status) {
+            if (status === 'success') {
+                allPages[id] = data;
+                loadRegForm()
+            } else {
+                console.log(data);
+            }
+        });
+    }
 };
+
+function loadRegForm() {
+    var regForm = $('#register-form-wrapper');
+    if (regForm) {
+        if (allForms['register']) {
+            regForm.html(allForms['register']);
+        }
+        else {
+            regForm.load('/forms/register', function (data, status) {
+                if (status === 'success') {
+                    allForms['register'] = data;
+                }
+            });
+        }
+    }
+}
 
 var handleHashChange = function () {
     var anchor = window.location.hash;
     switch (anchor) {
         case '#login':
-            showForm('login', '/forms/login', 'Sign In', true);
+            loadForm('login', 'Sign In', true);
             break;
         case '#confirm':
-            showForm('confirm', 'forms/confirm', 'Confirm Email', true);
+            loadForm('confirm', 'Confirm Email', true);
             break;
         case '#change-pass':
-            showForm('change-pass', 'forms/change-pass', 'Change Password', true);
+            loadForm('change-pass', 'Change Password', true);
             break;
         case '#profile':
-            loadHomePage('/profile');
+            loadHomePage('profile');
             break;
         case '#add-child':
-            loadHomePage('/add-child');
+            loadHomePage('add-child');
+            break;
+        case '#vaccines':
+            loadHomePage('vaccines');
+            break;
+        case '#centers':
+            loadHomePage('centers');
             break;
         default:
-            loadHomePage('/home-page');
+            loadHomePage('home-page');
             break;
     }
 };
@@ -68,7 +101,7 @@ var handleHashChange = function () {
 var allForms = {};
 var DEFAULT_MODAL_BODY = '<span class="glyphicon glyphicon-hourglass" style="font-size:72px;"></span>';
 
-var showForm = function (id, getUrl, title, small) {
+var loadForm = function (id, title, small) {
     // select elements
     var mmain = $('#access-modal');
     var dialog = $('#access-modal .modal-dialog');
@@ -87,7 +120,7 @@ var showForm = function (id, getUrl, title, small) {
     }
     else { // load body from server
         body.html(DEFAULT_MODAL_BODY);
-        body.load(getUrl, function (data, status) {
+        body.load('/forms/' + id, function (data, status) {
             if (status === 'success') {
                 allForms[id] = data;
             } else {

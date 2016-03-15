@@ -4,43 +4,44 @@
         <a class="navbar-brand right-pad" href="/" target="_self">
             <%= pageTitle %>
         </a>
+
         <% if (!user) { %>
         <!-- defult user buttons -->
         <div class="navbar-right navbar-btn btn-group right-pad">
-            <a type="button" class="btn btn-default" id="login-button" href="#login">
+            <a type="button" class="btn btn-default" href="#login">
                 <span class="glyphicon glyphicon-log-in"></span> Sign In
             </a>
             <!--a type="button" class="btn btn-primary" id="register-button">
                 <span class="glyphicon glyphicon-user"></span> Create Account
             </a-->
         </div>
+
         <% } else { %>
         <!-- menu bar -->
-        <ul class="nav navbar-nav">
-            <li>
-                <a href="#add-child" id="add-child-button">
-                    <span class="glyphicon glyphicon-plus"></span> Add Child
-                </a>
-            </li>
+        <ul class="nav navbar-left navbar-nav">
+            <li role="separator" class="divider"></li>
+            <li><a href="#add-child">Add Child</a></li>
+            <li><a href="#vaccines">Vaccines</a></li>
+            <li><a href="#centers">Centers</a></li>
         </ul>
         <!-- general user buttons -->
         <div class="navbar-right navbar-btn btn-group right-pad">
             <% if(!user.confirmed) { %>
-            <a type="button" class="btn btn-danger" id='confirm-button' href="#confirm">
+            <a type="button" class="btn btn-danger" href="#confirm">
                 <span class="glyphicon glyphicon-warning-sign"></span> Verify your Email
             </a>
             <% } %>
 
-            <a type="button" class="btn btn-default" id="user-button" href="#profile">
+            <a type="button" class="btn btn-default" href="#profile">
                 <% if (user.avatar) { %>
-                <img src="<%= user.avatar %>" alt="avatar" />
+                <img src="<%= user.avatar %>" alt="avatar"/>
                 <% } else { %>
                 <span class="glyphicon glyphicon-user"></span>
                 <% } %>
                 <b><%= user.uname %></b>
             </a>
-            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    class="btn btn-default dropdown-toggle">
+            <button type="button" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu">

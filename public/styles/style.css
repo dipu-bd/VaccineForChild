@@ -4,11 +4,37 @@ html, body {
     background: #0f0f0f url("/images/pattern2.jpg");
 }
 
+.content-wrapper {
+    margin: 0;
+    height: 85%;
+    padding: 0 15px 0 15px;
+}
+
+#bottom-panel {
+    margin: 0;
+    padding: 15px;
+    background: #8c8c9c;
+}
+
 #error-box {
     display: block;
     text-align: center;
 }
 
+img[alt="child"] {
+
+}
+
+.description-text {
+    color: #333;
+    font-size: medium;
+    text-align: justify;
+    padding: 12px;
+}
+
+#register-modal-content {
+    background-image: url('/images/pattern1.jpg');
+}
 
 /*
  * Padding
@@ -30,19 +56,5 @@ html, body {
 }
 .left-pad {
     padding-left: 10px;
-}
-
-#home-default {
-    height: 100%;
-}
-#content-wrapper {
-    margin: 0;
-    height: 85%;
-    padding: 0 15px 0 15px;
-}
-#bottom-panel {
-    margin: 0;
-    padding: 15px;
-    background: #8c8c9c;
 }
 

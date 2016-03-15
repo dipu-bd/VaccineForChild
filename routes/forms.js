@@ -30,8 +30,9 @@ router.get('/register', function (req, res, next) {
 /* GET confirm form. */
 router.get('/confirm', function (req, res, next) {
     var id = req.cookies[SESSION_ID_COOKIE];
-    if (session.getSession(id)) {
-        property.user = session.getSession(id);
+    var result = session.getSession(id);
+    if (result) {
+        property.user = result.data;
         res.render('forms/confirm', property);
     } else {
         res.render('invalid', property);
@@ -40,8 +41,9 @@ router.get('/confirm', function (req, res, next) {
 /* GET change-pass form. */
 router.get('/change-pass', function (req, res, next) {
     var id = req.cookies[SESSION_ID_COOKIE];
-    if (session.getSession(id)) {
-        property.user = session.getSession(id);
+    var result = session.getSession(id);
+    if (result) {
+        property.user = result.data;
         res.render('forms/change-pass', property);
     } else {
         res.render('invalid', property);

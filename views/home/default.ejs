@@ -1,26 +1,55 @@
-<div id="content-wrapper">
-    <div class="col-md-8 col-sm-7">
-        <h1>Welcome to <%= pageTitle %></h1>
+<div class="container-fluid">
+    <div class="col-md-8 col-sm-7 well">
+        <div class="container-fluid">
+            <h1 class="col-xs-12 text-center description-title">
+                Register now and save your child!
+            </h1>
 
-        <h3 style="color:red;">You are not logged in.</h3>
-        Please login or register an account.
-    </div>
+            <img src="/images/child.jpg" alt="child" class="col-md-8 col-xs-12"/>
 
-    <!-- Modal Form -->
-    <div class="col-md-4 col-sm-5">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h3>
-                    <span class="glyphicon glyphicon-fire"></span>
-                    Register your account
-                    <span class="glyphicon glyphicon-fire"></span>
-                </h3>
+            <div class="col-md-4 col-xs-12 description-text">
+                Every year, lots of child dies in different diseases which can be prevented just by maintaining a
+                proper vaccination schedule. Do not let your child be the one of them.
+                <mark>Register your account</mark>
+                now and never forget a single day to vaccinate your dearest child.
+                We will inform you by
+                <mark>Mobile SMS</mark>
+                or
+                <mark>Email</mark>
+                when a vaccination schedule comes for your child.
             </div>
-            <div class="well" id="register-form-wrapper">
-                <!-- register form will be loaded here later -->
-            </div>
+
+            <blockquote class="col-xs-12 blockquote-reverse">
+                <p class="qt_538073" title="view quote"
+                   onclick="qCl('keyword','/quotes/keywords/vaccines','/quotes/quotes/e/ezekielema538073','1')">
+                    Childhood vaccines are one of the great triumphs of modern medicine. Indeed, parents whose children
+                    are vaccinated no longer have to worry about their child's death or disability from whooping cough,
+                    polio, diphtheria, hepatitis, or a host of other infections.
+                </p>
+                <footer>
+                    <cite title="Ezekiel Emanuel">
+                        Ezekiel Emanuel.
+                        <a target="_blank"
+                           href="http://www.brainyquote.com/quotes/quotes/e/ezekielema538073.html?src=t_vaccines"
+                        >BrainyQuote.com</a>, Xplore Inc, 2016
+                    </cite>
+                </footer>
+            </blockquote>
         </div>
     </div>
 
+    <!-- Modal Form -->
+    <div class="col-md-4 col-sm-5 modal-content" id="register-modal-content">
+        <div class="modal-header text-center">
+            <a name="register" href="#"><h4>
+                    <span class="glyphicon glyphicon-fire"></span>
+                    Register your account
+                    <span class="glyphicon glyphicon-fire"></span>
+                </h4>
+            </a>
+        </div>
+        <div class="well-sm" id="register-form-wrapper">
+            <!-- register form will be loaded here later -->
+        </div>
+    </div>
 </div>
-
