@@ -15,7 +15,7 @@
 
     <div class="modal-footer">
         <!-- form output -->
-        <div class="text-center text-info well" id="error-box"></div>
+        <div class="text-center text-info well-sm" id="error-box"></div>
         <!-- modal buttons -->
         <input type="submit" class="btn btn-primary btn-block" value="Change It!"/>
     </div>
@@ -23,29 +23,31 @@
 
 <script>
     (function () {
-        var submitButton = $('#changePassForm input[type="submit"]');
-        $('#changePassForm').validate({
+        var form = $('#changePassForm');
+        var errBox = $('#changePassForm #error-box');
+        var submitButton = $('#changePassForm:submit);
+        form.validate({
             submitHandler: function () {
                 submitButton.attr('disabled', true);
-                $.post('/auth/change-pass', $('#changePassForm').serialize())
+                $.post('/auth/change-pass', form.serialize())
                         .done(function (result, status, jqXHR) {
                             if (result === 'OK') {
                                 hideForm();
                                 alert("Password Changed");
                             } else {
-                                showFormError(result);
+                                errBox.text(result);
                             }
                         })
                         .error(function (result, status) {
                             console.log(result);
-                            showFormError('Connection Failed');
+                            errBox.text('Connection Failed');
                         })
                         .always(function () {
                             submitButton.attr('disabled', false);
                         });
             },
             errorPlacement: function (error, element) {
-                $('#error-box').html(error);
+                errBox.html(error);
             },
             rules: {
                 old: {

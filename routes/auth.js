@@ -123,7 +123,7 @@ router.post('/mail-confirm', function (req, res, next) {
 });
 
 function getConfirmCode() {
-// generate confirm code : 5 digits
+    // generate confirm code : 5 digits
     return Math.floor((Math.random() * 899999) + 100000);
 }
 

@@ -8,7 +8,7 @@
         <% if (!user) { %>
         <!-- defult user buttons -->
         <div class="navbar-right navbar-btn btn-group right-pad">
-            <a type="button" class="btn btn-default" id="login-button">
+            <a type="button" class="btn btn-default" id="login-button" href="#login">
                 <span class="glyphicon glyphicon-log-in"></span> Sign In
             </a>
             <!--a type="button" class="btn btn-primary" id="register-button">
@@ -19,7 +19,7 @@
         <!-- menu bar -->
         <ul class="nav navbar-nav">
             <li>
-                <a href="#" id="add-child-button">
+                <a href="#add-child" id="add-child-button">
                     <span class="glyphicon glyphicon-plus"></span> Add Child
                 </a>
             </li>
@@ -28,14 +28,14 @@
         <!-- general user buttons -->
         <div class="navbar-right navbar-btn btn-group right-pad">
             <% if(!user.confirmed) { %>
-            <a type="button" class="btn btn-danger" id='confirm-button'>
+            <a type="button" class="btn btn-danger" id='confirm-button' href="#confirm">
                 <span class="glyphicon glyphicon-warning-sign"></span> Verify your Email
             </a>
             <% } %>
 
-            <a type="button" class="btn btn-default" id="user-button">
+            <a type="button" class="btn btn-default" id="user-button" href="#profile">
                 <% if (user.avatar) { %>
-                <img href="<%= user.avatar %>" alt="avatar">
+                <img src="<%= user.avatar %>" alt="avatar" />
                 <% } else { %>
                 <span class="glyphicon glyphicon-user"></span>
                 <% } %>
@@ -47,7 +47,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="#" id="change-pass-button">
+                    <a id="change-pass-button" href="#change-pass">
                         <span class="glyphicon glyphicon-edit"></span> Change Password
                     </a>
                 </li>

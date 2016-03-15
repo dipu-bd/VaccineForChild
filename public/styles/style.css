@@ -8,10 +8,6 @@ html, body {
     display: block;
     text-align: center;
 }
-#error-box:empty {
-    display: none;
-    text-align: center;
-}
 
 
 /*

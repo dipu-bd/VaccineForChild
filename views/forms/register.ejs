@@ -35,32 +35,32 @@
 
 <script>
     (function () {
-        var submitButton = $('#signup-button');
-        $('#registerForm').validate({
+        var form = $('#registerForm');
+        var errBox = $('#registerForm #error-box');
+        var submitButton = $('#registerForm #signup-button');
+        form.validate({
             submitHandler: function () {
-                showFormError('Submitting...');
-                $.post('/auth/register', $('#registerForm').serialize())
+                submitButton.text('Submitting...');
+                submitButton.attr('disabled', true);
+                $.post('/auth/register', form.serialize())
                         .done(function (result, status, jqXHR) {
                             if (result === 'OK') {
-                                showFormError('Redirecting...');
+                                submitButton.text('Redirecting...');
                                 window.location.href = '/';
                             } else {
-                                showFormError(result);
+                                errBox.text(result);
                             }
                         })
                         .error(function (result, status) {
                             console.log(result);
-                            showFormError('Connection Failed');
+                            errBox.text('Connection Failed');
                         })
                         .always(function () {
                             submitButton.attr('disabled', false);
                         });
             },
             errorPlacement: function (error, element) {
-                if (error.toString())
-                    $('#error-box').html(error);
-                else
-                    $('#error-box').html("");
+                errBox.html(error);
             },
             rules: {
                 uname: {
@@ -103,7 +103,7 @@
                     equalTo: "Please enter the same password as above"
                 },
                 email: "Please enter a valid email address",
-                agree: ""
+                agree: "Please agree with our terms and services"
             }
         });
     })();

@@ -10,27 +10,29 @@
     </div>
     <div class="modal-footer">
         <!-- form status -->
-        <div class="text-center text-info well" id="error-box"></div>
+        <div class="text-center text-info well-sm" id="error-box"></div>
         <!-- modal buttons -->
-        <button type="button" class="btn btn-danger" id="confirm-code-button">Resend Code!</button>
+        <label class="control-label text-left">Do not have a code? Please click this button to resend code- </label>
+        <button type="button" class="btn btn-danger btn-block" id="confirm-code-button">Resend Code!</button>
     </div>
 </form>
 
 <script>
     (function () {
         var form = $('#confirmForm');
-        var sendButton = $('#confirm-code-button');
-        var checkButton = $('#confirm-check-button');
+        var errBox = $('#confirmForm#error-box');
+        var sendButton = $('#confirmForm #confirm-code-button');
+        var checkButton = $('#confirmForm #confirm-check-button');
         sendButton.click(function () {
             sendButton.attr('disabled', true);
             sendButton.html('Sending Code...');
             $.post('/auth/mail-confirm')
                     .done(function (err, res) {
-                        showFormError('Confirmation Code Sent!');
+                        errBox.text('Confirmation Code Sent!');
                     })
                     .error(function (result, status) {
                         console.log(result);
-                        showFormError('Connection Failed');
+                        errBox.text('Connection Failed');
                     })
                     .always(function () {
                         sendButton.html('Resend Code!');
@@ -47,12 +49,12 @@
                                 checkButton.html('Redirecting...');
                                 window.location.href = '/';
                             } else {
-                                showFormError(result);
+                                errBox.text(result);
                             }
                         })
                         .error(function (result, status) {
                             console.log(result);
-                            showFormError('Connection Failed');
+                            errBox.text('Connection Failed');
                         })
                         .always(function () {
                             checkButton.html('Check');
@@ -60,7 +62,7 @@
                         });
             },
             errorPlacement: function (error, element) {
-                $('#error-box').html(error);
+                errBox.html(error);
             },
             rules: {
                 code: {

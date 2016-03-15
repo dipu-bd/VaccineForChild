@@ -10,7 +10,6 @@ $(document).ready(function () {
         if (status !== 'success') {
             console.log(data);
         }
-
         $('#login-button').click(function () {
             showForm('login', '/forms/login', 'Sign In', true);
         });
@@ -48,7 +47,6 @@ $(document).ready(function () {
 var allForms = {};
 var DEFAULT_MODAL_BODY = '<span class="glyphicon glyphicon-hourglass" style="font-size:72px;"></span>';
 
-
 var showForm = function (id, getUrl, title, small) {
     // set modal size
     if (small) $('.modal-dialog').addClass("modal-sm");
@@ -76,10 +74,6 @@ var showForm = function (id, getUrl, title, small) {
 
 var hideForm = function () {
     $("#access-modal").modal('hide');
-};
-
-var showFormError = function (err) {
-    $('#error-box').text(err);
 };
 
 
