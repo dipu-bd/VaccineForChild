@@ -4,6 +4,20 @@ html, body {
     background: #0f0f0f url("/images/pattern2.jpg");
 }
 
+.navbar-inverse {
+    background: url('/images/pattern4.png') #122b40;
+    -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0,0.5);
+    -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+.polaroid {
+    text-shadow: 2px 2px 5px white;
+    background: url('/images/pattern3.png') #fffbf3;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+}
+
 .content-wrapper {
     margin: 0;
     height: 85%;
@@ -19,10 +33,6 @@ html, body {
 #error-box {
     display: block;
     text-align: center;
-}
-
-img[alt="child"] {
-
 }
 
 .description-text {
