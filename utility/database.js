@@ -180,25 +180,56 @@ var confirmEmail = function (email, callback) {
 };
 
 /**
- * Retrieve the avatar image of an user
- * @param id ID of the user
- * @param callback (err, path) => path = image path of the avatar, null if none.
+ * Updates an user with name or address.
+ * @param name Name of the user
+ * @param address Address ID to set
+ * @param callback (err, res) where res = true on success.
  */
-var getAvatar = function (id, callback) {
+var updateUser = function (name, address, callback) {
+    if (!(name || address)) {
+        callback('Both fields are null');
+        return;
+    }
 
+    var sql, inserts;
+    if (name && address) {
+        sql = "UPDATE ?? SET ??=?, ??=? WHERE ??=?;";
+        inserts = ['user', 'name', name, 'address', address];
+    } else if (name) {
+        sql = "UPDATE ?? SET ??=? WHERE ??=?;";
+        inserts = ['user', 'name', name];
+    } else {
+        sql = "UPDATE ?? SET ??=? WHERE ??=?;";
+        inserts = ['user', 'address', address];
+    }
+
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, callback);
 };
-
 
 /**
- * Set the avatar image of an user
- * @param id ID of the user
- * @param path Image path of the avatar
- * @param callback (err, res)
+ * Adds an address
+ * @param state State name
+ * @param city City name
+ * @param region Region name
+ * @param postcode Postal code
+ * @param callback (err, res) where res = newly added address object.
  */
-var setAvatar = function (id, path, callback) {
+var createAddress = function (state, city, region, postcode, callback) {
 
 };
 
+/**
+ * Gets an address
+ * @param state State name
+ * @param city City name
+ * @param region Region name
+ * @param postcode Postal code
+ * @param callback (err, res) where res = address object or null if none.
+ */
+var getAddress = function (state, city, region, postcode, callback) {
+
+};
 
 /**
  * Retrieve the list of phone numbers of an user.
@@ -215,7 +246,7 @@ var getPhones = function (user, callback) {
  * @param number Phone number to add
  * @param callback (err, res) where res = newly added phone object.
  */
-var addPhone = function (user, number, callback) {
+var createPhone = function (user, number, callback) {
 
 };
 
@@ -225,30 +256,6 @@ var addPhone = function (user, number, callback) {
  * @param callback (err) => if no error, err=null
  */
 var removePhone = function (id, callback) {
-
-};
-
-/**
- * Adds an address
- * @param state State name
- * @param city City name
- * @param region Region name
- * @param postcode Postal code
- * @param callback (err, res) where res = newly added address object.
- */
-var addAddress = function (state, city, region, postcode, callback) {
-
-};
-
-/**
- * Gets an address
- * @param state State name
- * @param city City name
- * @param region Region name
- * @param postcode Postal code
- * @param callback (err, res) where res = address object or null if none.
- */
-var getAddress = function (state, city, region, postcode, callback) {
 
 };
 
@@ -275,18 +282,66 @@ var getAllChilds = function (id, callback) {
 
 };
 
+/**
+ * Creates a vaccine.
+ * @param title Name of the vaccine.
+ * @param callback (err, res)=> res = newly created vaccine object.
+ */
+var createVaccine = function (title, callback) {
+
+};
+
+/**
+ * Gets a list of all vaccines.
+ * @param callback (err, res)=> res = list of all vaccine object.
+ */
+var getVaccines = function (callback) {
+
+};
+
+
+/**
+ * Creates a dose for vaccine.
+ * @param vaccine ID of the vaccine.
+ * @param dab when to apply the vaccine in days after birth.
+ * @param callback (err, res)=> res = newly created vaccine object.
+ */
+var createDose = function (vaccine, dab, callback) {
+
+};
+
+/**
+ * Gets a list of all doses of a vaccine.
+ * @param vaccine ID of the vaccine.
+ * @param callback (err, res)=> res = list of all dose object.
+ */
+var getDoses = function (vaccine, callback) {
+
+};
+
+/**
+ * Gets a list of (phone_id, child_id, dose_id) object of children who needs vaccines.
+ * @param callback (err, res) => res = list of object containing above information.
+ */
+var childNeededVaccines = function (callback) {
+
+};
+
 module.exports.getUserById = getUserById;
 module.exports.getUserByName = getUserByName;
 module.exports.getUserByEmail = getUserByEmail;
 module.exports.createUser = createUser;
 module.exports.confirmEmail = confirmEmail;
 module.exports.changePassword = changePassword;
-module.exports.getAvatar = getAvatar;
-module.exports.setAvatar = setAvatar;
 module.exports.getPhones = getPhones;
-module.exports.addPhone = addPhone;
+module.exports.createPhone = createPhone;
 module.exports.removePhone = removePhone;
-module.exports.addAddress = addAddress;
+module.exports.createAddress = createAddress;
 module.exports.getAddress = getAddress;
+module.exports.updateUser = updateUser;
 module.exports.createChild = createChild;
 module.exports.getAllChilds = getAllChilds;
+module.exports.createVaccine = createVaccine;
+module.exports.getVaccines = getVaccines;
+module.exports.createDose = createDose;
+module.exports.childNeededVaccines = childNeededVaccines;

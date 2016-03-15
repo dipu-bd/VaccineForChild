@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2016 at 06:31 PM
+-- Generation Time: Mar 15, 2016 at 07:01 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -47,7 +47,6 @@ CREATE TABLE IF NOT EXISTS `child` (
   `name` varchar(60) DEFAULT NULL,
   `height` decimal(12,2) DEFAULT NULL,
   `weight` decimal(12,2) DEFAULT NULL,
-  `avatar` varchar(20) DEFAULT NULL,
   `address` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
 
@@ -61,20 +60,6 @@ CREATE TABLE IF NOT EXISTS `dose` (
   `id` int(11) NOT NULL,
   `dab` int(11) NOT NULL,
   `vaccine` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `name`
---
-
-CREATE TABLE IF NOT EXISTS `name` (
-  `id` int(11) NOT NULL,
-  `first` varchar(25) NOT NULL,
-  `middle` varchar(25) DEFAULT NULL,
-  `last` varchar(25) NOT NULL,
-  `nick` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
 
 -- --------------------------------------------------------
@@ -103,7 +88,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `confirmed` tinyint(1) DEFAULT '0',
   `access` int(11) DEFAULT '0',
   `name` varchar(60) DEFAULT NULL,
-  `avatar` varchar(20) DEFAULT NULL,
   `address` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=ucs2;
 
@@ -111,10 +95,10 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `avatar`, `address`) VALUES
-(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, NULL, NULL, NULL),
-(7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL, NULL),
-(9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 0, NULL, NULL, NULL);
+INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`) VALUES
+(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, NULL, NULL),
+(7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL),
+(9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -143,7 +127,6 @@ ALTER TABLE `address`
 ALTER TABLE `child`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_child__address` (`address`),
-  ADD KEY `idx_child__avatar` (`avatar`),
   ADD KEY `idx_child__name` (`name`),
   ADD KEY `idx_child__user` (`user`);
 
@@ -153,12 +136,6 @@ ALTER TABLE `child`
 ALTER TABLE `dose`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_dose__vaccine` (`vaccine`);
-
---
--- Indexes for table `name`
---
-ALTER TABLE `name`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `phone`
@@ -176,7 +153,6 @@ ALTER TABLE `user`
   ADD UNIQUE KEY `uname` (`uname`),
   ADD UNIQUE KEY `email` (`email`),
   ADD KEY `idx_user__address` (`address`),
-  ADD KEY `idx_user__avatar` (`avatar`),
   ADD KEY `idx_user__name` (`name`);
 
 --
@@ -203,11 +179,6 @@ ALTER TABLE `child`
 -- AUTO_INCREMENT for table `dose`
 --
 ALTER TABLE `dose`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `name`
---
-ALTER TABLE `name`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `phone`
