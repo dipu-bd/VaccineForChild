@@ -108,7 +108,7 @@ router.post('/confirm', function (req, res, next) {
 
 /* POST confirm email. */
 router.post('/mail-confirm', function (req, res, next) {
-    var confirmCode = getConfirmCode();
+    var confirmCode = session.getConfirmCode();
     var key = req.cookies[SESSION_ID_COOKIE];
     var sdat = session.getSession(key);
     if (sdat) {
