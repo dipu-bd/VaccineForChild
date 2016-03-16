@@ -139,16 +139,20 @@ router.post('/update-user', function (req, res, next) {
     var sdat = session.getSession(key);
     if (sdat) {
         user.id = sdat.data.id;
-        if (user.email != sdat.data.email) {
-            user.confirmed = 0;
-        }
+        if (user.email != sdat.data.email) user.confirmed = 0;
+        else user.email = null;
+        if (user.name == sdat.data.name) user.name = null;
+        if (user.address == sdat.data.address) user.address = null;
         database.updateUser(user, function (err, result) {
             if (err) {
                 res.send(err);
             }
             else {
+                sdat.data = result;
                 res.sendStatus(200);
-                if (!user.confirmed) mailer.sendConfirmCode(sdat.data.email, getConfirmCode());
+                if (!user.confirmed) {
+                    mailer.sendConfirmCode(sdat.data.email, getConfirmCode());
+                }
             }
         });
     }

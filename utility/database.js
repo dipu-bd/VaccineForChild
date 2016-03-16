@@ -192,40 +192,11 @@ var updateUser = function (user, callback) {
     runQuery(sql, function (err, res) {
         if (err) {
             callback(err);
-        } else if (!res || res.length === 0) {
-            callback('User not found.');
         }
         else {
-            callback(null, res[0]);
-            if (res.length > 1) {
-                debug('Multiple user found. Query Error!');
-            }
+            getUserById(user.id, callback);
         }
     });
-};
-
-/**
- * Adds an address
- * @param state State name
- * @param city City name
- * @param region Region name
- * @param postcode Postal code
- * @param callback (err, res) where res = newly added address object.
- */
-var createAddress = function (state, city, region, postcode, callback) {
-
-};
-
-/**
- * Gets an address
- * @param state State name
- * @param city City name
- * @param region Region name
- * @param postcode Postal code
- * @param callback (err, res) where res = address object or null if none.
- */
-var getAddress = function (state, city, region, postcode, callback) {
-
 };
 
 /**
@@ -332,8 +303,6 @@ module.exports.changePassword = changePassword;
 module.exports.getPhones = getPhones;
 module.exports.createPhone = createPhone;
 module.exports.removePhone = removePhone;
-module.exports.createAddress = createAddress;
-module.exports.getAddress = getAddress;
 module.exports.updateUser = updateUser;
 module.exports.createChild = createChild;
 module.exports.getAllChilds = getAllChilds;
