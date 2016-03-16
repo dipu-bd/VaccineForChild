@@ -2,11 +2,6 @@
  After document is ready
  */
 $(document).ready(function () {
-    // clear hash on modal hide
-    $('#access-modal').on('hidden.bs.modal', function () {
-        window.location.hash = "";
-    });
-
     // Bind the hash change event.
     $(window).bind('hashchange', handleHashChange);
 
@@ -23,6 +18,9 @@ $(document).ready(function () {
             console.log(data);
         }
     });
+
+    // clear hash on modal hide
+    $('#access-modal').on('hidden.bs.modal', handleModalHide);
 
     handleHashChange();
 });
@@ -139,4 +137,6 @@ var hideForm = function () {
     $("#access-modal").modal('hide');
 };
 
-
+var handleModalHide = function () {
+    window.history.back();
+};

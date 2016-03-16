@@ -1,63 +1,83 @@
-<div class="navbar navbar-inverse navbar-static-top">
+<div class="navbar navbar-default navbar-static-top">
     <div class="container">
+
         <!-- title -->
-        <a class="navbar-brand right-pad" href="/" target="_self">
-            <%= pageTitle %>
-        </a>
+        <div class="navbar-header">
+            <a class="navbar-brand right-pad" href="/" target="_self">
+                <%= pageTitle %>
+            </a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
 
         <% if (!user) { %>
         <!-- defult user buttons -->
-        <div class="navbar-right navbar-btn btn-group right-pad">
-            <a type="button" class="btn btn-default" href="#login">
-                <span class="glyphicon glyphicon-log-in"></span> Sign In
-            </a>
-            <a type="button" class="btn btn-primary" href="#register">
-                <span class="glyphicon glyphicon-user"></span> Create Account
-            </a>
+        <div class="navbar-right navbar-btn right-pad navbar-collapse collapse">
+            <div class="btn-group">
+                <a type="button" class="btn btn-default" href="#login">
+                    <span class="glyphicon glyphicon-log-in"></span> Sign In
+                </a>
+                <a type="button" class="btn btn-primary" href="#register">
+                    <span class="glyphicon glyphicon-user"></span> Create Account
+                </a>
+            </div>
         </div>
 
         <% } else { %>
         <!-- menu bar -->
-        <ul class="nav navbar-left navbar-nav">
+        <ul class="nav navbar-left navbar-nav collapse navbar-collapse">
             <li role="separator" class="divider"></li>
             <li><a href="#add-child">Add Child</a></li>
             <li><a href="#vaccines">Vaccines</a></li>
             <li><a href="#centers">Centers</a></li>
         </ul>
         <!-- general user buttons -->
-        <div class="navbar-right navbar-btn btn-group right-pad">
+        <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
             <% if(!user.confirmed) { %>
-            <a type="button" class="btn btn-danger" href="#confirm">
-                <span class="glyphicon glyphicon-warning-sign"></span> Verify your Email
-            </a>
+            <li>
+                <a href="#confirm">
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    Verify your Email
+                </a>
+            </li>
             <% } %>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                   aria-haspopup="false" aria-expanded="false">
+                    <% if (user.avatar) { %>
+                    <img src="<%= user.avatar %>" alt="avatar"/>
+                    <% } else { %>
+                    <span class="glyphicon glyphicon-user"></span>
+                    <% } %>
+                    <b><%= user.uname %></b>
+                    <span class="sr-only">Toggle Dropdown</span>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#profile">
+                            <span class="glyphicon glyphicon-edit"></span> Edit Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#change-pass">
+                            <span class="glyphicon glyphicon-lock"></span> Change Password
+                        </a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="/auth/logout">
+                            <span class="glyphicon glyphicon-log-out"></span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <% } %>
 
-            <a type="button" class="btn btn-default" href="#profile">
-                <% if (user.avatar) { %>
-                <img src="<%= user.avatar %>" alt="avatar"/>
-                <% } else { %>
-                <span class="glyphicon glyphicon-user"></span>
-                <% } %>
-                <b><%= user.uname %></b>
-            </a>
-            <button type="button" class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a id="change-pass-button" href="#change-pass">
-                        <span class="glyphicon glyphicon-edit"></span> Change Password
-                    </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                    <a href="/auth/logout" id="logout-button">
-                        <span class="glyphicon glyphicon-log-out"></span> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
     </div>
-    <% } %>
 </div>

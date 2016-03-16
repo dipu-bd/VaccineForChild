@@ -15,13 +15,24 @@
                     <div class="col-xs-10"><label class="form-control"> <%= user.uname %> </label></div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-xs-2">Email: </label>
 
+                    <div class="col-xs-10">
+                        <input type="email" class="form-control" value="<%= user.email %>"
+                               placeholder="Enter your email" onfocus="$(this).select();"/>
+                    </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-xs-2">Full Name: </label>
 
+                    <div class="col-xs-10">
+                        <input type="email" class="form-control" value="<%= user.name %>"
+                               placeholder="Enter your full name" onfocus="$(this).select();"/>
+                    </div>
                 </div>
                 <div class="modal-footer">
-
+                    <div class="well-sm" id="error-box"></div>
+                    <input type="submit" class="btn btn-primary" value="Save" style="padding: 10px 60px 10px 60px"/>
                 </div>
             </form>
         </div>
