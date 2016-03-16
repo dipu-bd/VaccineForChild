@@ -41,7 +41,7 @@ router.post('/add-child', function (req, res, next) {
     var sdat = session.getSession(key);
     if (sdat) {
         user.dob = new Date(user.year, user.month, user.day);
-        database.createChild(user.dob, sdat.user.id, user.name, user.height, user.weight, function (err, result) {
+        database.createChild(user.dob, sdat.data.id, user.name, user.height, user.weight, function (err, result) {
             if (err) {
                 res.send(err);
             }
@@ -57,7 +57,7 @@ router.post('/add-child', function (req, res, next) {
 router.get('/get-children', function (req, res, next) {
     var sdat = session.getSession(key);
     if (sdat) {
-        database.getAllChilds(sdat.user.id, function (err, result) {
+        database.getAllChilds(sdat.data.id, function (err, result) {
             if (err) {
                 res.send(err);
             }
