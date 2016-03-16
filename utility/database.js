@@ -205,7 +205,12 @@ var updateUser = function (user, callback) {
  * @param callback (err, res) where res=list of objects
  */
 var getPhones = function (user, callback) {
-
+    var sql, selects;
+    //SELECT * FROM ?? WHERE ?? = ?
+    sql = "SELECT * FROM ?? WHERE ?? = ?";
+    selects = ['phone', 'user', user];
+    sql = mysql.format(sql, selects);
+    runQuery(sql, callback);
 };
 
 /**
@@ -215,7 +220,9 @@ var getPhones = function (user, callback) {
  * @param callback (err, res) where res = newly added phone object.
  */
 var createPhone = function (user, number, callback) {
-
+    // the number is verified:
+    var sql, inserts;
+    //sql = ;
 };
 
 /**
@@ -224,21 +231,26 @@ var createPhone = function (user, number, callback) {
  * @param callback (err) => if no error, err=null
  */
 var removePhone = function (id, callback) {
-
+    ;
 };
 
 /**
- * Creates a new user
+ * Creates a new child
  * @param dob Date of birth
  * @param user ID of user this child belongs to
  * @param name Name of the child
  * @param height Height of the child
  * @param weight Weight of the child
- * @param address Address id of the child
+ //* @param address Address id of the child
  * @param callback (err, res) => res = newly created child object
  */
-var createChild = function (dob, user, name, height, weight, address, callback) {
-
+var createChild = function (dob, user, name, height, weight, /*address,*/ callback) {
+    var sql, inserts;
+    sql = "INSERT INTO ?? (??,??,??,??,??) VALUES (?,?,?,?,?)";
+    inserts = ['child', 'dob', 'user', 'name', 'height', 'weight',
+                dob, user, name, height, weight];
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, callback);
 };
 
 /**
@@ -247,7 +259,13 @@ var createChild = function (dob, user, name, height, weight, address, callback) 
  * @param callback (err, res) => array of child objects
  */
 var getAllChilds = function (id, callback) {
-
+    // two tables are related so query will return from two tables, user and child
+    var sql, selects;
+    sql = "SELECT ??, ??, ??, ?? FROM ??, ?? WHERE ?? = ?";
+    selects = ['child.name', 'child.height', 'child.weight', 'child.dob'
+                , 'child', 'user', 'child.user', id];
+    sql = mysql.format(sql, selects);
+    runQuery(sql, callback);
 };
 
 /**
@@ -256,7 +274,7 @@ var getAllChilds = function (id, callback) {
  * @param callback (err, res)=> res = newly created vaccine object.
  */
 var createVaccine = function (title, callback) {
-
+    ;
 };
 
 /**
@@ -275,7 +293,13 @@ var getVaccines = function (callback) {
  * @param callback (err, res)=> res = newly created vaccine object.
  */
 var createDose = function (vaccine, dab, callback) {
-
+    /*
+    var sql, inserts;
+    sql = "INSERT INTO ?? (??, ??) VALUES(?, ?)";
+    inserts = ['dose', 'dab', 'vaccine', dab, vaccine];
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, callback);
+    */
 };
 
 /**
@@ -284,7 +308,11 @@ var createDose = function (vaccine, dab, callback) {
  * @param callback (err, res)=> res = list of all dose object.
  */
 var getDoses = function (vaccine, callback) {
-
+    /*
+    var sql, selects;
+    sql = "SELECT ??, ?? FROM ??, ?? WHERE ?? = ?";
+    selects = ['dose.dab', 'dose.vaccine', 'dose', 'vaccine', 'dose.vaccine',];
+    */
 };
 
 /**
