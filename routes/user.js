@@ -34,4 +34,14 @@ router.post('/update-user', function (req, res, next) {
     }
 });
 
+/* POST add new child */
+router.post('/add-child', function (req, res, next) {
+
+});
+
+/* POST get list of all children */
+router.post('/add-child', function (req, res, next) {
+
+});
+
 module.exports = router;
