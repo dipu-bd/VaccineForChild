@@ -106,11 +106,6 @@ router.post('/confirm', function (req, res, next) {
     }
 });
 
-function getConfirmCode() {
-    // generate confirm code : 5 digits
-    return Math.floor((Math.random() * 899999) + 100000);
-}
-
 /* POST confirm email. */
 router.post('/mail-confirm', function (req, res, next) {
     var confirmCode = getConfirmCode();
@@ -127,32 +122,6 @@ router.post('/mail-confirm', function (req, res, next) {
                 debug(info);
                 res.sendStatus(200);
                 sdat.confirmCode = confirmCode;
-            }
-        });
-    }
-});
-
-/* POST change password */
-router.post('/update-user', function (req, res, next) {
-    var user = req.body;
-    var key = req.cookies[SESSION_ID_COOKIE];
-    var sdat = session.getSession(key);
-    if (sdat) {
-        user.id = sdat.data.id;
-        if (user.email != sdat.data.email) user.confirmed = 0;
-        else user.email = null;
-        if (user.name == sdat.data.name) user.name = null;
-        if (user.address == sdat.data.address) user.address = null;
-        database.updateUser(user, function (err, result) {
-            if (err) {
-                res.send(err);
-            }
-            else {
-                sdat.data = result;
-                res.sendStatus(200);
-                if (!user.confirmed) {
-                    mailer.sendConfirmCode(sdat.data.email, getConfirmCode());
-                }
             }
         });
     }

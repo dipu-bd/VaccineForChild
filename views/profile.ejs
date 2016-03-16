@@ -57,7 +57,7 @@
             submitHandler: function () {
                 submitButton.text('Saved...');
                 submitButton.attr('disabled', true);
-                $.post('/auth/update-user', form.serialize())
+                $.post('/user/update-user', form.serialize())
                         .done(function (result, status, jqXHR) {
                             if (result === 'OK') {
                                 errBox.html('<b>Saved!</b>');

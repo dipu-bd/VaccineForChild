@@ -107,9 +107,9 @@ var DEFAULT_MODAL_BODY = '<span class="glyphicon glyphicon-hourglass" style="fon
 var loadForm = function (id, title, small) {
     // select elements
     var mmain = $('#access-modal');
-    var dialog = $('#access-modal .modal-dialog');
-    var mtitle = $('#access-modal .modal-title');
-    var body = $('#access-modal .modal-body');
+    var dialog = mmain.find('.modal-dialog');
+    var mtitle = mmain.find('.modal-title');
+    var body = mmain.find('.modal-body');
     // set modal size
     if (small) dialog.addClass("modal-sm");
     else dialog.removeClass("modal-sm");

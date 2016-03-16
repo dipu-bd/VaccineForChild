@@ -12,6 +12,11 @@ var getKey = function () {
     return key;
 };
 
+var getConfirmCode = function () {
+    // generate confirm code : 5 digits
+    return Math.floor((Math.random() * 899999) + 100000);
+};
+
 var addSession = function (data) {
     var key = getKey();
     allSession[key] = {
@@ -41,3 +46,4 @@ var removeSession = function (key) {
 module.exports.addSession = addSession;
 module.exports.getSession = getSession;
 module.exports.removeSession = removeSession;
+module.exports.getConfirmCode = getConfirmCode;

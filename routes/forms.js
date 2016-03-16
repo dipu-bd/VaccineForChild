@@ -49,5 +49,16 @@ router.get('/change-pass', function (req, res, next) {
         res.render('invalid', property);
     }
 });
+/* GET change-pass form. */
+router.get('/add-child', function (req, res, next) {
+    var id = req.cookies[SESSION_ID_COOKIE];
+    var result = session.getSession(id);
+    if (result) {
+        property.user = result.data;
+        res.render('forms/add-child', property);
+    } else {
+        res.render('invalid', property);
+    }
+});
 
 module.exports = router;

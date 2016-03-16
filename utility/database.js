@@ -8,7 +8,6 @@ var options = {
     user: "root",   // username
     password: "",   // password
     database: "vaccinedb",   // name of the database
-    //charset: "",  // charset of the database
     debug: false    // true to show all output
 };
 
@@ -184,7 +183,7 @@ var updateUser = function (user, callback) {
         callback('No data');
         return;
     }
- 
+
     var sql = "UPDATE ?? SET ? WHERE ??=?;";
     var insert = ['user', data, 'id', user.id];
     sql = mysql.format(sql, insert);
@@ -247,7 +246,7 @@ var createChild = function (dob, user, name, height, weight, callback) {
     var sql, inserts;
     sql = "INSERT INTO ?? (??,??,??,??,??) VALUES (?,?,?,?,?)";
     inserts = ['child', 'dob', 'user', 'name', 'height', 'weight',
-                dob, user, name, height, weight];
+        dob, user, name, height, weight];
     sql = mysql.format(sql, inserts);
     runQuery(sql, callback);
 };
@@ -292,12 +291,12 @@ var getVaccines = function (callback) {
  */
 var createDose = function (vaccine, dab, callback) {
     /*
-    var sql, inserts;
-    sql = "INSERT INTO ?? (??, ??) VALUES(?, ?)";
-    inserts = ['dose', 'dab', 'vaccine', dab, vaccine];
-    sql = mysql.format(sql, inserts);
-    runQuery(sql, callback);
-    */
+     var sql, inserts;
+     sql = "INSERT INTO ?? (??, ??) VALUES(?, ?)";
+     inserts = ['dose', 'dab', 'vaccine', dab, vaccine];
+     sql = mysql.format(sql, inserts);
+     runQuery(sql, callback);
+     */
 };
 
 /**
@@ -307,10 +306,10 @@ var createDose = function (vaccine, dab, callback) {
  */
 var getDoses = function (vaccine, callback) {
     /*
-    var sql, selects;
-    sql = "SELECT ??, ?? FROM ??, ?? WHERE ?? = ?";
-    selects = ['dose.dab', 'dose.vaccine', 'dose', 'vaccine', 'dose.vaccine',];
-    */
+     var sql, selects;
+     sql = "SELECT ??, ?? FROM ??, ?? WHERE ?? = ?";
+     selects = ['dose.dab', 'dose.vaccine', 'dose', 'vaccine', 'dose.vaccine',];
+     */
 };
 
 /**
