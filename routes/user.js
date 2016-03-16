@@ -39,8 +39,8 @@ router.post('/add-child', function (req, res, next) {
 
 });
 
-/* POST get list of all children */
-router.post('/add-child', function (req, res, next) {
+/* GET list of all children */
+router.get('/get-children', function (req, res, next) {
 
 });
 
