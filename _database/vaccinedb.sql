@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2016 at 07:01 PM
+-- Generation Time: Mar 16, 2016 at 08:10 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -23,31 +23,16 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `address`
---
-
-CREATE TABLE IF NOT EXISTS `address` (
-  `id` int(11) NOT NULL,
-  `state` varchar(30) NOT NULL,
-  `city` varchar(30) NOT NULL,
-  `region` varchar(30) NOT NULL,
-  `postcode` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `child`
 --
 
 CREATE TABLE IF NOT EXISTS `child` (
   `id` int(11) NOT NULL,
   `dob` datetime NOT NULL,
-  `user` int(11) NOT NULL,
   `name` varchar(60) DEFAULT NULL,
   `height` decimal(12,2) DEFAULT NULL,
   `weight` decimal(12,2) DEFAULT NULL,
-  `address` int(11) NOT NULL
+  `user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
 
 -- --------------------------------------------------------
@@ -88,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `confirmed` tinyint(1) DEFAULT '0',
   `access` int(11) DEFAULT '0',
   `name` varchar(60) DEFAULT NULL,
-  `address` int(11) DEFAULT NULL
+  `address` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=ucs2;
 
 --
@@ -96,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`) VALUES
-(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, NULL, NULL),
+(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Sylhet, Bangladesh'),
 (7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL),
 (9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 0, NULL, NULL);
 
@@ -116,17 +101,10 @@ CREATE TABLE IF NOT EXISTS `vaccine` (
 --
 
 --
--- Indexes for table `address`
---
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `child`
 --
 ALTER TABLE `child`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_child__address` (`address`),
   ADD KEY `idx_child__name` (`name`),
   ADD KEY `idx_child__user` (`user`);
 
@@ -166,11 +144,6 @@ ALTER TABLE `vaccine`
 --
 
 --
--- AUTO_INCREMENT for table `address`
---
-ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `child`
 --
 ALTER TABLE `child`
@@ -203,7 +176,6 @@ ALTER TABLE `vaccine`
 -- Constraints for table `child`
 --
 ALTER TABLE `child`
-  ADD CONSTRAINT `fk_child__address` FOREIGN KEY (`address`) REFERENCES `address` (`id`),
   ADD CONSTRAINT `fk_child__user` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
 
 --
@@ -217,12 +189,6 @@ ALTER TABLE `dose`
 --
 ALTER TABLE `phone`
   ADD CONSTRAINT `fk_phone__user` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
-
---
--- Constraints for table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `fk_user__address` FOREIGN KEY (`address`) REFERENCES `address` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

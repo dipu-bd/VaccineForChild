@@ -33,7 +33,7 @@ router.get('/nav-bar', function (req, res, next) {
     var result = session.getSession(id);
     if (result) { // logged in
         property.user = result.data;
-        property.admin = (result.access > 0);
+        property.admin = (result.data.access > 0);
     } else { // not logged in
         property.user = null;
     }
@@ -51,7 +51,7 @@ router.get('/profile', function (req, res, next) {
     var result = session.getSession(id);
     if (result) { // logged in
         property.user = result.data;
-        property.admin = (result.access > 0);
+        property.admin = (result.data.access > 0);
         res.render('profile', property);
     } else { // not logged in
         property.user = null;
@@ -59,14 +59,14 @@ router.get('/profile', function (req, res, next) {
     }
 });
 
-/* GET add-child page. */
-router.get('/add-child', function (req, res, next) {
+/* GET children page. */
+router.get('/children', function (req, res, next) {
     var id = req.cookies['SessionID'];
     var result = session.getSession(id);
     if (result) { // logged in
         property.user = result.data;
-        property.admin = (result.access > 0);
-        res.render('add-child', property);
+        property.admin = (result.data.access > 0);
+        res.render('children', property);
     } else { // not logged in
         property.user = null;
         res.render('invalid', property);
@@ -77,9 +77,9 @@ router.get('/add-child', function (req, res, next) {
 router.get('/vaccines', function (req, res, next) {
     var id = req.cookies['SessionID'];
     var result = session.getSession(id);
-    if (result) { // logged in
+    if (result) { // logged in as admin
         property.user = result.data;
-        property.admin = (result.access > 0);
+        property.admin = (result.data.access > 0);
         res.render('vaccine', property);
     } else { // not logged in
         property.user = null;
@@ -88,14 +88,14 @@ router.get('/vaccines', function (req, res, next) {
 });
 
 /* GET centers page. */
-router.get('/centers', function (req, res, next) {
+router.get('/users', function (req, res, next) {
     var id = req.cookies['SessionID'];
     var result = session.getSession(id);
-    if (result) { // logged in
+    if (result && result.data.access > 0) { // logged in as admin
         property.user = result.data;
-        property.admin = (result.access > 0);
-        res.render('centers', property);
-    } else { // not logged in
+        property.admin = (result.data.access > 0);
+        res.render('users', property);
+    } else { // not logged in as admin
         property.user = null;
         res.render('invalid', property);
     }

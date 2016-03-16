@@ -4,18 +4,18 @@ html, body {
     background: #0f0f0f url("/images/pattern2.jpg");
 }
 
-.navbar-default {
-    background: url('/images/pattern3.png');
+.navbar-inverse {
+    background: url('/images/pattern4.png');
     -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
     box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 
 .polaroid {
-    text-shadow: 2px 2px 5px white;
     background: url('/images/pattern3.png') #fffbf3;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
+    margin: 5px;
 }
 
 .content-wrapper {
@@ -24,8 +24,22 @@ html, body {
     padding: 0 15px 0 15px;
 }
 
+.description-title {
+    font-family: 'Montserrat', sans-serif;
+    padding: 0 0 5px 0;
+    border-bottom: ridge;
+}
+
+.description-text {
+    color: #333;
+    font-size: medium;
+    text-align: justify;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
 #bottom-panel {
-    margin: 0;
+    margin: 5px 0 0 0;
     padding: 15px;
     background: #8c8c9c;
 }
@@ -33,16 +47,16 @@ html, body {
 #error-box {
     display: block;
     text-align: center;
+    font-size: small;
+    color: #330;
 }
 
-.description-text {
-    color: #333;
-    font-size: medium;
-    text-align: justify;
-    padding: 12px;
+#submit-button {
+    padding: 10px 60px 10px 60px;
 }
 
 #register-modal-content {
+    margin: 10px 0 10px 0;
     background-image: url('/images/pattern1.jpg');
 }
 
@@ -52,14 +66,14 @@ html, body {
 }
 
 /*
- * Padding
- */
+ Paddings
+*/
 .width-padding {
     padding: 0 5px 0 5px;
 }
 
 .height-padding {
-    padding: 5px 0 5px 0;
+    padding: 8px 0 5px 0;
 }
 
 .top-pad {

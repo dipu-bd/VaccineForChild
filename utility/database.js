@@ -168,43 +168,40 @@ var changePassword = function (id, old, password, callback) {
 };
 
 /**
- * Marks an email address as confirmed
- * @param email
- * @param callback
- */
-var confirmEmail = function (email, callback) {
-    var sql = "UPDATE ?? SET ??=? WHERE ??=?;";
-    var inserts = ['user', 'confirmed', 1, 'email', email];
-    sql = mysql.format(sql, inserts);
-    runQuery(sql, callback);
-};
-
-/**
  * Updates an user with name or address.
- * @param name Name of the user
- * @param address Address ID to set
+ * @param user User object to update
  * @param callback (err, res) where res = true on success.
  */
-var updateUser = function (name, address, callback) {
-    if (!(name || address)) {
-        callback('Both fields are null');
+var updateUser = function (user, callback) {
+    var data = {};
+    if (user.email) data.email = user.email;
+    if (user.name) data.name = user.name;
+    if (user.address) data.address = user.address;
+    if (user.confirmed) data.confirmed = user.confirmed;
+
+    if (data.length === 0) {
+        debug(data);
+        callback('No data');
         return;
     }
 
-    var sql, inserts;
-    if (name && address) {
-        sql = "UPDATE ?? SET ??=?, ??=? WHERE ??=?;";
-        inserts = ['user', 'name', name, 'address', address];
-    } else if (name) {
-        sql = "UPDATE ?? SET ??=? WHERE ??=?;";
-        inserts = ['user', 'name', name];
-    } else {
-        sql = "UPDATE ?? SET ??=? WHERE ??=?;";
-        inserts = ['user', 'address', address];
-    }
+    var sql = "UPDATE ?? SET ? WHERE ??=?;";
+    var insert = ['user', data, 'id', user.id];
+    sql = mysql.format(sql, insert);
 
-    sql = mysql.format(sql, inserts);
-    runQuery(sql, callback);
+    runQuery(sql, function (err, res) {
+        if (err) {
+            callback(err);
+        } else if (!res || res.length === 0) {
+            callback('User not found.');
+        }
+        else {
+            callback(null, res[0]);
+            if (res.length > 1) {
+                debug('Multiple user found. Query Error!');
+            }
+        }
+    });
 };
 
 /**
@@ -363,7 +360,6 @@ module.exports.getUserById = getUserById;
 module.exports.getUserByName = getUserByName;
 module.exports.getUserByEmail = getUserByEmail;
 module.exports.createUser = createUser;
-module.exports.confirmEmail = confirmEmail;
 module.exports.changePassword = changePassword;
 module.exports.getPhones = getPhones;
 module.exports.createPhone = createPhone;
