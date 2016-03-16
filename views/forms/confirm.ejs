@@ -15,11 +15,12 @@
         <!-- form status -->
         <div class="text-center text-info well-sm" id="error-box"></div>
         <!-- modal buttons -->
-        <label class="control-label text-left">Do not have a code? Please click this button to resend code- </label>
+        <label class="control-label text-center">Do not have a code? Please click this button to resend it.</label>
         <button type="button" class="btn btn-danger btn-block" id="confirm-code-button">Resend Code!</button>
     </div>
 </form>
 
+<!--[if (gt IE 8)|!(IE)]><!-->
 <script>
     (function () {
         var form = $('#confirmForm');
@@ -49,8 +50,9 @@
                 $.post('/auth/confirm', form.serialize())
                         .done(function (result, status, jqXHR) {
                             if (result === 'OK') {
-                                checkButton.html('Redirecting...');
-                                window.location.href = '/';
+                                hideForm();
+                                window.location.reload();
+                                alert("Email account verified");
                             } else {
                                 errBox.text(result);
                             }
@@ -81,3 +83,4 @@
 
     })();
 </script>
+<!--<![endif]-->

@@ -18,7 +18,7 @@
                     <label class="control-label col-xs-2">Email: </label>
 
                     <div class="col-xs-10">
-                        <input type="email" class="form-control" value="<%= user.email %>"
+                        <input type="email" class="form-control" value="<%= user.email %>" name="email"
                                placeholder="Enter your email" onfocus="$(this).select();"/>
                     </div>
                 </div>
@@ -26,15 +26,78 @@
                     <label class="control-label col-xs-2">Full Name: </label>
 
                     <div class="col-xs-10">
-                        <input type="email" class="form-control" value="<%= user.name %>"
+                        <input type="text" class="form-control" value="<%= user.name %>" name="name"
                                placeholder="Enter your full name" onfocus="$(this).select();"/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2">Address: </label>
+
+                    <div class="col-xs-10">
+                        <textarea class="form-control" name="address" placeholder="Enter your full address"
+                                  onfocus="$(this).select();"><%= user.address %></textarea>
+                    </div>
+                </div>
                 <div class="modal-footer">
-                    <div class="well-sm" id="error-box"></div>
-                    <input type="submit" class="btn btn-primary" value="Save" style="padding: 10px 60px 10px 60px"/>
+                    <div class="text-center text-info well-sm" id="error-box"></div>
+                    <input type="submit" class="btn btn-primary" value="Save" id="submit-button"/>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<!--[if (gt IE 8)|!(IE)]><!-->
+<script>
+    (function () {
+        var form = $('#profileForm');
+        var errBox = form.find('#error-box');
+        var submitButton = form.find('#submit-button');
+        form.validate({
+            submitHandler: function () {
+                submitButton.text('Saved...');
+                submitButton.attr('disabled', true);
+                $.post('/auth/update-user', form.serialize())
+                        .done(function (result, status, jqXHR) {
+                            if (result === 'OK') {
+                                errBox.html('<b>Saved!</b>');
+                                window.location.reload();
+                            } else {
+                                errBox.text(result);
+                            }
+                        })
+                        .error(function (result, status) {
+                            console.log(result.responseText);
+                            errBox.text('Connection Failed');
+                        })
+                        .always(function () {
+                            submitButton.text('Save');
+                            submitButton.attr('disabled', false);
+                        });
+            },
+            errorPlacement: function (error, element) {
+                errBox.html(error);
+            },
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 60
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                uname: {
+                    required: "The username is required",
+                    minlength: "Username should be at least 4 characters long",
+                    maxlength: "Username should not have more than 60 characters"
+                },
+                email: "Please enter a valid email address"
+            }
+        });
+    })();
+</script>
+<!--<![endif]-->

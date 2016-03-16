@@ -18,6 +18,20 @@ router.get('/logout', function (req, res, next) {
     res.redirect('/');
 });
 
+
+function sendSessionId(res, data, remember) {
+    // remove password for security
+    delete data.password;
+    // set age of session
+    var age = remember ? REMEMBER_PERIOD : DEFAULT_REMEMBER_PERIOD;
+    // create session
+    var id = session.addSession(data);
+    // add cookie
+    res.cookie(SESSION_ID_COOKIE, id, {maxAge: age});
+    // send OK
+    res.sendStatus(200);
+}
+
 /* POST login request. */
 router.post('/login', function (req, res, next) {
     var user = req.body || {};
@@ -48,19 +62,6 @@ router.post('/register', function (req, res, next) {
     });
 });
 
-function sendSessionId(res, data, remember) {
-    // remove password for security
-    delete data.password;
-    // set age of session
-    var age = remember ? REMEMBER_PERIOD : DEFAULT_REMEMBER_PERIOD;
-    // create session
-    var id = session.addSession(data);
-    // add cookie
-    res.cookie(SESSION_ID_COOKIE, id, {maxAge: age});
-    // send OK
-    res.sendStatus(200);
-}
-
 /* POST change password */
 router.post('/change-pass', function (req, res, next) {
     var user = req.body;
@@ -85,21 +86,30 @@ router.post('/confirm', function (req, res, next) {
     var sdat = session.getSession(key);
     if (sdat) {
         if (sdat.confirmCode == code) {
-            database.confirmEmail(sdat.data.email, function (err, result) {
-                if (err) {
-                    res.send("Error connecting to database");
-                } else {
-                    debug(sdat.data.email + " confirmed.");
-                    sdat.data.confirmed = true;
-                    res.sendStatus(200);
-                }
-            });
+            database.updateUser({
+                    id: sdat.data.id,
+                    confirmed: 1
+                },
+                function (err, result) {
+                    if (err) {
+                        res.send("Error connecting to database");
+                    } else {
+                        debug(sdat.data.email + " confirmed.");
+                        sdat.data.confirmed = true;
+                        res.sendStatus(200);
+                    }
+                });
         } else {
             debug(sdat.confirmCode + " != " + code);
             res.send('The code is invalid.');
         }
     }
 });
+
+function getConfirmCode() {
+    // generate confirm code : 5 digits
+    return Math.floor((Math.random() * 899999) + 100000);
+}
 
 /* POST confirm email. */
 router.post('/mail-confirm', function (req, res, next) {
@@ -122,9 +132,26 @@ router.post('/mail-confirm', function (req, res, next) {
     }
 });
 
-function getConfirmCode() {
-    // generate confirm code : 5 digits
-    return Math.floor((Math.random() * 899999) + 100000);
-}
+/* POST change password */
+router.post('/update-user', function (req, res, next) {
+    var user = req.body;
+    var key = req.cookies[SESSION_ID_COOKIE];
+    var sdat = session.getSession(key);
+    if (sdat) {
+        user.id = sdat.data.id;
+        if (user.email != sdat.data.email) {
+            user.confirmed = 0;
+        }
+        database.updateUser(user, function (err, result) {
+            if (err) {
+                res.send(err);
+            }
+            else {
+                res.sendStatus(200);
+                if (!user.confirmed) mailer.sendConfirmCode(sdat.data.email, getConfirmCode());
+            }
+        });
+    }
+});
 
 module.exports = router;

@@ -83,14 +83,14 @@ var handleHashChange = function () {
         case '#profile':
             loadHomePage('profile');
             break;
-        case '#add-child':
-            loadHomePage('add-child');
+        case '#children':
+            loadHomePage('children');
+            break;
+        case '#users':
+            loadHomePage('users');
             break;
         case '#vaccines':
             loadHomePage('vaccines');
-            break;
-        case '#centers':
-            loadHomePage('centers');
             break;
         default:
             loadHomePage('home-page');

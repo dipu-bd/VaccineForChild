@@ -1,6 +1,5 @@
-<div class="navbar navbar-default navbar-static-top">
+<div class="navbar navbar-inverse navbar-static-top">
     <div class="container">
-
         <!-- title -->
         <div class="navbar-header">
             <a class="navbar-brand right-pad" href="/" target="_self">
@@ -16,7 +15,7 @@
 
         <% if (!user) { %>
         <!-- defult user buttons -->
-        <div class="navbar-right navbar-btn right-pad navbar-collapse collapse">
+        <div class="navbar-right height-padding right-pad navbar-collapse collapse">
             <div class="btn-group">
                 <a type="button" class="btn btn-default" href="#login">
                     <span class="glyphicon glyphicon-log-in"></span> Sign In
@@ -31,9 +30,11 @@
         <!-- menu bar -->
         <ul class="nav navbar-left navbar-nav collapse navbar-collapse">
             <li role="separator" class="divider"></li>
-            <li><a href="#add-child">Add Child</a></li>
+            <li><a href="#children">Children</a></li>
+            <% if(user.admin) { %>
+            <li><a href="#users">Users</a></li>
+            <% } %>
             <li><a href="#vaccines">Vaccines</a></li>
-            <li><a href="#centers">Centers</a></li>
         </ul>
         <!-- general user buttons -->
         <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
@@ -48,30 +49,29 @@
             <li>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                    aria-haspopup="false" aria-expanded="false">
-                    <% if (user.avatar) { %>
-                    <img src="<%= user.avatar %>" alt="avatar"/>
-                    <% } else { %>
                     <span class="glyphicon glyphicon-user"></span>
-                    <% } %>
-                    <b><%= user.uname %></b>
+                    <b><%= user.name ? user.name : user.uname %></b>
                     <span class="sr-only">Toggle Dropdown</span>
                     <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu nav">
                     <li>
                         <a href="#profile">
-                            <span class="glyphicon glyphicon-edit"></span> Edit Profile
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Edit Profile
                         </a>
                     </li>
                     <li>
                         <a href="#change-pass">
-                            <span class="glyphicon glyphicon-lock"></span> Change Password
+                            <span class="glyphicon glyphicon-lock"></span>
+                            Change Password
                         </a>
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>
                         <a href="/auth/logout">
-                            <span class="glyphicon glyphicon-log-out"></span> Logout
+                            <span class="glyphicon glyphicon-log-out"></span>
+                            Logout
                         </a>
                     </li>
                 </ul>
