@@ -57,7 +57,7 @@ router.post('/register', function (req, res, next) {
         }
         else {
             sendSessionId(res, result, user.remember);
-            mailer.sendConfirmCode(user.email, getConfirmCode);
+            mailer.sendConfirmCode(user.email, session.getConfirmCode());
         }
     });
 });
