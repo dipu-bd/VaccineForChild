@@ -36,12 +36,36 @@ router.post('/update-user', function (req, res, next) {
 
 /* POST add new child */
 router.post('/add-child', function (req, res, next) {
-
+    var user = req.body;
+    var key = req.cookies[SESSION_ID_COOKIE];
+    var sdat = session.getSession(key);
+    if (sdat) {
+        database.createChild(user.dob, sdat.user.id, user.name, user.height, user.weight, function (err, result) {
+            if (err) {
+                res.send(err);
+            }
+            else {
+                sdat.data = result;
+                res.sendStatus(200);
+            }
+        });
+    }
 });
 
 /* GET list of all children */
 router.get('/get-children', function (req, res, next) {
-
+    var sdat = session.getSession(key);
+    if (sdat) {
+        database.getAllChilds(sdat.user.id, function (err, result) {
+            if (err) {
+                res.send(err);
+            }
+            else {
+                sdat.data = result;
+                res.sendStatus(200);
+            }
+        });
+    }
 });
 
 module.exports = router;
