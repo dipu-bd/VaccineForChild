@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="modal-content" id="profileEditor">
+        <div class="modal-header">
+            <h1 class="left-pad">
+                <span class="glyphicon glyphicon-user"></span> Edit your profile
+                <br/>
+                <small><b><%= user.uname %></b> (<%= user.email %>)</small>
+            </h1>
+        </div>
+        <div class="modal-body">
+            <form id="profileForm" class="form-horizontal" action="javascript:null;" method="post">
+                <div class="form-group">
+                    <label class="control-label col-xs-2">Username: </label>
+
+                    <div class="col-xs-10"><label class="form-control"> <%= user.uname %> </label></div>
+                </div>
+                <div class="form-group">
+
+                </div>
+                <div class="form-group">
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

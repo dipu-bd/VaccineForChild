@@ -64,7 +64,7 @@ var getUser = function (id, uname, email, callback) {
     }
 
     if (cnt === 0) {
-        callback("Invalid input");
+        callback("No user found");
         return;
     }
 
@@ -76,12 +76,12 @@ var getUser = function (id, uname, email, callback) {
         if (err) {
             callback(err);
         } else if (!res || res.length === 0) {
-            callback('User not found');
+            callback('User not found.');
         }
         else {
             callback(null, res[0]);
             if (res.length > 1) {
-                debug('Multiple user found. Database Error!');
+                debug('Multiple user found. Query Error!');
             }
         }
     });

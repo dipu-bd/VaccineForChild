@@ -1,8 +1,8 @@
 var debug = require('debug')('VaccineForChild:forms');
 var url = require('url');
 var express = require('express');
-var session = require('./session');
-var property = require('./property')();
+var session = require('../utility/session');
+var property = require('../utility/property')();
 
 var SESSION_ID_COOKIE = 'SessionID';
 

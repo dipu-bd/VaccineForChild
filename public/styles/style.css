@@ -46,6 +46,11 @@ html, body {
     background-image: url('/images/pattern1.jpg');
 }
 
+#profileEditor {
+    padding: 10px;
+    background-image: url('/images/pattern1.jpg');
+}
+
 /*
  * Padding
  */
