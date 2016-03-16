@@ -40,6 +40,7 @@ router.post('/add-child', function (req, res, next) {
     var key = req.cookies[SESSION_ID_COOKIE];
     var sdat = session.getSession(key);
     if (sdat) {
+        user.dob = new Date(user.year, user.month, user.day);
         database.createChild(user.dob, sdat.user.id, user.name, user.height, user.weight, function (err, result) {
             if (err) {
                 res.send(err);
