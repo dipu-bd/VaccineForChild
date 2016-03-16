@@ -179,12 +179,12 @@ var updateUser = function (user, callback) {
     if (user.address) data.address = user.address;
     if (user.confirmed) data.confirmed = user.confirmed;
 
-    if (data.length === 0) {
+    if (data.length == 0) {
         debug(data);
         callback('No data');
         return;
     }
-
+ 
     var sql = "UPDATE ?? SET ? WHERE ??=?;";
     var insert = ['user', data, 'id', user.id];
     sql = mysql.format(sql, insert);
@@ -231,7 +231,7 @@ var createPhone = function (user, number, callback) {
  * @param callback (err) => if no error, err=null
  */
 var removePhone = function (id, callback) {
-    ;
+
 };
 
 /**
@@ -241,10 +241,9 @@ var removePhone = function (id, callback) {
  * @param name Name of the child
  * @param height Height of the child
  * @param weight Weight of the child
- //* @param address Address id of the child
  * @param callback (err, res) => res = newly created child object
  */
-var createChild = function (dob, user, name, height, weight, /*address,*/ callback) {
+var createChild = function (dob, user, name, height, weight, callback) {
     var sql, inserts;
     sql = "INSERT INTO ?? (??,??,??,??,??) VALUES (?,?,?,?,?)";
     inserts = ['child', 'dob', 'user', 'name', 'height', 'weight',
@@ -261,9 +260,8 @@ var createChild = function (dob, user, name, height, weight, /*address,*/ callba
 var getAllChilds = function (id, callback) {
     // two tables are related so query will return from two tables, user and child
     var sql, selects;
-    sql = "SELECT ??, ??, ??, ?? FROM ??, ?? WHERE ?? = ?";
-    selects = ['child.name', 'child.height', 'child.weight', 'child.dob'
-                , 'child', 'user', 'child.user', id];
+    sql = "SELECT * FROM ?? WHERE ?? = ?";
+    selects = ['child', 'user', id];
     sql = mysql.format(sql, selects);
     runQuery(sql, callback);
 };
@@ -274,7 +272,7 @@ var getAllChilds = function (id, callback) {
  * @param callback (err, res)=> res = newly created vaccine object.
  */
 var createVaccine = function (title, callback) {
-    ;
+
 };
 
 /**
