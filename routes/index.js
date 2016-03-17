@@ -51,19 +51,19 @@ router.get('/profile', function (req, res, next) {
         property.admin = data.access;
         res.render('profile', property);
     } else { // not logged in
-        res.status(401).end();
+        res.render('invalid');
     }
 });
 
 /* GET children page. */
 router.get('/children', function (req, res, next) {
     var data = session.getDataByRequest(req);
-    if (result) { // logged in
+    if (data) { // logged in
         property.user = data;
         property.admin = data.access;
         res.render('children', property);
     } else { // not logged in
-        res.status(401).end();
+        res.render('invalid');
     }
 });
 
@@ -75,7 +75,7 @@ router.get('/vaccines', function (req, res, next) {
         property.admin = data.access;
         res.render('vaccine', property);
     } else { // not logged in
-        res.status(401).end();
+        res.render('invalid');
     }
 });
 
@@ -87,7 +87,7 @@ router.get('/users', function (req, res, next) {
         property.admin = data.access;
         res.render('users', property);
     } else { // not logged in as admin
-        res.status(401).end();
+        res.render('invalid');
     }
 });
 
