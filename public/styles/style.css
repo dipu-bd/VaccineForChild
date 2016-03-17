@@ -56,6 +56,10 @@ html, body {
     color: #330;
 }
 
+.form-inline .form-group {
+    padding: 4px;
+}
+
 /* id */
 #bottom-panel {
     margin: 5px 0 0 0;

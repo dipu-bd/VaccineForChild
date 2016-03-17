@@ -3,7 +3,7 @@
 
     form.validate({
         submitHandler: function () {
-            submitPostRequest(form, '/auth/change-pass', form.serialize(), function () {
+            submitPostRequest(form, '/auth/change-pass', function () {
                 hideForm();
             });
         },

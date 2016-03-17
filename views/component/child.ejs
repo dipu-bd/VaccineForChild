@@ -1,34 +1,30 @@
 <div class="modal-content polaroid">
-    <div class="modal-title text-center">
-        <h4 id="name">Child Name</h4>
+    <div class="modal-header">
+        <h3 class="modal-title">
+            <i class="fa fa-child fa-2x"></i>
+            <span id="name">Child Name</span>
+        </h3>
     </div>
     <div class="modal-body">
-        <div>
-            <label>Age:</label>
-            <span id="age">10 days old</span>
-        </div>
-        <div>
-            <label>Birthday:</label>
-            <i class="fa fa-calendar"></i>
-            <span id="dob">Februrary 29, 2016</span>
-        </div>
-        <div>
-            <div class="col-xs-5 input-group">
-                <label>Height:</label>
-                <i class="fa fa-text-height"></i>
-                <span id="height"></span>
-                <span class="input-group-addon">"</span>
-            </div>
-            <div class="col-xs-5">
-                <label>Weight:</label>
-                <i class="fa fa-weibo"></i>
-                <span id="height"></span>
-                <span class="input-group-addon">KG</span>
-            </div>
-        </div>
+        <dl class="dl-horizontal text-left">
+            <dt>Age:</dt>
+            <dd id="age">10 days old</dd>
+            <dt>Birthday:</dt>
+            <dd id="dab">Thu 17 Mar, 2016</dd>
+            <dt>Height:</dt>
+            <dd id="height">3.75"</dd>
+            <dt>Weight:</dt>
+            <dd id="weight">2.5kg</dd>
+        </dl>
     </div>
     <div class="modal-footer">
-        <button id="edit" class="btn btn-default">Edit</button>
-        <button id="delete" class="btn btn-default">Save</button>
+        <div class="btn-group">
+            <button id="edit" class="btn btn-primary">
+                <i class="fa fa-edit"></i> Edit
+            </button>
+            <button id="delete" class="btn btn-warning">
+                <i class="fa fa-remove"></i> Delete
+            </button>
+        </div>
     </div>
 </div>

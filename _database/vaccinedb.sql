@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2016 at 08:10 AM
+-- Generation Time: Mar 17, 2016 at 06:03 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -28,12 +28,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `child` (
   `id` int(11) NOT NULL,
-  `dob` datetime NOT NULL,
+  `dob` bigint(20) NOT NULL,
   `name` varchar(60) DEFAULT NULL,
   `height` decimal(12,2) DEFAULT NULL,
   `weight` decimal(12,2) DEFAULT NULL,
   `user` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=ucs2;
+
+--
+-- Dumping data for table `child`
+--
+
+INSERT INTO `child` (`id`, `dob`, `name`, `height`, `weight`, `user`) VALUES
+(3, 1428256800000, 'Dipu', '4.50', '2.30', 6),
+(4, 1388599200000, 'Bishwa', '3.60', '1.74', 6);
 
 -- --------------------------------------------------------
 
@@ -74,16 +82,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `access` int(11) DEFAULT '0',
   `name` varchar(60) DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`) VALUES
-(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Sylhet, Bangladesh'),
+(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh'),
 (7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL),
-(9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 0, NULL, NULL);
+(9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 0, NULL, NULL),
+(10, 'bishwa', 'bishwa420@gmail.com', '112358', 0, 0, NULL, NULL),
+(11, 'new', 'new@gmail.com', 'newpass', 0, 0, 'New Name', 'My Full Address');
 
 -- --------------------------------------------------------
 
@@ -147,7 +157,7 @@ ALTER TABLE `vaccine`
 -- AUTO_INCREMENT for table `child`
 --
 ALTER TABLE `child`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `dose`
 --
@@ -162,7 +172,7 @@ ALTER TABLE `phone`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `vaccine`
 --

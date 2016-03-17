@@ -5,14 +5,14 @@
     var checkButton = form.find('#confirm-check-button');
 
     sendButton.click(function () {
-        submitPostRequest(form, '/auth/mail-confirm', form.serialize(), function () {
+        submitPostRequest(form, '/auth/mail-confirm', function () {
             errBox.text('Confirmation Code Sent!');
         }, 'Sending Code...', sendButton);
     });
 
     form.validate({
         submitHandler: function () {
-            submitPostRequest(form, '/auth/confirm', form.serialize(), function () {
+            submitPostRequest(form, '/auth/confirm', function () {
                 hideForm();
                 loadNavBar();
             }, "Checking...", checkButton);

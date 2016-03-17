@@ -3,7 +3,7 @@
 
     form.validate({
         submitHandler: function () {
-            submitPostRequest(form, '/auth/login', form.serialize(), function () {
+            submitPostRequest(form, '/auth/login', function () {
                 window.location.href = '/';
             });
         },

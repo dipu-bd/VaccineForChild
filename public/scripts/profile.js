@@ -3,7 +3,7 @@
     var errBox = form.find('#error-box');
     form.validate({
         submitHandler: function () {
-            submitPostRequest(form, '/user/update-user', form.serialize(), function () {
+            submitPostRequest(form, '/user/update-user', function () {
                 reloadPage();
                 errBox.html('Saved!');
             });

@@ -1,5 +1,7 @@
-var currentHomePage = null;
-var DEFAULT_MODAL_BODY = '<i class="fa fa-5x fa-refresh fa-spin"></i>';
+var GlobalData = {
+    currentHomePage: null,
+    DEFAULT_MODAL_BODY: '<i class="fa fa-5x fa-refresh fa-spin"></i>'
+};
 
 // enable caching
 $.ajaxSetup({
@@ -8,6 +10,11 @@ $.ajaxSetup({
 
 // load the document
 $(document).ready(function () {
+    GlobalData.homePageDiv = $('#home-page');
+    GlobalData.bottomBar = $('#bottom-bar');
+    GlobalData.navBar = $('#nav-bar');
+    GlobalData.accessModal = $("#access-modal");
+
     // load top and bottom panels
     loadNavBar();
     loadBottomBar();
@@ -16,7 +23,7 @@ $(document).ready(function () {
     $(window).bind('hashchange', handleHashChange);
 
     // clear hash on modal hide
-    $('#access-modal').on('hidden.bs.modal', handleModalHide);
+    GlobalData.accessModal.on('hidden.bs.modal', handleModalHide);
 
     // load page content
     handleHashChange();
@@ -24,7 +31,7 @@ $(document).ready(function () {
 
 // Load Navigation bar
 function loadNavBar() {
-    $('#nav-bar').load('/nav-bar', function (data, status) {
+    GlobalData.navBar.load('/nav-bar', function (data, status) {
         if (status !== 'success')
             console.log(data);
     });
@@ -32,7 +39,7 @@ function loadNavBar() {
 
 // Load Bottom Bar
 function loadBottomBar() {
-    $('#bottom-bar').load('/bottom-bar', function (data, status) {
+    GlobalData.bottomBar.load('/bottom-bar', function (data, status) {
         if (status !== 'success')
             console.log(data);
     });
@@ -54,18 +61,16 @@ function loadElement(elem, url, scriptUrl, callback) {
 }
 
 // Show Home page
-function loadHomePage(id, force) {
-    if (!force && currentHomePage === id) return;
-    var home = $('#home-page');
-    loadElement(home, '/' + id, '/scripts/' + id + '.js', function () {
-        currentHomePage = id;
+function loadHomePage(id) {
+    loadElement(GlobalData.homePageDiv, '/' + id, '/scripts/' + id + '.js', function () {
+        GlobalData.currentHomePage = id;
     });
 }
 
 // Show Modal Form
 function loadForm(id, title, small) {
     // select elements
-    var modal = $('#access-modal');
+    var modal = GlobalData.accessModal;
     var modalDialog = modal.find('.modal-dialog');
     var modalTitle = modal.find('.modal-title');
     var body = modal.find('.modal-body');
@@ -77,7 +82,7 @@ function loadForm(id, title, small) {
     // show modal
     modal.modal('show');
     // load body from server
-    body.html(DEFAULT_MODAL_BODY);
+    body.html(GlobalData.DEFAULT_MODAL_BODY);
     loadElement(body, '/forms/' + id, '/scripts/forms/' + id + '.js');
 }
 
@@ -92,7 +97,7 @@ function includeRegForm() {
 function focusRegForm() {
     var elem = $('#register-modal-content');
     var form = elem.find('#registerForm');
-    var uname = form.find('input[name=\'uname\']');
+    var uname = form.find('input[name="uname"]');
     // focus on the form
     uname.focus();
     // animate to bring user attention
@@ -114,6 +119,9 @@ function handleHashChange() {
         case '#change-pass':
             loadForm('change-pass', 'Change Password', true);
             break;
+        case '#add-child':
+            loadForm('add-child', 'Add New Child', true);
+            break;
         case '#profile':
             loadHomePage('profile');
             break;
@@ -133,7 +141,7 @@ function handleHashChange() {
 }
 
 function hideForm() {
-    $("#access-modal").modal('hide');
+    GlobalData.accessModal.modal('hide');
 }
 
 function handleModalHide() {
@@ -150,12 +158,11 @@ function reloadPage() {
  * Send a submit request to server
  * @param form Form to submit
  * @param url URL to submit to
- * @param data Data to submit
  * @param callback gets called when success
  * @param submitButton The submit button element
  * @param submitText Text to display when sending submit request
  */
-function submitPostRequest(form, url, data, callback, submitText, submitButton) {
+function submitPostRequest(form, url, callback, submitText, submitButton) {
     // gather elements
     var errBox = form.find('#error-box');
     if (!submitText) submitText = 'Submitting...';
@@ -165,7 +172,7 @@ function submitPostRequest(form, url, data, callback, submitText, submitButton) 
     submitButton.text(submitText);
     submitButton.attr('disabled', true);
     // send a post request
-    $.post(url, data)
+    $.post(url, form.serialize())
         .done(function (data) {
             if (data.responseText) {
                 errBox.text(data.responseText);

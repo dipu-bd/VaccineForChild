@@ -3,7 +3,7 @@
     var errBox = form.find('#error-box');
     form.validate({
         submitHandler: function () {
-            submitPostRequest(form, '/auth/register', form.serialize(), function () {
+            submitPostRequest(form, '/auth/register', function () {
                 window.location.href = '/';
             });
         },

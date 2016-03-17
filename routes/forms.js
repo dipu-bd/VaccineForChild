@@ -1,5 +1,4 @@
 var debug = require('debug')('VaccineForChild:forms');
-var url = require('url');
 var express = require('express');
 var session = require('../utility/session');
 var property = require('../utility/property')();

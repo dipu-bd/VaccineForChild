@@ -1,6 +1,5 @@
 (function () {
     var form = $('#addChildForm');
-    var errBox = form.find('#error-box');
     var year = form.find('select[name="year"]');
     var month = form.find('select[name="month"]');
     var day = form.find('select[name="day"]');
@@ -35,6 +34,10 @@
     setMonths();
     setDates(1);
 
+    year.val((new Date()).getFullYear());
+    month.val((new Date()).getMonth());
+    day.val((new Date()).getDay());
+
     month.on('change', function () {
         setDates(month.val(), year.val());
     });
@@ -44,15 +47,9 @@
 
     form.validate({
         submitHandler: function () {
-            submitButton.attr('disabled', true);
-            var user = form.serialize();
-            // calculate date of birth
-            if (user.year && user.month && user.day)
-                user.dob = new Date(user.year, user.month, user.day);
             // send post request
-            submitPostRequest(form, '/user/add-child', user, function () {
-                form.trigger("reset");
-                errBox.show('Child Added!');
+            submitPostRequest(form, '/user/add-child', function () {
+                hideForm();
             });
         },
         rules: {},

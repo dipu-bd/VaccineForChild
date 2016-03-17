@@ -1,34 +1,28 @@
-<form class="form-horizontal" id="addChildForm" method="post" action="javascript:null;">
+<form id="addChildForm" method="post" action="javascript:null;">
     <div class="form-group">
-        <div class="col-xs-3 text-right"><label class="control-label">Child Name:</label></div>
-        <div class="col-xs-9">
-            <input type="text" class="form-control" name="name" placeholder="Name of your child">
+        <label class="control-label">Child Name:</label>
+        <input type="text" class="form-control" name="name" placeholder="Name of your child">
+    </div>
+    <div class="form-group">
+        <label class="control-label">Birthday:</label>
+        <select class="form-control" name='year' title="Year"></select>
+        <select class="form-control" name='month' title="Month"></select>
+        <select class="form-control" name='day' title="Day" id="date-data"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Height:</label>
+
+        <div class="input-group">
+            <input type="number" class="form-control" name="height" placeholder="Height">
+            <span class="input-group-addon">inches</span>
         </div>
     </div>
     <div class="form-group">
-        <div class="text-right col-xs-3"><label class="control-label">Birthday:</label></div>
-        <div class="col-xs-9">
-            <select class="form-control" name='year' title="Year"></select>
-            <select class="form-control" name='month' title="Month"></select>
-            <select class="form-control" name='day' title="Day" id="date-data"></select>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-xs-3 text-right"><label class="control-label">Height:</label></div>
-        <div class="col-xs-9">
-            <div class="input-group">
-                <input type="number" class="form-control" name="height" placeholder="Height of child">
-                <span class="input-group-addon">inches</span>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-xs-3 text-right"><label class="control-label">Weight:</label></div>
-        <div class="col-xs-9">
-            <div class="input-group">
-                <input type="number" class="form-control" name="weight" placeholder="Weight of child">
-                <span class="input-group-addon">kilograms</span>
-            </div>
+        <label class="control-label">Weight:</label>
+
+        <div class="input-group">
+            <input type="number" class="form-control" name="weight" placeholder="Weight">
+            <span class="input-group-addon">kg</span>
         </div>
     </div>
     <div class="modal-footer">
