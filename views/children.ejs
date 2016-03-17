@@ -1,15 +1,18 @@
 <div class="container" id="children-page">
 
-    <div class="row">
-        <h1 class="text-center description-title">
-            Hi <%= user.name || user.uname %>. <br/>
-            <small>Here is the list of all children registered under you</small>
-        </h1>
-    </div>
-
-    <div class="navbar navbar-default">
-        <div class="container">
-            <a class="btn btn-default navbar-btn" href="#add-child">Add Child</a>
+    <div class="navbar navbar-default polaroid">
+        <div class="container-fluid">
+            <div class="navbar-brand">
+                Children registered under you
+            </div>
+            <div class="btn-group navbar-right right-pad navbar-btn">
+                <a class="btn btn-primary" href="#add-child">
+                    <span class="glyphicon glyphicon-plus"></span> Add Child
+                </a>
+                <button class="btn btn-default" id="refreshButton">
+                    <span class="glyphicon glyphicon-refresh"></span> Refresh List
+                </button>
+            </div>
         </div>
     </div>
 

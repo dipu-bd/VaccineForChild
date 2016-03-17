@@ -174,8 +174,8 @@ function submitPostRequest(form, url, callback, submitText, submitButton) {
     // send a post request
     $.post(url, form.serialize())
         .done(function (data) {
-            if (data.responseText) {
-                errBox.text(data.responseText);
+            if (data) {
+                errBox.text(data);
             } else if (callback) {
                 callback();
             }

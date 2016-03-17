@@ -123,7 +123,7 @@ var getUserByEmail = function (email, callback) {
  */
 var createUser = function (uname, email, password, callback) {
     getUser(null, uname, email, function (err, res) {
-        if (res) {
+        if (res && res.length > 0) {
             callback("Another user exists with same username or email");
         } else {
             var inserts = ['user', 'uname', 'email', 'password', uname, email, password];
@@ -232,20 +232,32 @@ var removePhone = function (id, callback) {
 
 /**
  * Creates a new child
- * @param dob Date of birth
  * @param user ID of user this child belongs to
  * @param name Name of the child
+ * @param dob Date of birth
  * @param height Height of the child
  * @param weight Weight of the child
  * @param callback (err, res) => res = newly created child object
  */
-var createChild = function (dob, user, name, height, weight, callback) {
-    var sql, inserts;
-    sql = "INSERT INTO ?? (??,??,??,??,??) VALUES (?,?,?,?,?)";
-    inserts = ['child', 'dob', 'user', 'name', 'height', 'weight',
-        dob, user, name, height, weight];
-    sql = mysql.format(sql, inserts);
-    runQuery(sql, callback);
+var createChild = function (user, name, dob, height, weight, callback) {
+    getChildByName(user, name, dob, function (err, data) {
+        if (data && data.length > 0) {
+            callback("This child has already been added");
+        } else {
+            var sql, inserts;
+            sql = "INSERT INTO ?? (??,??,??,??,??) VALUES (?,?,?,?,?)";
+            inserts = ['child', 'dob', 'user', 'name', 'height', 'weight',
+                dob, user, name, height, weight];
+            sql = mysql.format(sql, inserts);
+            runQuery(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    getChildByName(user, name, dob, callback);
+                }
+            });
+        }
+    });
 };
 
 /**
@@ -316,6 +328,19 @@ var getChildren = function (id, callback) {
 var getChild = function (id, callback) {
     var sql = "SELECT * FROM ?? WHERE ??=?";
     var insert = ['child', 'id', id];
+    sql = mysql.format(sql, insert);
+    runQuery(sql, callback);
+};
+/**
+ * Gets a child by id
+ * @param user User ID of the child
+ * @param name Name of the child
+ * @param dob DateOfBirth of the child
+ * @param callback (err, res) => array of child objects
+ */
+var getChildByName = function (user, name, dob, callback) {
+    var sql = "SELECT * FROM ?? WHERE ??=? AND ??=? AND ??=?";
+    var insert = ['child', 'user', user, 'name', name, 'dob', dob];
     sql = mysql.format(sql, insert);
     runQuery(sql, callback);
 };

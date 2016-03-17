@@ -27,9 +27,10 @@ router.get('/get-children', function (req, res, next) {
                     res.status(500).end(err);
                 }
                 else { // got children from database
-                    res.status(200).send(result);
                     // save children in session
                     data.children = result;
+                    // send success message
+                    res.status(200).send(result);
                 }
             });
         }
@@ -57,7 +58,6 @@ router.post('/update-user', function (req, res, next) {
                 res.status(200).end(err);
             }
             else { // data received successfully
-                res.status(200).end();
                 // send confirm code if not confirmed
                 if (!result.confirmed) {
                     data.code = session.getConfirmCode();
@@ -71,6 +71,8 @@ router.post('/update-user', function (req, res, next) {
                 data.name = result.name;
                 data.confirmed = result.confirmed;
                 data.email = result.email;
+                // send success message
+                res.status(200).end();
             }
         });
     }
@@ -82,18 +84,21 @@ router.post('/add-child', function (req, res, next) {
     if (data) {
         var user = req.body;
         // calculate date of birth
-        user.dob = (new Date(user.year, user.month, user.day)).getTime();
+        if (user.year && user.month && user.day) {
+            user.dob = (new Date(user.year, user.month, user.day)).getTime();
+        }
         // create child in the database
-        database.createChild(user.dob, data.id, user.name, user.height, user.weight, function (err, result) {
+        database.createChild(data.id, user.name, user.dob, user.height, user.weight, function (err, result) {
             if (err) { // database returned error
                 debug(err);
                 res.status(200).end(err);
             }
-            else { // database is success
-                res.status(200).end();
+            else {
                 // update in session
                 debug(result);
-                data.children.push(result);
+                data.children.push(result[0]);
+                // send success message
+                res.status(200).end();
             }
         });
     }
@@ -108,7 +113,6 @@ router.post('/delete-child', function (req, res, next) {
             if (err) { // database returned error
                 res.status(200).end(err);
             } else {
-                res.status(200).end();
                 //delete from session
                 for (var i = 0; i < data.children.length; ++i) {
                     if (data.children[i].id == child.id) {
@@ -116,6 +120,8 @@ router.post('/delete-child', function (req, res, next) {
                         break;
                     }
                 }
+                // send success message
+                res.status(200).end();
             }
         });
     }
