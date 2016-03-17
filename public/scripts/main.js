@@ -50,14 +50,15 @@ var loadHomePage = function (id, force) {
         currentHomePage = id;
     }
     else {
-        home.load('/' + id)
-            .done(function (data, status) {
+        home.load('/' + id, function (data, status) {
+            if (status == 'success') {
                 cachedPages[id] = data;
                 currentHomePage = id;
-            })
-            .fail(function (data, status) {
+            }
+            else {
                 console.log(data);
-            });
+            }
+        });
     }
 };
 
@@ -145,10 +146,17 @@ var loadForm = function (id, title, small) {
     }
     else { // load body from server
         body.html(DEFAULT_MODAL_BODY);
+        // first get body
         body.load('/forms/' + id, function (data, status) {
             if (status === 'success') {
                 cachedForms[id] = data;
             } else {
+                console.log(data);
+            }
+        });
+        // then the script
+        $.getScript('/scripts/forms/' + id + '.js', function (data, status) {
+            if (status !== 'success') {
                 console.log(data);
             }
         });
