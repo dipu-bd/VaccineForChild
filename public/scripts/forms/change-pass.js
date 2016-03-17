@@ -10,7 +10,6 @@
                 .done(function (result, status, jqXHR) {
                     if (result === 'OK') {
                         hideForm();
-                        alert("Password Changed");
                     } else {
                         errBox.text(result);
                     }

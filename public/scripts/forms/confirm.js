@@ -29,8 +29,7 @@
                 .done(function (result, status, jqXHR) {
                     if (result === 'OK') {
                         hideForm();
-                        window.location.reload();
-                        alert("Email account verified");
+                        loadNavBar();
                     } else {
                         errBox.text(result);
                     }

@@ -50,7 +50,7 @@
                 .done(function (result) {
                     if (result === 'OK') {
                         form.trigger("reset");
-                        alert('Child added!');
+                        errBox.show('Child Added!');
                     } else {
                         errBox.text(result);
                     }
@@ -64,7 +64,7 @@
                 });
         },
         errorPlacement: function (error, element) {
-           errBox.show(error);
+            errBox.show(error);
         },
         rules: {},
         messages: {}

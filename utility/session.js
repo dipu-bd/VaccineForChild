@@ -43,7 +43,10 @@ var removeSession = function (key) {
     }
 };
 
+module.exports.SESSION_ID_COOKIE = 'SessionID';
+
 module.exports.addSession = addSession;
 module.exports.getSession = getSession;
 module.exports.removeSession = removeSession;
 module.exports.getConfirmCode = getConfirmCode;
+

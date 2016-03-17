@@ -1,3 +1,12 @@
+var currentHomePage = null;
+var DEFAULT_MODAL_BODY = '<i class="fa fa-5x fa-refresh fa-spin"></i>';
+
+// enable caching
+$.ajaxSetup({
+    cache: true
+});
+
+// load the document
 $(document).ready(function () {
     // load top and bottom panels
     loadNavBar();
@@ -13,85 +22,105 @@ $(document).ready(function () {
     handleHashChange();
 });
 
-//
-// Show Home page
-//
-var cachedPages = {};
-var currentHomePage = null;
-
 // Load Navigation bar
-var loadNavBar = function () {
+function loadNavBar() {
     $('#nav-bar').load('/nav-bar', function (data, status) {
         if (status !== 'success') {
             console.log(data);
         }
     });
-};
+}
 
 // Load Bottom Bar
-var loadBottomBar = function () {
+function loadBottomBar() {
     $('#bottom-bar').load('/bottom-bar', function (data, status) {
         if (status !== 'success') {
             console.log(data);
         }
     });
-};
+}
 
-/**
- * Load home page
- * @param id Id, as well as the address to get home page
- * @param force True to force to reload home page
- */
-var loadHomePage = function (id, force) {
+// Show Home page
+function loadHomePage(id, force) {
     if (!force && currentHomePage === id) return;
     var home = $('#home-page');
-    if (cachedPages[id]) {
-        home.html(cachedPages[id]);
-        currentHomePage = id;
-    }
-    else {
-        home.load('/' + id, function (data, status) {
-            if (status == 'success') {
-                cachedPages[id] = data;
-                currentHomePage = id;
+    home.load('/' + id, function (data, status) {
+        if (status == 'success') {
+            currentHomePage = id;
+            $.getScript('/scripts/' + id + '.js', function (data, status) {
+                if (status !== 'success') console.log(data);
+            });
+        }
+        else {
+            console.log(data);
+        }
+    });
+}
+
+// Show Modal Form
+function loadForm(id, title, small) {
+    // select elements
+    var modal = $('#access-modal');
+    var modalDialog = modal.find('.modal-dialog');
+    var modalTitle = modal.find('.modal-title');
+    var body = modal.find('.modal-body');
+    // set modal size
+    if (small) modalDialog.addClass("modal-sm");
+    else modalDialog.removeClass("modal-sm");
+    // set modal title
+    modalTitle.html(title);
+    // show modal
+    modal.modal('show');
+    // load body from server
+    body.html(DEFAULT_MODAL_BODY);
+    // first get body
+    body.load('/forms/' + id, function (data, status) {
+        if (status === 'success') {
+            $.getScript('/scripts/forms/' + id + '.js', function (data, status) {
+                if (status !== 'success') {
+                    console.log(data);
+                }
+            });
+        }
+        else {
+            console.log(data);
+        }
+    });
+}
+
+// load registration form
+function includeRegForm() {
+    var regForm = $('#register-form-wrapper');
+    if (regForm) {
+        regForm.load('/forms/register', function (data, status) {
+            if (status === 'success') {
+                $.getScript('/scripts/forms/register.js', function (data, status) {
+                    if (status !== 'success') {
+                        console.log(data);
+                    }
+                });
             }
             else {
                 console.log(data);
             }
         });
     }
-};
-
-// load registration form
-function includeRegForm() {
-    var regForm = $('#register-form-wrapper');
-    if (regForm) {
-        if (cachedForms['register']) {
-            regForm.html(cachedForms['register']);
-        }
-        else {
-            regForm.load('/forms/register', function (data, status) {
-                if (status === 'success') {
-                    cachedForms['register'] = data;
-                }
-            });
-        }
-    }
 }
 
 function focusRegForm() {
-    var form = $('#registerForm');
+    var elem = $('#register-modal-content');
+    var form = elem.find('#registerForm');
     var uname = form.find('input[name=\'uname\']');
+    // focus on the form
     uname.focus();
-    form.animate({margin: '5px 0 0 0'}, 100);
-    form.animate({margin: '-5px 0 0 0'}, 100);
-    form.animate({margin: '5px 0 0 0'}, 100);
-    form.animate({margin: '-5px 0 0 0'}, 100);
-    form.animate({margin: '5px 0 0 0'}, 100);
-    form.animate({margin: '-5px 0 0 0'}, 100);
+    // animate to bring user attention
+    for (var i = 0; i < 3; ++i) {
+        elem.animate({marginTop: '+=10px'}, 100);
+        elem.animate({marginTop: '-=10px'}, 100);
+    }
 }
 
-var handleHashChange = function () {
+function handleHashChange() {
     var anchor = window.location.hash;
     switch (anchor) {
         case '#login':
@@ -119,61 +148,18 @@ var handleHashChange = function () {
             loadHomePage('home-page');
             break;
     }
-};
+}
 
-//
-// Show Modal Form
-//
-var cachedForms = {};
-var DEFAULT_MODAL_BODY = '<i class="fa fa-5x fa-refresh fa-spin"></i>';
-
-var loadForm = function (id, title, small) {
-    // select elements
-    var mmain = $('#access-modal');
-    var dialog = mmain.find('.modal-dialog');
-    var mtitle = mmain.find('.modal-title');
-    var body = mmain.find('.modal-body');
-    // set modal size
-    if (small) dialog.addClass("modal-sm");
-    else dialog.removeClass("modal-sm");
-    // set modal title
-    mtitle.html(title);
-    // show modal
-    mmain.modal('show');
-    // set modal body
-    if (cachedForms[id]) { // body is loaded
-        body.html(cachedForms[id]);
-    }
-    else { // load body from server
-        body.html(DEFAULT_MODAL_BODY);
-        // first get body
-        body.load('/forms/' + id, function (data, status) {
-            if (status === 'success') {
-                cachedForms[id] = data;
-            } else {
-                console.log(data);
-            }
-        });
-        // then the script
-        $.getScript('/scripts/forms/' + id + '.js', function (data, status) {
-            if (status !== 'success') {
-                console.log(data);
-            }
-        });
-    }
-};
-
-var hideForm = function () {
+function hideForm() {
     $("#access-modal").modal('hide');
-};
+}
 
-var handleModalHide = function () {
+function handleModalHide() {
     window.history.back();
-};
+}
 
-var reloadPage = function () {
-    cachedForms = {};
-    cachedPages = {};
+function reloadPage() {
+    loadNavBar();
+    loadBottomBar();
     handleHashChange();
-    load
-};
+}

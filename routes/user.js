@@ -6,25 +6,23 @@ var database = require('../utility/database');
 
 var router = express.Router();
 
-var SESSION_ID_COOKIE = 'SessionID';
-
 /* POST change password */
 router.post('/update-user', function (req, res, next) {
-    var user = req.body;
-    var key = req.cookies[SESSION_ID_COOKIE];
-    var sdat = session.getSession(key);
-    if (sdat) {
-        user.id = sdat.data.id;
-        if (user.email != sdat.data.email) user.confirmed = 0;
+    var key = req.cookies[session.SESSION_ID_COOKIE];
+    var data = session.getSession(key);
+    if (data) {
+        var user = req.body;
+        user.id = data.data.id;
+        if (user.email != data.data.email) user.confirmed = 0;
         else user.email = null;
-        if (user.name == sdat.data.name) user.name = null;
-        if (user.address == sdat.data.address) user.address = null;
+        if (user.name == data.data.name) user.name = null;
+        if (user.address == data.data.address) user.address = null;
         database.updateUser(user, function (err, result) {
             if (err) {
                 res.send(err);
             }
             else {
-                sdat.data = result;
+                data.data = result;
                 res.sendStatus(200);
                 if (!user.confirmed) {
                     mailer.sendConfirmCode(sdat.data.email, session.getConfirmCode());
@@ -36,10 +34,10 @@ router.post('/update-user', function (req, res, next) {
 
 /* POST add new child */
 router.post('/add-child', function (req, res, next) {
-    var user = req.body;
-    var key = req.cookies[SESSION_ID_COOKIE];
+    var key = req.cookies[session.SESSION_ID_COOKIE];
     var sdat = session.getSession(key);
     if (sdat) {
+        var user = req.body;
         user.dob = new Date(user.year, user.month, user.day);
         database.createChild(user.dob, sdat.data.id, user.name, user.height, user.weight, function (err, result) {
             if (err) {
@@ -53,20 +51,5 @@ router.post('/add-child', function (req, res, next) {
     }
 });
 
-/* GET list of all children */
-router.get('/get-children', function (req, res, next) {
-    var sdat = session.getSession(key);
-    if (sdat) {
-        database.getAllChilds(sdat.data.id, function (err, result) {
-            if (err) {
-                res.send(err);
-            }
-            else {
-                sdat.data = result;
-                res.sendStatus(200);
-            }
-        });
-    }
-});
 
 module.exports = router;

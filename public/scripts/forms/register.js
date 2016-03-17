@@ -10,7 +10,6 @@
             $.post('/auth/register', form.serialize())
                 .done(function (result, status, jqXHR) {
                     if (result === 'OK') {
-                        submitButton.text('Redirecting...');
                         window.location.href = '/';
                     } else {
                         errBox.text(result);
