@@ -1,5 +1,5 @@
-var nodemailer = require('nodemailer');
 var debug = require('debug')('VaccineForChild:mailer');
+var nodemailer = require('nodemailer');
 
 var smtpInfo = {
     host: "smtp.gmail.com",
@@ -13,11 +13,10 @@ var smtpInfo = {
 };
 
 module.exports.sendConfirmCode = function (email, code, callback) {
-
     // create reusable transporter object using the default SMTP transport
     var transporter = nodemailer.createTransport(smtpInfo);
 
-    // e-mail data
+    // create e-mail body
     var mailOptions = {
         from: "vaccinebd@gmail.com",
         to: email,
@@ -26,5 +25,6 @@ module.exports.sendConfirmCode = function (email, code, callback) {
         //html: '<html><body><h1>Vaccine For Child</h1><br/> Your confirmation code is: <br/><code>' + code + '</code></body></html>'
     };
 
+    // send an email
     transporter.sendMail(mailOptions, callback);
 };

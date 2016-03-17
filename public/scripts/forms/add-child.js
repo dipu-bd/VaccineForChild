@@ -46,13 +46,18 @@
     form.validate({
         submitHandler: function () {
             submitButton.attr('disabled', true);
-            $.post('/user/add-child', form.serialize())
+            var user = form.serialize();
+            // calculate date of birth
+            if (user.year && user.month && user.day)
+                user.dob = new Date(user.year, user.month, user.day);
+            // send post request
+            $.post('/user/add-child', user)
                 .done(function (result) {
-                    if (result === 'OK') {
+                    if (result) {
+                        errBox.text(result);
+                    } else {
                         form.trigger("reset");
                         errBox.show('Child Added!');
-                    } else {
-                        errBox.text(result);
                     }
                 })
                 .fail(function (result) {

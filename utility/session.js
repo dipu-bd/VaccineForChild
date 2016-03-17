@@ -2,6 +2,7 @@ var debug = require('debug')('VaccineForChild:session');
 var crypto = require('crypto');
 
 var KEY_LENGTH = 16;
+var SESSION_ID_COOKIE = 'SessionID';
 
 var allSession = {};
 
@@ -18,14 +19,13 @@ var getConfirmCode = function () {
 };
 
 var addSession = function (data) {
-    var key = getKey();
-    allSession[key] = {
-        key: key,
-        data: data,
-        creationTime: (new Date()).getTime(),
-        lastAccessTime: (new Date()).getTime()
-    };
-    return key;
+    data.key = getKey();
+    data.creationTime = (new Date()).getTime();
+    data.lastAccessTime = (new Date()).getTime();
+    allSession[data.key] = data;
+
+    debug("Created: " + data.key);
+    return data;
 };
 
 var getSession = function (key) {
@@ -43,8 +43,13 @@ var removeSession = function (key) {
     }
 };
 
-module.exports.SESSION_ID_COOKIE = 'SessionID';
+var getDataByRequest = function (request) {
+    var key = request.cookies[SESSION_ID_COOKIE];
+    return getSession(key);
+};
 
+module.exports.SESSION_ID_COOKIE = SESSION_ID_COOKIE;
+module.exports.getDataByRequest = getDataByRequest;
 module.exports.addSession = addSession;
 module.exports.getSession = getSession;
 module.exports.removeSession = removeSession;

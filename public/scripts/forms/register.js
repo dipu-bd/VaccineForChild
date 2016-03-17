@@ -9,11 +9,8 @@
             submitButton.attr('disabled', true);
             $.post('/auth/register', form.serialize())
                 .done(function (result, status, jqXHR) {
-                    if (result === 'OK') {
-                        window.location.href = '/';
-                    } else {
-                        errBox.text(result);
-                    }
+                    if (result) errBox.text(result);
+                    else window.location.href = '/';
                 })
                 .error(function (result, status) {
                     console.log(result);

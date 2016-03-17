@@ -8,25 +8,39 @@ var router = express.Router();
 
 /* POST change password */
 router.post('/update-user', function (req, res, next) {
-    var key = req.cookies[session.SESSION_ID_COOKIE];
-    var data = session.getSession(key);
+    var data = session.getDataByRequest(req);
     if (data) {
         var user = req.body;
-        user.id = data.data.id;
-        if (user.email != data.data.email) user.confirmed = 0;
+        // set id
+        user.id = data.id;
+        // check if email changed
+        if (user.email != data.email) user.confirmed = 0;
         else user.email = null;
-        if (user.name == data.data.name) user.name = null;
-        if (user.address == data.data.address) user.address = null;
+        // check if name changed
+        if (user.name == data.name) user.name = null;
+        // check if address changed
+        if (user.address == data.address) user.address = null;
+        // request database to update user
         database.updateUser(user, function (err, result) {
-            if (err) {
-                res.send(err);
+            if (err) { // error in database
+                debug(err);
+                res.status(200).end(err);
             }
-            else {
-                data.data = result;
-                res.sendStatus(200);
-                if (!user.confirmed) {
-                    mailer.sendConfirmCode(sdat.data.email, session.getConfirmCode());
+            else { // data received successfully
+                res.status(200).end();
+                // send confirm code if not confirmed
+                if (!result.confirmed) {
+                    data.code = session.getConfirmCode();
+                    mailer.sendConfirmCode(data.email, data.code, function (err, info) {
+                        debug(err);
+                        debug(info);
+                    });
                 }
+                // update session
+                debug(result);
+                data.name = result.name;
+                data.confirmed = result.confirmed;
+                data.email = result.email;
             }
         });
     }
@@ -34,22 +48,23 @@ router.post('/update-user', function (req, res, next) {
 
 /* POST add new child */
 router.post('/add-child', function (req, res, next) {
-    var key = req.cookies[session.SESSION_ID_COOKIE];
-    var sdat = session.getSession(key);
-    if (sdat) {
+    var data = session.getDataByRequest(req);
+    if (data) {
         var user = req.body;
-        user.dob = new Date(user.year, user.month, user.day);
-        database.createChild(user.dob, sdat.data.id, user.name, user.height, user.weight, function (err, result) {
-            if (err) {
-                res.send(err);
+        // create child in the database
+        database.createChild(user.dob, data.id, user.name, user.height, user.weight, function (err, result) {
+            if (err) { // database returned error
+                debug(err);
+                res.status(200).end(err);
             }
-            else {
-                sdat.data = result;
-                res.sendStatus(200);
+            else { // database is success
+                res.status(200).end();
+                // update in session
+                debug(result);
+                data.children[result.id] = result;
             }
         });
     }
 });
-
 
 module.exports = router;

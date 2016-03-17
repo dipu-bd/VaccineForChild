@@ -1,5 +1,5 @@
-var mysql = require('mysql');
 var debug = require('debug')('VaccineForChild:database');
+var mysql = require('mysql');
 
 var options = {
     connectionLimit: 100,   // important - limit the number of simultaneous connection
@@ -8,15 +8,15 @@ var options = {
     user: "root",   // username
     password: "",   // password
     database: "vaccinedb",   // name of the database
-    debug: false    // true to show all output
+    debug: false    // true to show all outputs
 };
 
 // create a database pool to make parallel connections
 var pool = mysql.createPool(options);
 
 pool.on('error', function (err) {
-    debug("!!MySQL Error: " + err.errno + " " + err.code + " " + (fatal ? "{FATAL}" : "{NOT FATAL}"));
-    debug(err);
+    debug("MySQL Error: " + err.errno + " " + err.code + " " + (err.fatal ? "{FATAL}" : "{NOT FATAL}"));
+    //debug(err);
 });
 
 /**
@@ -25,13 +25,13 @@ pool.on('error', function (err) {
  * @param callback (err, result) : if no error then error is null, otherwise result is null
  */
 var runQuery = function (sql, callback) {
-    debug(sql);
     pool.getConnection(function (err, connection) {
         if (err) {
-            debug(err);
+            //debug(err);
             callback('Failed to connect with database!');
         } else {
             connection.query(sql, function (err, res) {
+                debug(sql);
                 connection.release();
                 callback(null, res);
             });
@@ -150,7 +150,6 @@ var createUser = function (uname, email, password, callback) {
  */
 var changePassword = function (id, old, password, callback) {
     getUserById(id, function (err, res) {
-        console.log(id);
         if (err) {
             callback(err);
         }
@@ -178,9 +177,8 @@ var updateUser = function (user, callback) {
     if (user.address) data.address = user.address;
     if (user.confirmed) data.confirmed = user.confirmed;
 
-    if (data.length == 0) {
-        debug(data);
-        callback('No data');
+    if (Object.keys(data).length == 0) {
+        callback('Nothing changed!');
         return;
     }
 
@@ -205,7 +203,6 @@ var updateUser = function (user, callback) {
  */
 var getPhones = function (user, callback) {
     var sql, selects;
-    //SELECT * FROM ?? WHERE ?? = ?
     sql = "SELECT * FROM ?? WHERE ?? = ?";
     selects = ['phone', 'user', user];
     sql = mysql.format(sql, selects);
@@ -253,15 +250,73 @@ var createChild = function (dob, user, name, height, weight, callback) {
 
 /**
  * Gets all child under the user
+ * @param id ID of the child
+ * @param callback (err, res) => array of child objects
+ */
+var deleteChild = function (id, callback) {
+    // two tables are related so query will return from two tables, user and child
+    var sql, selects;
+    sql = "DELETE FROM ?? WHERE ?? = ?";
+    selects = ['child', 'id', id];
+    sql = mysql.format(sql, selects);
+    runQuery(sql, callback);
+};
+
+/**
+ * Updates a child
+ * @param child Child object
+ * @param callback
+ */
+var updateChild = function (child, callback) {
+    var data = {};
+    if (child.name) data.name = child.name;
+    if (child.dob) data.dob = child.dob;
+    if (child.height) data.height = child.height;
+    if (child.weight) data.weight = child.weight;
+
+    if (Object.keys(data).length == 0) {
+        callback('Nothing changed!');
+        return;
+    }
+
+    var sql = "UPDATE ?? SET ? WHERE ??=?;";
+    var insert = ['child', data, 'id', child.id];
+    sql = mysql.format(sql, insert);
+
+    // update child
+    runQuery(sql, function (err, res) {
+        if (err) {
+            callback(err);
+        }
+        else {
+            // get updated child and return
+            getChild(child.id, callback);
+        }
+    });
+};
+
+/**
+ * Gets all child under the user
  * @param id ID of the user
  * @param callback (err, res) => array of child objects
  */
-var getAllChilds = function (id, callback) {
-    // two tables are related so query will return from two tables, user and child
+var getChildren = function (id, callback) {
     var sql, selects;
     sql = "SELECT * FROM ?? WHERE ?? = ?";
     selects = ['child', 'user', id];
     sql = mysql.format(sql, selects);
+    runQuery(sql, callback);
+};
+
+/**
+ * Gets a child by id
+ * @param id ID of the child
+ * @param callback (err, res) => array of child objects
+ */
+var getChild = function (id, callback) {
+    var sql = "SELECT * FROM ?? WHERE ??=?";
+    var insert = ['child', 'id', id];
+    sql = mysql.format(sql, insert);
     runQuery(sql, callback);
 };
 
@@ -327,10 +382,13 @@ module.exports.createUser = createUser;
 module.exports.changePassword = changePassword;
 module.exports.getPhones = getPhones;
 module.exports.createPhone = createPhone;
+module.exports.deleteChild = deleteChild;
 module.exports.removePhone = removePhone;
 module.exports.updateUser = updateUser;
 module.exports.createChild = createChild;
-module.exports.getAllChilds = getAllChilds;
+module.exports.getChildren = getChildren;
+module.exports.getChild = getChild;
+module.exports.updateChild = updateChild;
 module.exports.createVaccine = createVaccine;
 module.exports.getVaccines = getVaccines;
 module.exports.createDose = createDose;

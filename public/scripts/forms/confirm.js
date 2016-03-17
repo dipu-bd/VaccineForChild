@@ -27,11 +27,11 @@
             checkButton.html('Checking...');
             $.post('/auth/confirm', form.serialize())
                 .done(function (result, status, jqXHR) {
-                    if (result === 'OK') {
+                    if (result) {
+                        errBox.text(result);
+                    } else {
                         hideForm();
                         loadNavBar();
-                    } else {
-                        errBox.text(result);
                     }
                 })
                 .error(function (result, status) {

@@ -46,6 +46,7 @@ html, body {
 
 #error-box {
     display: block;
+    font-weight: bold;
     text-align: center;
     font-size: small;
     color: #330;

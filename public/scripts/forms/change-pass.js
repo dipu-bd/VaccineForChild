@@ -8,10 +8,10 @@
             submitButton.attr('disabled', true);
             $.post('/auth/change-pass', form.serialize())
                 .done(function (result, status, jqXHR) {
-                    if (result === 'OK') {
-                        hideForm();
-                    } else {
+                    if (result) {
                         errBox.text(result);
+                    } else {
+                        hideForm();
                     }
                 })
                 .error(function (result, status) {
