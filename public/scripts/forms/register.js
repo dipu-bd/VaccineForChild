@@ -1,24 +1,11 @@
 (function () {
     var form = $('#registerForm');
     var errBox = form.find('#error-box');
-    var submitButton = form.find('#signup-button');
-
     form.validate({
         submitHandler: function () {
-            submitButton.text('Submitting...');
-            submitButton.attr('disabled', true);
-            $.post('/auth/register', form.serialize())
-                .done(function (result, status, jqXHR) {
-                    if (result) errBox.text(result);
-                    else window.location.href = '/';
-                })
-                .error(function (result, status) {
-                    console.log(result);
-                    errBox.text('Connection Failed');
-                })
-                .always(function () {
-                    submitButton.attr('disabled', false);
-                });
+            submitPostRequest(form, '/auth/register', form.serialize(), function () {
+                window.location.href = '/';
+            });
         },
         errorPlacement: function (error, element) {
             errBox.show(error);

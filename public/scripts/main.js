@@ -25,18 +25,31 @@ $(document).ready(function () {
 // Load Navigation bar
 function loadNavBar() {
     $('#nav-bar').load('/nav-bar', function (data, status) {
-        if (status !== 'success') {
+        if (status !== 'success')
             console.log(data);
-        }
     });
 }
 
 // Load Bottom Bar
 function loadBottomBar() {
     $('#bottom-bar').load('/bottom-bar', function (data, status) {
-        if (status !== 'success') {
+        if (status !== 'success')
             console.log(data);
+    });
+}
+
+function loadElement(elem, url, scriptUrl, callback) {
+    elem.load(url, function (data, status) {
+        if (status != 'success') {
+            console.log(data);
+            return;
         }
+        $.getScript(scriptUrl, function (data, status) {
+            if (status !== 'success')
+                console.log(data);
+            else if (callback)
+                callback();
+        });
     });
 }
 
@@ -44,16 +57,8 @@ function loadBottomBar() {
 function loadHomePage(id, force) {
     if (!force && currentHomePage === id) return;
     var home = $('#home-page');
-    home.load('/' + id, function (data, status) {
-        if (status == 'success') {
-            currentHomePage = id;
-            $.getScript('/scripts/' + id + '.js', function (data, status) {
-                if (status !== 'success') console.log(data);
-            });
-        }
-        else {
-            console.log(data);
-        }
+    loadElement(home, '/' + id, '/scripts/' + id + '.js', function () {
+        currentHomePage = id;
     });
 }
 
@@ -73,37 +78,14 @@ function loadForm(id, title, small) {
     modal.modal('show');
     // load body from server
     body.html(DEFAULT_MODAL_BODY);
-    // first get body
-    body.load('/forms/' + id, function (data, status) {
-        if (status === 'success') {
-            $.getScript('/scripts/forms/' + id + '.js', function (data, status) {
-                if (status !== 'success') {
-                    console.log(data);
-                }
-            });
-        }
-        else {
-            console.log(data);
-        }
-    });
+    loadElement(body, '/forms/' + id, '/scripts/forms/' + id + '.js');
 }
 
 // load registration form
 function includeRegForm() {
     var regForm = $('#register-form-wrapper');
     if (regForm) {
-        regForm.load('/forms/register', function (data, status) {
-            if (status === 'success') {
-                $.getScript('/scripts/forms/register.js', function (data, status) {
-                    if (status !== 'success') {
-                        console.log(data);
-                    }
-                });
-            }
-            else {
-                console.log(data);
-            }
-        });
+        loadElement(regForm, '/forms/register', '/scripts/forms/register.js');
     }
 }
 
@@ -162,4 +144,51 @@ function reloadPage() {
     loadNavBar();
     loadBottomBar();
     handleHashChange();
+}
+
+/**
+ * Send a submit request to server
+ * @param form Form to submit
+ * @param url URL to submit to
+ * @param data Data to submit
+ * @param callback gets called when success
+ * @param submitButton The submit button element
+ * @param submitText Text to display when sending submit request
+ */
+function submitPostRequest(form, url, data, callback, submitText, submitButton) {
+    // gather elements
+    var errBox = form.find('#error-box');
+    if (!submitText) submitText = 'Submitting...';
+    if (!submitButton) submitButton = form.find(':submit');
+    // set submit button text
+    var txt = submitButton.text();
+    submitButton.text(submitText);
+    submitButton.attr('disabled', true);
+    // send a post request
+    $.post(url, data)
+        .done(function (data) {
+            if (data.responseText) {
+                errBox.text(data.responseText);
+            } else if (callback) {
+                callback();
+            }
+        })
+        .fail(function (data) {
+            console.log(data);
+            switch (data.status / 100) {
+                case 4:
+                    errBox.text('Connection Failed!');
+                    break;
+                case 5:
+                    errBox.text('Internal Server Error!');
+                    break;
+                default:
+                    errBox.text('Unknown Error!');
+                    break;
+            }
+        })
+        .always(function () {
+            submitButton.text(txt);
+            submitButton.attr('disabled', false);
+        });
 }

@@ -1,9 +1,20 @@
+/* latin font */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Montserrat-Regular'), url('/styles/montserrat.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* tag */
 html, body {
     height: 100%;
     margin: 0;
     background: #0f0f0f url("/images/pattern2.jpg");
 }
 
+/* class */
 .navbar-inverse {
     background: url('/images/pattern4.png');
     -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
@@ -25,9 +36,9 @@ html, body {
 }
 
 .description-title {
-    font-family: 'Montserrat', sans-serif;
     padding: 0 0 5px 0;
     border-bottom: ridge;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .description-text {
@@ -38,18 +49,18 @@ html, body {
     font-family: 'Montserrat', sans-serif;
 }
 
+.error, #error-box {
+    display: block;
+    font-weight: bold;
+    font-size: small;
+    color: #330;
+}
+
+/* id */
 #bottom-panel {
     margin: 5px 0 0 0;
     padding: 15px;
     background: #8c8c9c;
-}
-
-#error-box {
-    display: block;
-    font-weight: bold;
-    text-align: center;
-    font-size: small;
-    color: #330;
 }
 
 #submit-button {
@@ -66,9 +77,7 @@ html, body {
     background-image: url('/images/pattern1.jpg');
 }
 
-/*
- Paddings
-*/
+/* padding */
 .width-padding {
     padding: 0 5px 0 5px;
 }
@@ -91,13 +100,4 @@ html, body {
 
 .left-pad {
     padding-left: 10px;
-}
-
-/* latin */
-@font-face {
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Montserrat-Regular'), url(montserrat.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }

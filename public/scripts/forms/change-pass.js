@@ -1,29 +1,11 @@
 (function () {
     var form = $('#changePassForm');
-    var errBox = form.find('#error-box');
-    var submitButton = form.find(':submit');
 
     form.validate({
         submitHandler: function () {
-            submitButton.attr('disabled', true);
-            $.post('/auth/change-pass', form.serialize())
-                .done(function (result, status, jqXHR) {
-                    if (result) {
-                        errBox.text(result);
-                    } else {
-                        hideForm();
-                    }
-                })
-                .error(function (result, status) {
-                    console.log(result);
-                    errBox.text('Connection Failed');
-                })
-                .always(function () {
-                    submitButton.attr('disabled', false);
-                });
-        },
-        errorPlacement: function (error, element) {
-            errBox.html(error);
+            submitPostRequest(form, '/auth/change-pass', form.serialize(), function () {
+                hideForm();
+            });
         },
         rules: {
             old: {

@@ -32,7 +32,7 @@ router.get('/nav-bar', function (req, res, next) {
     if (data) { // logged in
         property.user = data;
         property.admin = data.access;
-    } else {
+    } else { // not logged ni
         property.user = null;
     }
     res.render('component/nav-bar', property);
@@ -51,8 +51,7 @@ router.get('/profile', function (req, res, next) {
         property.admin = data.access;
         res.render('profile', property);
     } else { // not logged in
-        property.user = null;
-        res.render('invalid', property);
+        res.status(401).end();
     }
 });
 
@@ -64,8 +63,7 @@ router.get('/children', function (req, res, next) {
         property.admin = data.access;
         res.render('children', property);
     } else { // not logged in
-        property.user = null;
-        res.render('invalid', property);
+        res.status(401).end();
     }
 });
 
@@ -77,8 +75,7 @@ router.get('/vaccines', function (req, res, next) {
         property.admin = data.access;
         res.render('vaccine', property);
     } else { // not logged in
-        property.user = null;
-        res.render('invalid', property);
+        res.status(401).end();
     }
 });
 
@@ -90,8 +87,7 @@ router.get('/users', function (req, res, next) {
         property.admin = data.access;
         res.render('users', property);
     } else { // not logged in as admin
-        property.user = null;
-        res.render('invalid', property);
+        res.status(401).end();
     }
 });
 

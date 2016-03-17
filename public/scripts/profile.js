@@ -1,31 +1,12 @@
 (function () {
     var form = $('#profileForm');
     var errBox = form.find('#error-box');
-    var submitButton = form.find('#submit-button');
     form.validate({
         submitHandler: function () {
-            submitButton.text('Saved...');
-            submitButton.attr('disabled', true);
-            $.post('/user/update-user', form.serialize())
-                .done(function (result, status, jqXHR) {
-                    if (result === 'OK') {
-                        errBox.html('<b>Saved!</b>');
-                        reloadPage();
-                    } else {
-                        errBox.text(result);
-                    }
-                })
-                .error(function (result, status) {
-                    console.log(result.responseText);
-                    errBox.text('Connection Failed');
-                })
-                .always(function () {
-                    submitButton.text('Save');
-                    submitButton.attr('disabled', false);
-                });
-        },
-        errorPlacement: function (error, element) {
-            errBox.html(error);
+            submitPostRequest(form, '/user/update-user', form.serialize(), function () {
+                reloadPage();
+                errBox.html('Saved!');
+            });
         },
         rules: {
             name: {

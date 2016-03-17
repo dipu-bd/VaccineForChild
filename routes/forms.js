@@ -23,8 +23,7 @@ router.get('/confirm', function (req, res, next) {
         property.user = data;
         res.render('forms/confirm', property);
     } else {
-        property.user = null;
-        res.render('invalid', property);
+        res.status(401).end();
     }
 });
 
@@ -34,9 +33,7 @@ router.get('/change-pass', function (req, res, next) {
     if (data) {
         property.user = data;
         res.render('forms/change-pass', property);
-    } else {
-        property.user = null;
-        res.render('invalid', property);
+    } else {res.status(401).end();
     }
 });
 
@@ -47,8 +44,7 @@ router.get('/add-child', function (req, res, next) {
         property.user = data;
         res.render('forms/add-child', property);
     } else {
-        property.user = null;
-        res.render('invalid', property);
+        res.status(401).end();
     }
 });
 

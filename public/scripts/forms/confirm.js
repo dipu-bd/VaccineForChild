@@ -5,46 +5,17 @@
     var checkButton = form.find('#confirm-check-button');
 
     sendButton.click(function () {
-        sendButton.attr('disabled', true);
-        sendButton.html('Sending Code...');
-        $.post('/auth/mail-confirm')
-            .done(function (err, res) {
-                errBox.text('Confirmation Code Sent!');
-            })
-            .error(function (result, status) {
-                console.log(result);
-                errBox.text('Connection Failed');
-            })
-            .always(function () {
-                sendButton.html('Resend Code!');
-                sendButton.attr('disabled', false);
-            });
+        submitPostRequest(form, '/auth/mail-confirm', form.serialize(), function () {
+            errBox.text('Confirmation Code Sent!');
+        }, 'Sending Code...', sendButton);
     });
 
     form.validate({
         submitHandler: function () {
-            checkButton.attr('disabled', true);
-            checkButton.html('Checking...');
-            $.post('/auth/confirm', form.serialize())
-                .done(function (result, status, jqXHR) {
-                    if (result) {
-                        errBox.text(result);
-                    } else {
-                        hideForm();
-                        loadNavBar();
-                    }
-                })
-                .error(function (result, status) {
-                    console.log(result);
-                    errBox.text('Connection Failed');
-                })
-                .always(function () {
-                    checkButton.html('Check');
-                    checkButton.attr('disabled', false);
-                });
-        },
-        errorPlacement: function (error, element) {
-            errBox.html(error);
+            submitPostRequest(form, '/auth/confirm', form.serialize(), function () {
+                hideForm();
+                loadNavBar();
+            }, "Checking...", checkButton);
         },
         rules: {
             code: {

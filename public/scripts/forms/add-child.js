@@ -1,7 +1,6 @@
 (function () {
     var form = $('#addChildForm');
     var errBox = form.find('#error-box');
-    var submitButton = form.find(':submit');
     var year = form.find('select[name="year"]');
     var month = form.find('select[name="month"]');
     var day = form.find('select[name="day"]');
@@ -51,25 +50,10 @@
             if (user.year && user.month && user.day)
                 user.dob = new Date(user.year, user.month, user.day);
             // send post request
-            $.post('/user/add-child', user)
-                .done(function (result) {
-                    if (result) {
-                        errBox.text(result);
-                    } else {
-                        form.trigger("reset");
-                        errBox.show('Child Added!');
-                    }
-                })
-                .fail(function (result) {
-                    console.log(result);
-                    errBox.text('Connection Failed');
-                })
-                .always(function () {
-                    submitButton.attr('disabled', false);
-                });
-        },
-        errorPlacement: function (error, element) {
-            errBox.show(error);
+            submitPostRequest(form, '/user/add-child', user, function () {
+                form.trigger("reset");
+                errBox.show('Child Added!');
+            });
         },
         rules: {},
         messages: {}

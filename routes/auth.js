@@ -74,7 +74,7 @@ router.post('/change-pass', function (req, res, next) {
                 res.status(200).end(err);
             }
             else {
-                res.sendStatus(200);
+                res.status(200).end();
             }
         });
     }
