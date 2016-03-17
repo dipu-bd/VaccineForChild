@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af26c707-a3d8-4455-950b-4792f669967f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/routes/api.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/children.js" afterPath="$PROJECT_DIR$/public/scripts/children.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/forms/add-child.js" afterPath="$PROJECT_DIR$/public/scripts/forms/add-child.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/forms/change-pass.js" afterPath="$PROJECT_DIR$/public/scripts/forms/change-pass.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/forms/confirm.js" afterPath="$PROJECT_DIR$/public/scripts/forms/confirm.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/forms/login.js" afterPath="$PROJECT_DIR$/public/scripts/forms/login.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/forms/register.js" afterPath="$PROJECT_DIR$/public/scripts/forms/register.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/main.js" afterPath="$PROJECT_DIR$/public/scripts/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/profile.js" afterPath="$PROJECT_DIR$/public/scripts/profile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/styles/style.css" afterPath="$PROJECT_DIR$/public/styles/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/forms.js" afterPath="$PROJECT_DIR$/routes/forms.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/user.js" afterPath="$PROJECT_DIR$/routes/user.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/children.ejs" afterPath="$PROJECT_DIR$/views/children.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/component/child.ejs" afterPath="$PROJECT_DIR$/views/component/child.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/forms/add-child.ejs" afterPath="$PROJECT_DIR$/views/forms/add-child.ejs" />
     </list>
     <ignored path="VaccineForChild.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -92,8 +76,8 @@
       <file leaf-file-name="children.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/scripts/children.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2739726">
-              <caret line="8" column="39" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.6164383">
+              <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -886,8 +870,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/children.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2739726">
-          <caret line="8" column="39" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.6164383">
+          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
           <folding />
         </state>
       </provider>

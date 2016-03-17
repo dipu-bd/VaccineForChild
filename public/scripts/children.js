@@ -3,6 +3,11 @@
     var childrenList = children.find('#children-list');
     var childPage = null;
 
+    function getAge(bday) {
+        //TODO: return age like- "10 days" or "2 years 3 months"
+        return "4 months";
+    }
+
     function buildChildPage(page, child) {
         // add page
         var id = "child-" + child.id;
@@ -14,11 +19,10 @@
         var dob = page.find('#dob');
         var age = page.find('#age');
         var height = page.find('#height');
-        var weight = page.find('#weight');
-        //TODO: calculate age from birthday
-        child.age = "0 days";
-        // date of birth
+        var weight = page.find('#weight');// date of birth
         var time = new Date(child.dob);
+        //calculate age from birthday
+        child.age = getAge(time);
         // set data to elements
         name.text(child.name);
         dob.text(time.toDateString());
