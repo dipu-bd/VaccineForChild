@@ -80,7 +80,7 @@ router.get('/vaccines', function (req, res, next) {
     if (result) { // logged in as admin
         property.user = result.data;
         property.admin = (result.data.access > 0);
-        res.render('forms/add-child', property);
+        res.render('forms/vaccine', property);
     } else { // not logged in
         property.user = null;
         res.render('invalid', property);

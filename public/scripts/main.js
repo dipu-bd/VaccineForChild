@@ -1,71 +1,93 @@
-/*
- After document is ready
- */
 $(document).ready(function () {
+    // load top and bottom panels
+    loadNavBar();
+    loadBottomBar();
+
     // Bind the hash change event.
     $(window).bind('hashchange', handleHashChange);
-
-    // Load Navigation bar
-    $('#nav-bar').load('/nav-bar', function (data, status) {
-        if (status !== 'success') {
-            console.log(data);
-        }
-    });
-
-    // Load Bottom Bar
-    $('#bottom-bar').load('/bottom-bar', function (data, status) {
-        if (status !== 'success') {
-            console.log(data);
-        }
-    });
 
     // clear hash on modal hide
     $('#access-modal').on('hidden.bs.modal', handleModalHide);
 
+    // load page content
     handleHashChange();
 });
 
 //
 // Show Home page
 //
-var allPages = {};
+var cachedPages = {};
+var currentHomePage = null;
+
+// Load Navigation bar
+var loadNavBar = function () {
+    $('#nav-bar').load('/nav-bar', function (data, status) {
+        if (status !== 'success') {
+            console.log(data);
+        }
+    });
+};
+
+// Load Bottom Bar
+var loadBottomBar = function () {
+    $('#bottom-bar').load('/bottom-bar', function (data, status) {
+        if (status !== 'success') {
+            console.log(data);
+        }
+    });
+};
 
 /**
  * Load home page
  * @param id Id, as well as the address to get home page
+ * @param force True to force to reload home page
  */
-var loadHomePage = function (id) {
+var loadHomePage = function (id, force) {
+    if (!force && currentHomePage === id) return;
     var home = $('#home-page');
-    if (allPages[id]) {
-        home.html(allPages[id]);
-        loadRegForm();
+    if (cachedPages[id]) {
+        home.html(cachedPages[id]);
+        currentHomePage = id;
     }
     else {
-        home.load('/' + id, function (data, status) {
-            if (status === 'success') {
-                allPages[id] = data;
-                loadRegForm()
-            } else {
+        home.load('/' + id)
+            .done(function (data, status) {
+                cachedPages[id] = data;
+                currentHomePage = id;
+            })
+            .fail(function (data, status) {
                 console.log(data);
-            }
-        });
+            });
     }
 };
 
-function loadRegForm() {
+// load registration form
+function includeRegForm() {
     var regForm = $('#register-form-wrapper');
     if (regForm) {
-        if (allForms['register']) {
-            regForm.html(allForms['register']);
+        if (cachedForms['register']) {
+            regForm.html(cachedForms['register']);
         }
         else {
             regForm.load('/forms/register', function (data, status) {
                 if (status === 'success') {
-                    allForms['register'] = data;
+                    cachedForms['register'] = data;
                 }
             });
         }
     }
+}
+
+function focusRegForm() {
+    var form = $('#registerForm');
+    var uname = form.find('input[name=\'uname\']');
+    uname.focus();
+    form.animate({margin: '5px 0 0 0'}, 100);
+    form.animate({margin: '-5px 0 0 0'}, 100);
+    form.animate({margin: '5px 0 0 0'}, 100);
+    form.animate({margin: '-5px 0 0 0'}, 100);
+    form.animate({margin: '5px 0 0 0'}, 100);
+    form.animate({margin: '-5px 0 0 0'}, 100);
 }
 
 var handleHashChange = function () {
@@ -101,8 +123,8 @@ var handleHashChange = function () {
 //
 // Show Modal Form
 //
-var allForms = {};
-var DEFAULT_MODAL_BODY = '<span class="glyphicon glyphicon-hourglass" style="font-size:72px;"></span>';
+var cachedForms = {};
+var DEFAULT_MODAL_BODY = '<i class="fa fa-5x fa-refresh fa-spin"></i>';
 
 var loadForm = function (id, title, small) {
     // select elements
@@ -118,14 +140,14 @@ var loadForm = function (id, title, small) {
     // show modal
     mmain.modal('show');
     // set modal body
-    if (allForms[id]) { // body is loaded
-        body.html(allForms[id]);
+    if (cachedForms[id]) { // body is loaded
+        body.html(cachedForms[id]);
     }
     else { // load body from server
         body.html(DEFAULT_MODAL_BODY);
         body.load('/forms/' + id, function (data, status) {
             if (status === 'success') {
-                allForms[id] = data;
+                cachedForms[id] = data;
             } else {
                 console.log(data);
             }
@@ -139,4 +161,11 @@ var hideForm = function () {
 
 var handleModalHide = function () {
     window.history.back();
+};
+
+var reloadPage = function () {
+    cachedForms = {};
+    cachedPages = {};
+    handleHashChange();
+    load
 };

@@ -66,7 +66,7 @@ router.post('/register', function (req, res, next) {
 router.post('/change-pass', function (req, res, next) {
     var user = req.body;
     var key = req.cookies[SESSION_ID_COOKIE];
-    var sdata = session.getSession(key);
+    var sdat = session.getSession(key);
     if (sdat) {
         database.changePassword(sdat.data.id, user.old, user.password, function (err, result) {
             if (err) {
