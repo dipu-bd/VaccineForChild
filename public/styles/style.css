@@ -56,8 +56,18 @@ html, body {
     color: #330;
 }
 
-.form-inline .form-group {
-    padding: 4px;
+.child-data {
+    height: 300px;
+    width: 350px;;
+}
+.child-data .modal-body {
+    height: 175px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+}
+.child-data .modal-footer {
+    padding: 10px;
 }
 
 /* id */
