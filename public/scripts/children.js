@@ -5,7 +5,17 @@
 
     function getAge(bday) {
         //TODO: return age like- "10 days" or "2 years 3 months"
-        return "4 months";
+        var ret = "";
+        Date date = new Date();
+        var diffDay =  Math.floor(( date.getTime() - bday.getTime()) ) / 86400000);
+        var years = Math.floor(diffDay/365);
+        var months = Math.floor((diffDay % 365) / 31);
+        var days = (diffDay % 365) % 31 ;
+        if( years > 0) ret += years + " year" + (years > 1 ? "s " : "");
+        if(months > 0) ret += months + " month" + (months > 1 ? "s" : "");
+        if(days > 0) ret += days + " day" + (days > 1 ? "s" : "");
+        if(ret === "") ret = "0 day";
+        return ret;
     }
 
     function buildChildPage(page, child) {
