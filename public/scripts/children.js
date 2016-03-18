@@ -3,6 +3,8 @@
     var childrenList = children.find('#children-list');
     var childPage = null;
 
+    children.find('#refreshButton').on('click', loadAllChildren);
+
     function getAge(bday) {
         //TODO: return age like- "10 days" or "2 years 3 months"
         var ret = "";
@@ -16,6 +18,7 @@
         if(days > 0) ret += days + " day" + (days > 1 ? "s" : "");
         if(ret === "") ret = "0 day";
         return ret;
+
     }
 
     function buildChildPage(page, child) {
@@ -30,15 +33,22 @@
         var age = page.find('#age');
         var height = page.find('#height');
         var weight = page.find('#weight');// date of birth
-        var time = new Date(child.dob);
         //calculate age from birthday
-        child.age = getAge(time);
+        var time = new Date(child.dob);
+        child.age = getAge(child.dob);
         // set data to elements
         name.text(child.name);
         dob.text(time.toDateString());
         age.text(child.age + " old");
         height.text(child.height + "\"");
         weight.text(child.weight + "kg");
+        // add events
+        page.find('#edit').on('click', function () {
+            editClicked(child.id);
+        });
+        page.find('#delete').on('click', function () {
+            deleteClicked(child.id);
+        })
     }
 
     function getChildPage(callback) {
@@ -52,27 +62,42 @@
         });
     }
 
-    function showAllChildren() {
-        console.log('here i am');
+    function loadAllChildren() {
         $.get('/user/get-children', function (data, status) {
-            if (status == 'success' && data) {
-                console.log(data);
-                // clear previous list
-                childrenList.html('');
+            // clear previous list
+            childrenList.html('');
+
+            if (status == 'success' && data && data.length > 0) {
                 // add all children
                 getChildPage(function (page) {
                     for (var i = 0; i < data.length; ++i) {
-                        var child = data[i];
-                        buildChildPage(page, child);
+                        buildChildPage(page, data[i]);
                     }
                 });
             } else {
                 console.log(data);
-                console.log('foul!');
             }
         });
     }
 
-    showAllChildren();
+    // run at first time
+    loadAllChildren();
+
+    function editClicked(id) {
+
+    }
+
+    function deleteClicked(id) {
+        $.post('/user/delete-child', {id: id}, function (data, status) {
+            console.log(data);
+            if (status === 'success') {
+                childrenList.find('#child-' + id).remove();
+            }
+            else {
+                console.log(data);
+            }
+        })
+    }
+
 
 })();

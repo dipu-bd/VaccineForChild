@@ -37,7 +37,7 @@ function sendSessionId(res, user, remember) {
 
 /* POST login request. */
 router.post('/login', function (req, res, next) {
-    var user = req.body || {};
+    var user = req.body;
     database.getUserByName(user.uname, function (err, result) {
         if (err) {
             res.status(200).end(err);
@@ -53,7 +53,7 @@ router.post('/login', function (req, res, next) {
 
 /* POST register request. */
 router.post('/register', function (req, res, next) {
-    var user = req.body || {};
+    var user = req.body;
     database.createUser(user.uname, user.email, user.password, function (err, result) {
         if (err) {
             res.status(200).end(err);
@@ -67,7 +67,7 @@ router.post('/register', function (req, res, next) {
 /* POST change password */
 router.post('/change-pass', function (req, res, next) {
     var data = session.getDataByRequest(req);
-    if (data) {
+    if (data) { // if logged in
         var user = req.body;
         database.changePassword(data.id, user.old, user.password, function (err, result) {
             if (err) {

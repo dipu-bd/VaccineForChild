@@ -18,10 +18,10 @@ router.get('/register', function (req, res, next) {
 /* GET confirm form. */
 router.get('/confirm', function (req, res, next) {
     var data = session.getDataByRequest(req);
-    if (data) {
+    if (data) { // if logged in
         property.user = data;
         res.render('forms/confirm', property);
-    } else {
+    } else { // not logged in
         res.render('invalid');
     }
 });
@@ -29,10 +29,10 @@ router.get('/confirm', function (req, res, next) {
 /* GET change-pass form. */
 router.get('/change-pass', function (req, res, next) {
     var data = session.getDataByRequest(req);
-    if (data) {
+    if (data) { // if logged in
         property.user = data;
         res.render('forms/change-pass', property);
-    } else {
+    } else { // not logged in
         res.render('invalid');
     }
 });
@@ -40,10 +40,10 @@ router.get('/change-pass', function (req, res, next) {
 /* GET add-child form. */
 router.get('/add-child', function (req, res, next) {
     var data = session.getDataByRequest(req);
-    if (data) {
+    if (data) { // if logged in
         property.user = data;
         res.render('forms/add-child', property);
-    } else {
+    } else { // not logged in
         res.render('invalid');
     }
 });

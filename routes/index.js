@@ -15,7 +15,7 @@ router.get('/home-page', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) { // logged in
         property.user = data;
-        if (data.access) { // access type : administrators
+        if (data.access) { // access type : administrator.
             res.render('home/admin', property);
         } else {    // access type: general user.
             res.render('home/general', property);
