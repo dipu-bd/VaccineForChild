@@ -79,15 +79,17 @@
     }
 
     function deleteClicked(id) {
-        $.post('/user/delete-child', {id: id}, function (data, status) {
-            console.log(data);
-            if (status === 'success') {
-                childrenList.find('#child-' + id).remove();
-            }
-            else {
+        if (confirm("Are you sure to delete one child?")) {
+            $.post('/user/delete-child', {id: id}, function (data, status) {
                 console.log(data);
-            }
-        })
+                if (status === 'success') {
+                    childrenList.find('#child-' + id).remove();
+                }
+                else {
+                    console.log(data);
+                }
+            })
+        }
     }
 
 
