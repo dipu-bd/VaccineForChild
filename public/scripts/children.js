@@ -6,8 +6,10 @@
     // run at first time
     loadAllChildren();
 
+    // add refresh button event
     children.find('#refreshButton').on('click', loadAllChildren);
 
+    // shows all children in children-list div
     function loadAllChildren() {
         $.get('/user/get-children', function (data, status) {
             // clear previous list
@@ -26,6 +28,7 @@
         });
     }
 
+    // get child-page from server
     function getChildPage(callback) {
         $.get('/user/child-page', function (data, status) {
             if (status == 'success') {
@@ -37,6 +40,11 @@
         });
     }
 
+    function getChildWrapper(id, page) {
+        return "<div class='form-group' id='" + id + "'>" + page + "</div>";
+    }
+
+    // append child page to the children list
     function buildChildPage(page, child) {
         // append page and find it
         var id = "child-" + child.id;
@@ -47,15 +55,11 @@
         setChildData(page, child);
         // add events
         page.find('#edit').on('click', function () {
-            editClicked(child.id);
+            editClicked(child);
         });
         page.find('#delete').on('click', function () {
-            deleteClicked(child.id);
+            deleteClicked(child);
         })
-    }
-
-    function getChildWrapper(id, page) {
-        return "<div class='form-group' id='" + id + "'>" + page + "</div>";
     }
 
     function setChildData(page, child) {
@@ -73,16 +77,17 @@
         weight.text(child.weight + "kg");
     }
 
-    function editClicked(id) {
-
+    function editClicked(child) {
+        var qs = encodeURIComponent(JSON.stringify(child));
+        window.location.href = '#edit-child?' + qs;
     }
 
-    function deleteClicked(id) {
+    function deleteClicked(child) {
         if (confirm("Are you sure to delete one child?")) {
-            $.post('/user/delete-child', {id: id}, function (data, status) {
+            $.post('/user/delete-child', child, function (data, status) {
                 console.log(data);
                 if (status === 'success') {
-                    childrenList.find('#child-' + id).remove();
+                    childrenList.find('#child-' + child.id).remove();
                 }
                 else {
                     console.log(data);

@@ -108,7 +108,7 @@ function focusRegForm() {
 }
 
 function handleHashChange() {
-    var anchor = window.location.hash;
+    var anchor = (window.location.hash.match(/#[^?]+/g) || [""])[0];
     switch (anchor) {
         case '#login':
             loadForm('login', 'Sign In', true);
@@ -120,6 +120,7 @@ function handleHashChange() {
             loadForm('change-pass', 'Change Password', true);
             break;
         case '#add-child':
+        case '#edit-child':
             loadForm('add-child', 'Add New Child', true);
             break;
         case '#profile':

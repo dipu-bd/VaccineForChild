@@ -63,8 +63,8 @@ html, body {
 .child-data .modal-body {
     height: 175px;
     display: flex;
-    justify-content: center; /* align horizontal */
     align-items: center;
+    justify-content: center;
 }
 .child-data .modal-footer {
     padding: 10px;

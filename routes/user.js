@@ -140,7 +140,7 @@ router.post('/update-child', function (req, res, next) {
                 //update in session
                 for (var i = 0; i < data.children.length; ++i) {
                     if (data.children[i].id == child.id) {
-                        data.children[i] = result;
+                        data.children[i] = result[0];
                         break;
                     }
                 }
