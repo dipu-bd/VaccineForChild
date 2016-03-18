@@ -5,13 +5,6 @@
 
     children.find('#refreshButton').on('click', loadAllChildren);
 
-    function getAge(bday) {
-        //TODO: return age like- "10 days" or "2 years 3 months"
-        var cur = new Date().getTime() - bday;
-        var day = Math.floor(cur / (24 * 3600 * 1000));
-        return day + " days";
-    }
-
     function buildChildPage(page, child) {
         // add page
         var id = "child-" + child.id;
@@ -23,14 +16,11 @@
         var dob = page.find('#dob');
         var age = page.find('#age');
         var height = page.find('#height');
-        var weight = page.find('#weight');// date of birth
-        //calculate age from birthday
-        var time = new Date(child.dob);
-        child.age = getAge(child.dob);
+        var weight = page.find('#weight');
         // set data to elements
         name.text(child.name);
-        dob.text(time.toDateString());
-        age.text(child.age + " old");
+        dob.text(new Date(child.dob).toDateString());
+        age.text(getAge(child.dob));
         height.text(child.height + "\"");
         weight.text(child.weight + "kg");
         // add events
@@ -92,5 +82,20 @@
         }
     }
 
+    function getAge(bday) {
+        //TODO: return age like- "10 days" or "2 years 3 months"
+        var ret = "";
+        Date date = new Date();
+        var diffDay =  Math.floor(( date.getTime() - bday)) / 86400000);
+        var years = Math.floor(diffDay/365);
+        var months = Math.floor((diffDay % 365) / 31);
+        var days = (diffDay % 365) % 31 ;
+        if( years > 0) ret += years + " year" + (years > 1 ? "s " : "");
+        if(months > 0) ret += months + " month" + (months > 1 ? "s" : "");
+        if(days > 0) ret += days + " day" + (days > 1 ? "s" : "");
+        if(ret === "") ret = "0 day";
+        return ret;
+
+    }
 
 })();
