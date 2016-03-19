@@ -194,6 +194,15 @@ function selectNavBar(anchor) {
 
 }
 
+// Read a page's GET URL variables and return them as an associative array.
+function getDataFromUrl() {
+    try {
+        var search = (window.location.hash.match(/\?.*/g) || ["?"])[0];
+        return JSON.parse(decodeURIComponent(search.slice(1)));
+    } catch (ex) {
+        return null;
+    }
+}
 function formatSpan(span) {
     // divide into components
     span /= (24 * 3600 * 1000);

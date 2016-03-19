@@ -22,8 +22,6 @@
                         buildChildPage(page, data[i]);
                     }
                 });
-            } else {
-                console.log(data);
             }
         });
     }
@@ -34,8 +32,6 @@
             if (status == 'success') {
                 childPage = data;
                 callback(childPage);
-            } else {
-                console.log(data);
             }
         });
     }
@@ -87,12 +83,12 @@
     function deleteClicked(child) {
         if (confirm("Are you sure to delete one child?")) {
             $.post('/user/delete-child', child, function (data, status) {
-                console.log(data);
                 if (status === 'success') {
                     childrenList.find('#child-' + child.id).remove();
                 }
                 else {
                     console.log(data);
+                    alert("Could not delete the child");
                 }
             })
         }

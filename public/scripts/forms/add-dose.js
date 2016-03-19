@@ -5,21 +5,16 @@
     deserializeParam();
 
     function deserializeParam() {
-        if (addMode) return;
         // set default values
         var data = getDataFromUrl();
-        Object.keys(data).forEach(function (key) {
-            var elem = form.find('input[name="' + key + '"]');
-            if (elem) elem.val(data[key]);
-        });
-        // other elements
-        form.find(':submit').val('Save');
-    }
-
-    // Read a page's GET URL variables and return them as an associative array.
-    function getDataFromUrl() {
-        var search = (window.location.hash.match(/\?.*/g) || ["?"])[0];
-        return JSON.parse(decodeURIComponent(search.slice(1)));
+        if (data) {
+            Object.keys(data).forEach(function (key) {
+                var elem = form.find('input[name="' + key + '"]');
+                if (elem) elem.val(data[key]);
+            });
+            // other elements
+            if (!addMode) form.find(':submit').val('Save');
+        }
     }
 
     form.validate({

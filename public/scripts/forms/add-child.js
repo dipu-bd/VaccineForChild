@@ -56,24 +56,19 @@
     }
 
     function deserializeParam() {
-        if (addMode) return;
         // set default values
-        var child = getChildFromUrl();
-        Object.keys(child).forEach(function (key) {
-            var elem = form.find('input[name="' + key + '"]');
-            if (elem) elem.val(child[key]);
-        });
-        // set other elements value
-        var gender = form.find('select[name="gender"]');
-        gender.val(child.gender);
-        setBirthDay(new Date(child.dob));
-        form.find(':submit').val('Save');
-    }
-
-    // Read a page's GET URL variables and return them as an associative array.
-    function getChildFromUrl() {
-        var search = (window.location.hash.match(/\?.*/g) || ["?"])[0];
-        return JSON.parse(decodeURIComponent(search.slice(1)));
+        var child = getDataFromUrl();
+        if (child) {
+            Object.keys(child).forEach(function (key) {
+                var elem = form.find('input[name="' + key + '"]');
+                if (elem) elem.val(child[key]);
+            });
+            // set other elements value
+            var gender = form.find('select[name="gender"]');
+            gender.val(child.gender);
+            setBirthDay(new Date(child.dob));
+            if (!addMode) form.find(':submit').val('Save');
+        }
     }
 
     form.validate({

@@ -27,8 +27,7 @@ router.get('/doses', function (req, res, next) {
 
 /* GET list of doses of a certain vaccine */
 router.get('/doses-of', function (req, res, next) {
-    console.log(req.body);
-    database.getDosesOfVaccine(req.body.id, function (err, result) {
+    database.getDosesOfVaccine(req.query.id, function (err, result) {
         if (err)
             res.status(500).send(err);
         else
@@ -40,7 +39,7 @@ router.get('/doses-of', function (req, res, next) {
 router.post('/add-vaccine', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
-        var vac = res.body;
+        var vac = req.body;
         database.createVaccine(vac.title, function (err, result) {
             res.status(200).send(err);
         });
@@ -50,10 +49,10 @@ router.post('/add-vaccine', function (req, res, next) {
 });
 
 /* POST edit vaccine. */
-router.post('/edit-vaccine', function (req, res, next) {
+router.post('/update-vaccine', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
-        var vac = res.body;
+        var vac = req.body;
         database.updateVaccine(vac, function (err, result) {
             res.status(200).send(err);
         });
@@ -65,7 +64,7 @@ router.post('/edit-vaccine', function (req, res, next) {
 router.post('/delete-vaccine', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
-        var vac = res.body;
+        var vac = req.body;
         database.deleteVaccine(vac.id, function (err, result) {
             res.status(200).send(err);
         });
@@ -78,7 +77,7 @@ router.post('/delete-vaccine', function (req, res, next) {
 router.post('/add-dose', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
-        var dose = res.body;
+        var dose = req.body;
         database.createDose(dose.vaccine, dose.name, dose.dab, function (err, result) {
             res.status(200).send(err);
         });
@@ -89,10 +88,10 @@ router.post('/add-dose', function (req, res, next) {
 
 
 /* POST edit dose. */
-router.post('/edit-dose', function (req, res, next) {
+router.post('/update-dose', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
-        var dose = res.body;
+        var dose = req.body;
         database.updateDose(dose, function (err, result) {
             res.status(200).send(err);
         });
@@ -106,7 +105,7 @@ router.post('/edit-dose', function (req, res, next) {
 router.post('/delete-dose', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
-        var dose = res.body;
+        var dose = req.body;
         database.deleteDose(dose.id, function (err, result) {
             res.status(200).send(err);
         });

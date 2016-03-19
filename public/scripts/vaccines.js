@@ -10,8 +10,7 @@
 
     loadVaccineList();
 
-    if (refreshButton)
-        refreshButton.on('click', loadVaccineList);
+    if (refreshButton) refreshButton.on('click', loadVaccineList);
 
     function loadVaccineList() {
         $.get('/admin/vaccines').done(function (data) {
@@ -40,22 +39,22 @@
     }
 
     function loadDoseList(doseList, vac) {
-        $.get('/admin/doses-of', {id: vac.id}, function (data, success) {
-            console.log(data);
-            if (data.length == 0) {
-                doseList.html(EMPTY);
-            }
-            else {
-                doseList.html('');
-                data.forEach(function (dose) {
-                    var wrapper = doseBody.find('#dose-wrapper');
-                    wrapper.attr('id', 'dose-' + dose.id);
-                    doseList.append(doseBody.html());
-                    buildDosePage(doseList, dose);
-                    wrapper.attr('id', 'dose-wrapper');
-                });
-            }
-        });
+        $.get('/admin/doses-of', {id: vac.id})
+            .done(function (data) {
+                if (data.length == 0) {
+                    doseList.html(EMPTY);
+                }
+                else {
+                    doseList.html('');
+                    data.forEach(function (dose) {
+                        var wrapper = doseBody.find('#dose-wrapper');
+                        wrapper.attr('id', 'dose-' + dose.id);
+                        doseList.append(doseBody.html());
+                        buildDosePage(doseList, dose);
+                        wrapper.attr('id', 'dose-wrapper');
+                    });
+                }
+            });
     }
 
     function buildDosePage(doseList, data) {
@@ -66,6 +65,14 @@
     }
 
     function attachVacEvent(body, data) {
+        // attach add dose option
+        var addDoseButton = body.find('#add-dose');
+        if (addDoseButton) {
+            addDoseButton.on('click', function () {
+                var qs = encodeURIComponent(JSON.stringify({vaccine: data.id}));
+                window.location.href = '#add-dose?' + qs;
+            });
+        }
         // attach edit option
         var editVacButton = body.find('#edit-vaccine');
         if (editVacButton) {
@@ -80,11 +87,12 @@
             deleteVacButton.on('click', function () {
                 if (confirm("Are you sure to delete this vaccine?")) {
                     $.post('/admin/delete-vaccine', data, function (data, status) {
-                        console.log(data);
-                        if (status == 'success')
-                            body.remote();
-                        else
+                        if (status == 'success') {
+                            body.remove();
+                        } else {
                             console.log(data);
+                            alert("Could not delete the vaccine");
+                        }
                     })
                 }
             });
@@ -106,11 +114,12 @@
             deleteDoseButton.on('click', function () {
                 if (confirm("Are you sure to delete this dose?")) {
                     $.post('/admin/delete-dose', data, function (data, status) {
-                        console.log(data);
-                        if (status == 'success')
-                            body.remote();
-                        else
+                        if (status == 'success') {
+                            body.remove();
+                        } else {
                             console.log(data);
+                            alert("Could not delete the dose");
+                        }
                     })
                 }
             });

@@ -1,10 +1,10 @@
 <div class="container" id="vaccine-page">
     <div class="navbar navbar-default">
-        <div class="container-fluid right-pad">
+        <div class="container-fluid">
             <div class="navbar-brand">
                 List of all Vaccines
             </div>
-            <div class="navbar-btn btn-group navbar-right">
+            <div class="navbar-btn btn-group navbar-right right-pad">
                 <% if(user.access > 0) { %>
                 <a class="btn btn-default" href="#add-vaccine">
                     <i class="glyphicon glyphicon-plus"></i>
@@ -25,12 +25,12 @@
     <div id="vaccine-body" class="hidden">
         <div class="thumbnail" id="vaccine-wrapper">
             <div class="modal-header">
-                <h4 class="modal-title height-padding">
+                <h4 class="modal-title">
                     <i class="fa fa-medkit"></i>
                     <span id="title"></span>
                 </h4>
             </div>
-            <div class="modal-body" id="doses-list">
+            <div class="modal-body">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -47,10 +47,10 @@
                 </table>
             </div>
             <% if(user.access > 0) { %>
-            <div class="modal-footer height-padding">
-                <a href="'#add-dose" class="btn btn-default" id="add-dose">
+            <div class="modal-footer">
+                <button class="btn btn-default" id="add-dose">
                     <i class="glyphicon glyphicon-edit"></i> Add Dose
-                </a>
+                </button>
                 <button class="btn btn-primary" id="edit-vaccine">
                     <i class="glyphicon glyphicon-edit"></i> Edit Vaccine
                 </button>
@@ -68,13 +68,15 @@
             <td id="name">Dose 3</td>
             <td id="dab">3 weeks</td>
             <% if(user.access > 0) { %>
-            <td>
-                <button class="btn btn-primary" id="edit-dose">
-                    <i class="glyphicon glyphicon-edit"></i> Edit
-                </button>
-                <button class="btn btn-warning" id="delete-dose">
-                    <i class="glyphicon glyphicon-remove"></i> Delete
-                </button>
+            <td class="text-center">
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="edit-dose">
+                        <i class="glyphicon glyphicon-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-warning" id="delete-dose">
+                        <i class="glyphicon glyphicon-remove"></i> Delete
+                    </button>
+                </div>
             </td>
             <% } %>
         </tr>

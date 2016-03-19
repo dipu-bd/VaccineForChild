@@ -172,7 +172,7 @@ var changePassword = function (id, old, password, callback) {
  */
 var updateUser = function (user, callback) {
     getUserByEmail(user.email, function (err, result) {
-        if (result && result.id != user.id) {
+        if (result && result.length > 0 && result.id != user.id) {
             callback("Another user exists with same email!");
         }
         else {
@@ -267,7 +267,7 @@ var deleteChild = function (id, callback) {
  */
 var updateChild = function (child, callback) {
     getChildByName(child.user, child.name, function (err, result) {
-        if (result && child.id != result.id) {
+        if (result && result.length > 0 && child.id != result.id) {
             callback("Another child exists with same name");
         }
         else {
@@ -347,7 +347,7 @@ var getChildByName = function (user, name, callback) {
 var createVaccine = function (title, callback) {
     getVaccine(title, function (err, res) {
         if (res && res.length > 0) {
-            callback("Vaccine has already been added");
+            callback("Vaccine has already been added!");
         }
         else {
             var sql = "INSERT INTO ?? (??) VALUES(?)";
@@ -378,8 +378,8 @@ var deleteVaccine = function (id, callback) {
  * @param callback (err, res)=> res = newly created vaccine object.
  */
 var updateVaccine = function (vac, callback) {
-    getVaccine(title, function (err, res) {
-        if (res && res.id != vac.id) {
+    getVaccine(vac.title, function (err, res) {
+        if (res && res.length > 0 && res.id != vac.id) {
             callback("Vaccine with similar name already exists!");
         }
         else {
@@ -462,7 +462,7 @@ var getDose = function (dab, name, vaccine, callback) {
 
 var updateDose = function (dose, callback) {
     getDose(dose.dab, dose.name, dose.vaccine, function (err, result) {
-        if (result && result[0].id != dose.id) {
+        if (result && result.length > 0 && result[0].id != dose.id) {
             callback('Similar dose already exists!');
         }
         else {
@@ -486,7 +486,7 @@ var updateDose = function (dose, callback) {
 var getAllDoses = function (callback) {
     var sql =
         "SELECT dose.id, dose.vaccine, vaccine.title, dose.name, dose.dab " +
-        "FROM dose JOIN vaccine WHERE vaccine.id = dose.vaccine";
+        "FROM dose JOIN vaccine WHERE vaccine.id = dose.vaccine ORDER BY dose.dab";
     runQuery(sql, callback);
 };
 
@@ -497,7 +497,9 @@ var getAllDoses = function (callback) {
  * @param callback (err, res)=> res = list of all dose object.
  */
 var getDosesOfVaccine = function (vaccine, callback) {
-    var sql = "SELECT * FROM dose WHERE vaccine=" + mysql.escape(vaccine);
+    var sql = "SELECT * FROM ?? WHERE ??=? ORDER BY ??";
+    var inserts = ['dose', 'vaccine', vaccine, 'dab'];
+    sql = mysql.format(sql, inserts);
     runQuery(sql, callback);
 };
 
