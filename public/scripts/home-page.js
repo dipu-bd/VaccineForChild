@@ -1,12 +1,13 @@
 (function () {
 
     var general = $('#general-home-page');
+    var admin = $('#admin-home-page');
 
     if (general) {
 
         var list = general.find('#schedule-list');
         var message = general.find('#messege-data');
-        var empty = general.find('#empty-list');
+        var empty = "<div class='flex-full'>Empty List</div>";
 
         loadSchedules();
 
@@ -39,5 +40,9 @@
                 message.find('tr').removeClass('info');
             list.append(message.find('tbody').html());
         }
+    }
+
+    if (admin) {
+
     }
 })();

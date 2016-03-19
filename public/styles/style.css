@@ -77,6 +77,14 @@ html, body {
     font-weight: bold;
 }
 
+.flex-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    font-size: large;
+}
+
 /* id */
 #bottom-panel {
     margin: 5px 0 0 0;

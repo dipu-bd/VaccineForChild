@@ -33,7 +33,7 @@ $(document).ready(function () {
 function loadNavBar() {
     GlobalData.navBar.load('/nav-bar', function (data, status) {
         if (status !== 'success')
-            console.log(data); 
+            console.log(data);
     });
 }
 
@@ -134,11 +134,25 @@ function handleHashChange() {
             loadForm('change-pass', 'Change Password', true);
             break;
         case '#add-child':
-        case '#edit-child':
             loadForm('add-child', 'Add New Child', true);
+            break;
+        case '#edit-child':
+            loadForm('add-child', 'Edit Child', true);
             break;
         case '#add-phone':
             loadForm('add-phone', 'Add New Phone', true);
+            break;
+        case '#add-vaccine':
+            loadForm('add-vaccine', 'Add Vaccine', true);
+            break;
+        case '#edit-vaccine':
+            loadForm('add-vaccine', 'Edit Vaccine', true);
+            break;
+        case '#add-dose':
+            loadForm('add-dose', 'Add Dose', true);
+            break;
+        case '#edit-dose':
+            loadForm('add-dose', 'Edit Dose', true);
             break;
         case '#profile':
             loadHomePage('profile');

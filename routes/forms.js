@@ -49,6 +49,29 @@ router.get('/add-child', function (req, res, next) {
 });
 
 
+/* GET add-vaccine form. */
+router.get('/add-vaccine', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data && data.access > 0) { // if logged in as admin
+        property.user = data;
+        res.render('forms/add-vaccine', property);
+    } else { // not logged in as admin
+        res.render('invalid');
+    }
+});
+
+/* GET add-dose form. */
+router.get('/add-dose', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data && data.access > 0) { // if logged in as admin
+        property.user = data;
+        res.render('forms/add-dose', property);
+    } else { // not logged in as admin
+        res.render('invalid');
+    }
+});
+
+
 /* GET add-phone form. */
 router.get('/add-phone', function (req, res, next) {
     var data = session.getDataByRequest(req);

@@ -27,6 +27,7 @@ router.get('/doses', function (req, res, next) {
 
 /* GET list of doses of a certain vaccine */
 router.get('/doses-of', function (req, res, next) {
+    console.log(req.body);
     database.getDosesOfVaccine(req.body.id, function (err, result) {
         if (err)
             res.status(500).send(err);

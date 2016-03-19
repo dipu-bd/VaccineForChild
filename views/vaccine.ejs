@@ -1,0 +1,84 @@
+<div class="container" id="vaccine-page">
+    <div class="navbar navbar-default">
+        <div class="container-fluid right-pad">
+            <div class="navbar-brand">
+                List of all Vaccines
+            </div>
+            <div class="navbar-btn btn-group navbar-right">
+                <% if(user.access > 0) { %>
+                <a class="btn btn-default" href="#add-vaccine">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Add Vaccine
+                </a>
+                <% } %>
+                <button class="btn btn-default" id="refresh-list">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                    Refresh List
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="vaccine-list">
+        <div class="flex-full">Empty List</div>
+    </div>
+
+    <div id="vaccine-body" class="hidden">
+        <div class="thumbnail" id="vaccine-wrapper">
+            <div class="modal-header">
+                <h4 class="modal-title height-padding">
+                    <i class="fa fa-medkit"></i>
+                    <span id="title"></span>
+                </h4>
+            </div>
+            <div class="modal-body" id="doses-list">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Apply time after birth</th>
+                        <% if(user.access > 0) { %>
+                        <th>Action</th>
+                        <% } %>
+                    </tr>
+                    </thead>
+                    <tbody id="doses-list">
+
+                    </tbody>
+                </table>
+            </div>
+            <% if(user.access > 0) { %>
+            <div class="modal-footer height-padding">
+                <a href="'#add-dose" class="btn btn-default" id="add-dose">
+                    <i class="glyphicon glyphicon-edit"></i> Add Dose
+                </a>
+                <button class="btn btn-primary" id="edit-vaccine">
+                    <i class="glyphicon glyphicon-edit"></i> Edit Vaccine
+                </button>
+                <button class="btn btn-warning" id="delete-vaccine">
+                    <i class="glyphicon glyphicon-remove"></i> Delete Vaccine
+                </button>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <table class="hidden">
+        <tbody id="dose-body">
+        <tr id="dose-wrapper">
+            <td id="name">Dose 3</td>
+            <td id="dab">3 weeks</td>
+            <% if(user.access > 0) { %>
+            <td>
+                <button class="btn btn-primary" id="edit-dose">
+                    <i class="glyphicon glyphicon-edit"></i> Edit
+                </button>
+                <button class="btn btn-warning" id="delete-dose">
+                    <i class="glyphicon glyphicon-remove"></i> Delete
+                </button>
+            </td>
+            <% } %>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

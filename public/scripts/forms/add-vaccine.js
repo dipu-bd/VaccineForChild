@@ -12,12 +12,8 @@
             var elem = form.find('input[name="' + key + '"]');
             if (elem) elem.val(data[key]);
         });
-        // other elements
-        var modalTitle = $('#access-modal').find('.modal-title');
-        var submitButton = form.find(':submit');
         // set other elements value
-        modalTitle.text('Edit Vaccine');
-        submitButton.val('Save');
+        form.find(':submit').val('Save');
     }
 
     // Read a page's GET URL variables and return them as an associative array.
