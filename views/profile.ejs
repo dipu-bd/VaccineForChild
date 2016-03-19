@@ -4,7 +4,7 @@
             <h1 class="left-pad">
                 <span class="glyphicon glyphicon-user"></span> Edit your profile
                 <br/>
-                <small><b><%= user.uname %></b> (<%= user.email %>)</small>
+                <small id="profile-header-display"></small>
             </h1>
         </div>
         <div class="modal-body">
@@ -12,22 +12,24 @@
                 <div class="form-group">
                     <label class="control-label col-xs-2">Username: </label>
 
-                    <div class="col-xs-10"><label class="form-control"> <%= user.uname %> </label></div>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="uname" placeholder="Username" readonly>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-xs-2">Email: </label>
 
                     <div class="col-xs-10">
-                        <input type="email" class="form-control" value="<%= user.email %>" name="email"
-                               placeholder="Enter your email" onfocus="$(this).select();"/>
+                        <input type="email" class="form-control" name="email" placeholder="Enter your email"
+                               onfocus="$(this).select();"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-xs-2">Full Name: </label>
 
                     <div class="col-xs-10">
-                        <input type="text" class="form-control" value="<%= user.name %>" name="name"
-                               placeholder="Enter your full name" onfocus="$(this).select();"/>
+                        <input type="text" class="form-control" name="name" placeholder="Enter your full name"
+                               onfocus="$(this).select();"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -35,24 +37,20 @@
 
                     <div class="col-xs-10">
                         <textarea class="form-control" name="address" placeholder="Enter your full address"
-                                  onfocus="$(this).select();"><%= user.address %></textarea>
+                                  onfocus="$(this).select();"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-xs-2">Phone 1: </label>
+                    <label class="control-label col-xs-2">Phone: </label>
 
-                    <div class="col-xs-10">
-                        <input type="number" class="form-control" value="<%= user.phone1 %>" name="phone1"
-                               placeholder="Phone 1" onfocus="$(this).select();"/>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" name="phone" placeholder="Your phone number" readonly>
+                    </div>
+                    <div class="col-xs-2">
+                        <a href="#add-phone" class="btn btn-default form-control">Add Phone</a>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">Phone 2: </label>
-
-                    <div class="col-xs-10">
-                        <input type="number" class="form-control" value="<%= user.phone2 %>" name="phone2"
-                               placeholder="Phone 2" onfocus="$(this).select();"/>
-                    </div>
+                <div class="col-xs-8">
                 </div>
                 <div class="modal-footer">
                     <div class="text-center text-info well-sm" id="error-box"></div>

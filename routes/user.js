@@ -1,18 +1,9 @@
 var debug = require('debug')('VaccineForChild:user');
 var express = require('express');
-var mailer = require('../utility/mailer');
 var session = require('../utility/session');
 var database = require('../utility/database');
-var property = require('../utility/property')();
 
 var router = express.Router();
-
-/* GET user. */
-router.get('/user-data', function (req, res, next) {
-    var data = session.getDataByRequest(req) || {};
-    data.property = property;
-    res.end(data);
-});
 
 /* GET list of all children */
 router.get('/get-children', function (req, res, next) {
@@ -24,7 +15,7 @@ router.get('/get-children', function (req, res, next) {
             // get children from database
             database.getChildren(data.id, function (err, result) {
                 if (err) { // error in database
-                    res.status(500).end(err);
+                    res.status(500).send(err);
                 }
                 else { // got children from database
                     // save children in session
@@ -34,6 +25,8 @@ router.get('/get-children', function (req, res, next) {
                 }
             });
         }
+    } else {
+        res.status(401).end();
     }
 });
 
@@ -47,34 +40,28 @@ router.post('/update-user', function (req, res, next) {
         // check if email changed
         if (user.email != data.email) user.confirmed = 0;
         else user.email = null;
-        // check if name changed
-        if (user.name == data.name) user.name = null;
-        // check if address changed
-        if (user.address == data.address) user.address = null;
         // request database to update user
         database.updateUser(user, function (err, result) {
             if (err) { // error in database
                 debug(err);
-                res.status(200).end(err);
+                res.status(200).send(err);
             }
             else { // data received successfully
                 // send confirm code if not confirmed
                 if (!result.confirmed) {
-                    data.code = session.getConfirmCode();
-                    mailer.sendConfirmCode(data.email, data.code, function (err, info) {
-                        debug(err);
-                        debug(info);
-                    });
+                    session.sendConfirmMail(data);
                 }
                 // update session
                 debug(result);
-                data.name = result.name;
-                data.confirmed = result.confirmed;
-                data.email = result.email;
+                Object.keys(result).forEach(function (key) {
+                    data[key] = result[key];
+                });
                 // send success message
                 res.status(200).end();
             }
         });
+    } else {
+        res.status(401).end();
     }
 });
 
@@ -88,19 +75,22 @@ router.post('/add-child', function (req, res, next) {
             user.dob = (new Date(user.year, user.month, user.day)).getTime();
         }
         // create child in the database
-        database.createChild(data.id, user.name, user.dob, user.height, user.weight, function (err, result) {
-            if (err) { // database returned error
-                debug(err);
-                res.status(200).end(err);
-            }
-            else {
-                // update in session
-                debug(result);
-                data.children.push(result[0]);
-                // send success message
-                res.status(200).end();
-            }
-        });
+        database.createChild(data.id, user.name, user.dob, user.height, user.weight, user.gender,
+            function (err, result) {
+                if (err) { // database returned error
+                    debug(err);
+                    res.status(200).send(err);
+                }
+                else {
+                    // update in session
+                    debug(result);
+                    data.children.push(result[0]);
+                    // send success message
+                    res.status(200).end();
+                }
+            });
+    } else {
+        res.status(401).end();
     }
 });
 
@@ -111,7 +101,7 @@ router.post('/delete-child', function (req, res, next) {
         // delete child from database
         database.deleteChild(child.id, function (err, result) {
             if (err) { // database returned error
-                res.status(200).end(err);
+                res.status(200).send(err);
             } else {
                 //delete from session
                 for (var i = 0; i < data.children.length; ++i) {
@@ -124,6 +114,8 @@ router.post('/delete-child', function (req, res, next) {
                 res.status(200).end();
             }
         });
+    } else {
+        res.status(401).end();
     }
 });
 
@@ -134,7 +126,7 @@ router.post('/update-child', function (req, res, next) {
         // update child in database
         database.updateChild(child, function (err, result) {
             if (err) { // database returned error
-                res.status(200).end(err);
+                res.status(200).send(err);
             } else {
                 res.status(200).end();
                 //update in session
@@ -146,18 +138,10 @@ router.post('/update-child', function (req, res, next) {
                 }
             }
         });
+    } else {
+        res.status(401).end();
     }
 });
 
-/* GET child page */
-router.get('/child-page', function (req, res, next) {
-    var data = session.getDataByRequest(req);
-    if (data) {
-        property.user = data;
-        res.render('component/child', property);
-    } else {
-        res.status(401).end('Not logged in');
-    }
-});
 
 module.exports = router;

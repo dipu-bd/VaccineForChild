@@ -57,22 +57,21 @@
 
     function deserializeParam() {
         if (addMode) return;
-        // gather elements
-        var cid = form.find('input[name="id"]');
-        var cname = form.find('input[name="name"]');
-        var height = form.find('input[name="height"]');
-        var weight = form.find('input[name="weight"]');
-        var submitButton = form.find(':submit');
-        var modalTitle = $('#access-modal').find('.modal-title');
-        // set elements value
+        // set default values
         var child = getChildFromUrl();
-        cid.val(child.id);
-        cname.val(child.name);
-        height.val(child.height);
-        weight.val(child.weight);
+        Object.keys(child).forEach(function (key) {
+            var elem = form.find('input[name="' + key + '"]');
+            if (elem) elem.val(child[key]);
+        });
+        // other elements
+        var modalTitle = $('#access-modal').find('.modal-title');
+        var gender = form.find('select[name="gender"]');
+        var submitButton = form.find(':submit');
+        // set other elements value
+        modalTitle.text('Edit Child');
+        gender.val(child.gender);
         setBirthDay(new Date(child.dob));
         submitButton.val('Save');
-        modalTitle.text('Edit Child')
     }
 
     // Read a page's GET URL variables and return them as an associative array.
@@ -95,7 +94,41 @@
                 });
             }
         },
-        rules: {},
-        messages: {}
+        rules: {
+            name: {
+                required: true,
+                maxlength: 60
+            },
+            gender: {
+                required: true
+            },
+            year: {
+                required: true
+            },
+            month: {
+                required: true
+            },
+            day: {
+                required: true
+            }
+        },
+        messages: {
+            name: {
+                required: "Please provide a name of the child",
+                maxlength: "Name should not be more than 60 characters long"
+            },
+            gender: {
+                required: "Please select the gender of the child"
+            },
+            year: {
+                required: "Please select the year of birth"
+            },
+            month: {
+                required: "Please select the month of birth"
+            },
+            day: {
+                required: "Please select the day of birth"
+            }
+        }
     });
 })();

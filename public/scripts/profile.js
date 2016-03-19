@@ -1,6 +1,26 @@
 (function () {
     var form = $('#profileForm');
     var errBox = form.find('#error-box');
+
+    loadData();
+
+    function loadData() {
+        $.get('/user-data').done(function (data) {
+            if (data) {
+                showUserData(data);
+            }
+        });
+    }
+
+    function showUserData(data) {
+        form.find('input[name="uname"]').val(data.uname);
+        form.find('input[name="email"]').val(data.email);
+        form.find('input[name="name"]').val(data.name);
+        form.find('input[name="phone"]').val(data.phone);
+        form.find('textarea[name="address"]').val(data.address);
+        $('#profile-header-display').text(data.uname + " (" + data.email + ")");
+    }
+
     form.validate({
         submitHandler: function () {
             submitPostRequest(form, '/user/update-user', function () {

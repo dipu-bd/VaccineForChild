@@ -4,7 +4,7 @@
     form.validate({
         submitHandler: function () {
             submitPostRequest(form, '/auth/register', function () {
-                window.location.href = '/';
+                window.location.href = '/#profile';
             });
         },
         errorPlacement: function (error, element) {

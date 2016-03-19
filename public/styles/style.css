@@ -69,6 +69,10 @@ html, body {
 .child-data .modal-footer {
     padding: 10px;
 }
+.child-data th {
+    text-align: right;
+    font-weight: bold;
+}
 
 /* id */
 #bottom-panel {

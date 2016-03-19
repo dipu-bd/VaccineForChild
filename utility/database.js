@@ -176,6 +176,7 @@ var updateUser = function (user, callback) {
     if (user.name) data.name = user.name;
     if (user.address) data.address = user.address;
     if (user.confirmed) data.confirmed = user.confirmed;
+    if (user.phone) data.phone = user.phone;
 
     if (Object.keys(data).length == 0) {
         callback('Nothing changed!');
@@ -237,17 +238,18 @@ var removePhone = function (id, callback) {
  * @param dob Date of birth
  * @param height Height of the child
  * @param weight Weight of the child
+ * @param gender Gender of the child
  * @param callback (err, res) => res = newly created child object
  */
-var createChild = function (user, name, dob, height, weight, callback) {
+var createChild = function (user, name, dob, height, weight, gender, callback) {
     getChildByName(user, name, dob, function (err, data) {
         if (data && data.length > 0) {
             callback("This child has already been added");
         } else {
             var sql, inserts;
-            sql = "INSERT INTO ?? (??,??,??,??,??) VALUES (?,?,?,?,?)";
-            inserts = ['child', 'dob', 'user', 'name', 'height', 'weight',
-                dob, user, name, height, weight];
+            sql = "INSERT INTO ?? (??,??,??,??,??,??) VALUES (?,?,?,?,?,?)";
+            inserts = ['child', 'user', 'name', 'dob', 'height', 'weight', 'gender',
+                user, name, dob, height, weight, gender];
             sql = mysql.format(sql, inserts);
             runQuery(sql, function (err, result) {
                 if (err) {
@@ -285,6 +287,7 @@ var updateChild = function (child, callback) {
     if (child.dob) data.dob = child.dob;
     if (child.height) data.height = child.height;
     if (child.weight) data.weight = child.weight;
+    if (child.gender) data.gender = child.gender;
 
     if (Object.keys(data).length == 0) {
         callback('Nothing changed!');

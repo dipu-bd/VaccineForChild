@@ -1,6 +1,5 @@
 var debug = require('debug')('VaccineForChild:auth');
 var express = require('express');
-var mailer = require('../utility/mailer');
 var session = require('../utility/session');
 var database = require('../utility/database');
 
@@ -26,13 +25,12 @@ function sendSessionId(res, user, remember) {
     var data = session.addSession(user);
     // add cookie
     res.cookie(session.SESSION_ID_COOKIE, data.key, {maxAge: age});
-    // send OK
-    res.status(200).end();
     // send confirm code
     if (!data.confirmed) {
-        data.code = session.getConfirmCode();
-        mailer.sendConfirmCode(data.email, data.code);
+        session.sendConfirmMail(data);
     }
+    // send OK
+    res.status(200).end();
 }
 
 /* POST login request. */
@@ -40,10 +38,10 @@ router.post('/login', function (req, res, next) {
     var user = req.body;
     database.getUserByName(user.uname, function (err, result) {
         if (err) {
-            res.status(200).end(err);
+            res.status(200).send(err);
         }
         else if (user.passwd !== result.password) {
-            res.status(200).end("Password did not match");
+            res.status(200).send("Password did not match");
         }
         else {
             sendSessionId(res, result, user.remember);
@@ -56,7 +54,7 @@ router.post('/register', function (req, res, next) {
     var user = req.body;
     database.createUser(user.uname, user.email, user.password, function (err, result) {
         if (err) {
-            res.status(200).end(err);
+            res.status(200).send(err);
         }
         else {
             sendSessionId(res, result);
@@ -70,12 +68,7 @@ router.post('/change-pass', function (req, res, next) {
     if (data) { // if logged in
         var user = req.body;
         database.changePassword(data.id, user.old, user.password, function (err, result) {
-            if (err) {
-                res.status(200).end(err);
-            }
-            else {
-                res.status(200).end();
-            }
+            res.status(200).send(err);
         });
     }
 });
@@ -95,7 +88,7 @@ router.post('/confirm', function (req, res, next) {
                 },
                 function (err, result) {
                     if (err) { // connection failed
-                        res.status(200).end(err);
+                        res.status(200).send(err);
                     } else {
                         debug(data.email + " confirmed by code = " + code);
                         res.status(200).end();
@@ -105,29 +98,21 @@ router.post('/confirm', function (req, res, next) {
                 });
         } else {
             debug(data.code + " != " + code);
-            res.status(200).end('The code is invalid');
+            res.status(200).send('The code is invalid');
         }
     }
 });
 
 /* POST confirm email. */
 router.post('/mail-confirm', function (req, res, next) {
-    var confirmCode = session.getConfirmCode();
     var data = session.getDataByRequest(req);
     if (data) {
         // mail the confirmation code
-        mailer.sendConfirmCode(data.email, confirmCode, function (err, info) {
-            if (err) { // could not send mail
-                debug(err);
-                res.status(200).end('Could not send Email');
-            }
-            else { // mail was sent
-                debug(info);
-                res.status(200).end();
-                // store code in session
-                data.code = confirmCode;
-            }
+        session.sendConfirmMail(data, function (err) {
+            res.status(200).send(err);
         });
+    } else {
+        res.status(401).end();
     }
 });
 

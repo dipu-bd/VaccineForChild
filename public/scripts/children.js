@@ -30,7 +30,7 @@
 
     // get child-page from server
     function getChildPage(callback) {
-        $.get('/user/child-page', function (data, status) {
+        $.get('/child-page', function (data, status) {
             if (status == 'success') {
                 childPage = data;
                 callback(childPage);
@@ -69,12 +69,14 @@
         var age = page.find('#age');
         var height = page.find('#height');
         var weight = page.find('#weight');
+        var gender = page.find('#gender');
         // set data to elements
         name.text(child.name);
         dob.text(new Date(child.dob).toDateString());
         age.text(getAge(child.dob));
         height.text(child.height + "\"");
         weight.text(child.weight + "kg");
+        gender.attr('class', 'fa fa-2x fa-' + child.gender);
     }
 
     function editClicked(child) {

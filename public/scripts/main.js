@@ -123,6 +123,9 @@ function handleHashChange() {
         case '#edit-child':
             loadForm('add-child', 'Add New Child', true);
             break;
+        case '#add-phone':
+            loadForm('add-phone', 'Add New Phone', true);
+            break;
         case '#profile':
             loadHomePage('profile');
             break;

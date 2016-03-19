@@ -91,4 +91,22 @@ router.get('/users', function (req, res, next) {
     }
 });
 
+/* GET child page */
+router.get('/child-page', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        property.user = data;
+        res.render('component/child', property);
+    } else {
+        res.status(401).end('Not logged in');
+    }
+});
+
+
+/* GET user data */
+router.get('/user-data', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    res.status(200).send(data);
+});
+
 module.exports = router;

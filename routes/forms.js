@@ -49,4 +49,15 @@ router.get('/add-child', function (req, res, next) {
 });
 
 
+/* GET add-phone form. */
+router.get('/add-phone', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) { // if logged in
+        property.user = data;
+        res.render('forms/add-phone', property);
+    } else { // not logged in
+        res.render('invalid');
+    }
+});
+
 module.exports = router;
