@@ -67,7 +67,7 @@ router.get('/children', function (req, res, next) {
 /* GET vaccine page. */
 router.get('/vaccines', function (req, res, next) {
     var data = session.getDataByRequest(req);
-    if (data && data.access) { // logged in as admin
+    if (data) { // logged in
         property.user = data;
         res.render('vaccine', property);
     } else { // not logged in
