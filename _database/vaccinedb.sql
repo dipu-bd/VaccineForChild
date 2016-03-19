@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2016 at 05:23 AM
+-- Generation Time: Mar 19, 2016 at 04:28 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `child` (
   `height` decimal(12,2) DEFAULT NULL,
   `weight` decimal(12,2) DEFAULT NULL,
   `user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `child`
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `child` (
 INSERT INTO `child` (`id`, `dob`, `name`, `gender`, `height`, `weight`, `user`) VALUES
 (8, 1426874400000, 'Amrito Das Tipu', 'male', '9.15', '3.30', 6),
 (11, 1455645600000, 'Mehedi Hasan Nirob', 'male', '10.65', '3.00', 6),
-(13, 1447783200000, 'Meow Meow', 'female', '4.00', '4.00', 6);
+(16, 1458237600000, 'Node JS', 'female', '4.00', '1.00', 6);
 
 -- --------------------------------------------------------
 
@@ -54,20 +54,21 @@ INSERT INTO `child` (`id`, `dob`, `name`, `gender`, `height`, `weight`, `user`) 
 CREATE TABLE IF NOT EXISTS `dose` (
   `id` int(11) NOT NULL,
   `dab` int(11) NOT NULL,
-  `vaccine` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
-
--- --------------------------------------------------------
+  `vaccine` int(11) NOT NULL,
+  `name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=ucs2;
 
 --
--- Table structure for table `phone`
+-- Dumping data for table `dose`
 --
 
-CREATE TABLE IF NOT EXISTS `phone` (
-  `id` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  `number` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
+INSERT INTO `dose` (`id`, `dab`, `vaccine`, `name`) VALUES
+(1, 0, 1, 'Dose 1'),
+(2, 28, 1, 'Dose 2'),
+(3, 112, 1, 'Dose 3'),
+(4, 42, 2, 'Dose 1'),
+(5, 70, 2, 'Dose 2'),
+(6, 98, 2, 'Dose 3');
 
 -- --------------------------------------------------------
 
@@ -94,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`, `phone`) VALUES
 (6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', NULL),
 (7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL, NULL),
-(9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 1, NULL, NULL, NULL);
+(9, 'polo', 'dipu.sudipto@hotmail.com', '123456', 1, 1, 'Apolo Mission', 'None what so ever.', NULL);
 
 -- --------------------------------------------------------
 
@@ -104,8 +105,16 @@ INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `
 
 CREATE TABLE IF NOT EXISTS `vaccine` (
   `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
+  `title` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=ucs2;
+
+--
+-- Dumping data for table `vaccine`
+--
+
+INSERT INTO `vaccine` (`id`, `title`) VALUES
+(1, 'Hepatitis B'),
+(2, 'Rotavirus');
 
 --
 -- Indexes for dumped tables
@@ -125,14 +134,6 @@ ALTER TABLE `child`
 ALTER TABLE `dose`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_dose__vaccine` (`vaccine`);
-
---
--- Indexes for table `phone`
---
-ALTER TABLE `phone`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `number` (`number`),
-  ADD KEY `idx_phone__user` (`user`);
 
 --
 -- Indexes for table `user`
@@ -158,17 +159,12 @@ ALTER TABLE `vaccine`
 -- AUTO_INCREMENT for table `child`
 --
 ALTER TABLE `child`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `dose`
 --
 ALTER TABLE `dose`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `phone`
---
-ALTER TABLE `phone`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -178,7 +174,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `vaccine`
 --
 ALTER TABLE `vaccine`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
@@ -187,19 +183,13 @@ ALTER TABLE `vaccine`
 -- Constraints for table `child`
 --
 ALTER TABLE `child`
-  ADD CONSTRAINT `fk_child__user` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `fk_child__user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `dose`
 --
 ALTER TABLE `dose`
-  ADD CONSTRAINT `fk_dose__vaccine` FOREIGN KEY (`vaccine`) REFERENCES `vaccine` (`id`);
-
---
--- Constraints for table `phone`
---
-ALTER TABLE `phone`
-  ADD CONSTRAINT `fk_phone__user` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `fk_dose__vaccine` FOREIGN KEY (`vaccine`) REFERENCES `vaccine` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
