@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2016 at 08:38 PM
+-- Generation Time: Mar 19, 2016 at 05:23 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -30,19 +30,20 @@ CREATE TABLE IF NOT EXISTS `child` (
   `id` int(11) NOT NULL,
   `dob` bigint(20) NOT NULL,
   `name` varchar(60) DEFAULT NULL,
+  `gender` varchar(10) NOT NULL DEFAULT 'male',
   `height` decimal(12,2) DEFAULT NULL,
   `weight` decimal(12,2) DEFAULT NULL,
   `user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `child`
 --
 
-INSERT INTO `child` (`id`, `dob`, `name`, `height`, `weight`, `user`) VALUES
-(4, 1388599200000, 'Bishwa', '3.60', '1.74', 6),
-(8, 1426874400000, 'Tipu', '5.00', '4.00', 6),
-(11, 1455645600000, 'Nirob', '4.00', '3.00', 6);
+INSERT INTO `child` (`id`, `dob`, `name`, `gender`, `height`, `weight`, `user`) VALUES
+(8, 1426874400000, 'Amrito Das Tipu', 'male', '9.15', '3.30', 6),
+(11, 1455645600000, 'Mehedi Hasan Nirob', 'male', '10.65', '3.00', 6),
+(13, 1447783200000, 'Meow Meow', 'female', '4.00', '4.00', 6);
 
 -- --------------------------------------------------------
 
@@ -82,20 +83,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `confirmed` tinyint(1) DEFAULT '0',
   `access` int(11) DEFAULT '0',
   `name` varchar(60) DEFAULT NULL,
-  `address` varchar(100) DEFAULT NULL
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`) VALUES
-(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh'),
-(7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL),
-(9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 0, NULL, NULL),
-(10, 'bishwa', 'bishwa420@gmail.com', '112358', 0, 0, NULL, NULL),
-(11, 'new', 'new@gmail.com', 'newpass', 0, 0, 'New Name', 'My Full Address'),
-(12, 'nirob', 'nirob@sds.com', 'nirob', 0, 0, NULL, NULL);
+INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`, `phone`) VALUES
+(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', NULL),
+(7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL, NULL),
+(9, 'polo', 'sudipto.bd@hotmail.com', '123456', 0, 1, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -159,7 +158,7 @@ ALTER TABLE `vaccine`
 -- AUTO_INCREMENT for table `child`
 --
 ALTER TABLE `child`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `dose`
 --
