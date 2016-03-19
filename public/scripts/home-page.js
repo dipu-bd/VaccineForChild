@@ -30,7 +30,13 @@
             message.find('#child').html(data.child);
             message.find('#vaccine').html(data.vaccine);
             message.find('#apply').html((new Date(data.apply)).toDateString());
-            message.find('#remaining').html(formatSpan(data.apply - (new Date()).getTime()));
+            var cur = (new Date()).getTime();
+            var rem = Math.abs(data.apply - (new Date()).getTime());
+            message.find('#remaining').html(formatSpan(rem));
+            if (rem < 7 * 24 * 3600 * 1000)
+                message.find('tr').addClass('info');
+            else
+                message.find('tr').removeClass('info');
             list.append(message.find('tbody').html());
         }
     }

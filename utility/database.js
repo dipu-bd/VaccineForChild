@@ -171,64 +171,49 @@ var changePassword = function (id, old, password, callback) {
  * @param callback (err, res) where res = true on success.
  */
 var updateUser = function (user, callback) {
-    var data = {};
-    if (user.email) data.email = user.email;
-    if (user.name) data.name = user.name;
-    if (user.address) data.address = user.address;
-    if (user.confirmed) data.confirmed = user.confirmed;
-    if (user.phone) data.phone = user.phone;
-
-    if (Object.keys(data).length == 0) {
-        callback('Nothing changed!');
-        return;
-    }
-
-    var sql = "UPDATE ?? SET ? WHERE ??=?;";
-    var insert = ['user', data, 'id', user.id];
-    sql = mysql.format(sql, insert);
-
-    runQuery(sql, function (err, res) {
-        if (err) {
-            callback(err);
+    getUserByEmail(user.email, function (err, result) {
+        if (result && result.id != user.id) {
+            callback("Another user exists with same email!");
         }
         else {
-            getUserById(user.id, callback);
+            var data = {};
+            if (user.email) data.email = user.email;
+            if (user.name) data.name = user.name;
+            if (user.address) data.address = user.address;
+            if (user.confirmed) data.confirmed = user.confirmed;
+            if (user.phone) data.phone = user.phone;
+
+            if (Object.keys(data).length == 0) {
+                callback('Nothing changed!');
+                return;
+            }
+
+            var sql = "UPDATE ?? SET ? WHERE ??=?;";
+            var insert = ['user', data, 'id', user.id];
+            sql = mysql.format(sql, insert);
+
+            runQuery(sql, function (err, res) {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    getUserById(user.id, callback);
+                }
+            });
         }
     });
 };
 
 /**
- * Retrieve the list of phone numbers of an user.
- * @param user ID of the user
- * @param callback (err, res) where res=list of objects
+ * Delete an user
+ * @param id ID of the user
+ * @param callback
  */
-var getPhones = function (user, callback) {
-    var sql, selects;
-    sql = "SELECT * FROM ?? WHERE ?? = ?";
-    selects = ['phone', 'user', user];
+var deleteUser = function (id, callback) {
+    var sql = "DELETE FROM ?? WHERE ?? = ?";
+    var selects = ['user', 'id', id];
     sql = mysql.format(sql, selects);
     runQuery(sql, callback);
-};
-
-/**
- * Add a phone number to an user. Number must be verified before adding.
- * @param user ID of the user
- * @param number Phone number to add
- * @param callback (err, res) where res = newly added phone object.
- */
-var createPhone = function (user, number, callback) {
-    // the number is verified:
-    var sql, inserts;
-    //sql = ;
-};
-
-/**
- * Removes a phone number.
- * @param id ID of the phone
- * @param callback (err) => if no error, err=null
- */
-var removePhone = function (id, callback) {
-
 };
 
 /**
@@ -242,10 +227,11 @@ var removePhone = function (id, callback) {
  * @param callback (err, res) => res = newly created child object
  */
 var createChild = function (user, name, dob, height, weight, gender, callback) {
-    getChildByName(user, name, dob, function (err, data) {
+    getChildByName(user, name, function (err, data) {
         if (data && data.length > 0) {
             callback("This child has already been added");
-        } else {
+        }
+        else {
             var sql, inserts;
             sql = "INSERT INTO ?? (??,??,??,??,??,??) VALUES (?,?,?,?,?,?)";
             inserts = ['child', 'user', 'name', 'dob', 'height', 'weight', 'gender',
@@ -255,7 +241,7 @@ var createChild = function (user, name, dob, height, weight, gender, callback) {
                 if (err) {
                     callback(err);
                 } else {
-                    getChildByName(user, name, dob, callback);
+                    getChildByName(user, name, callback);
                 }
             });
         }
@@ -263,15 +249,13 @@ var createChild = function (user, name, dob, height, weight, gender, callback) {
 };
 
 /**
- * Gets all child under the user
+ * Delete a child
  * @param id ID of the child
- * @param callback (err, res) => array of child objects
+ * @param callback
  */
 var deleteChild = function (id, callback) {
-    // two tables are related so query will return from two tables, user and child
-    var sql, selects;
-    sql = "DELETE FROM ?? WHERE ?? = ?";
-    selects = ['child', 'id', id];
+    var sql = "DELETE FROM ?? WHERE ?? = ?";
+    var selects = ['child', 'id', id];
     sql = mysql.format(sql, selects);
     runQuery(sql, callback);
 };
@@ -282,30 +266,37 @@ var deleteChild = function (id, callback) {
  * @param callback
  */
 var updateChild = function (child, callback) {
-    var data = {};
-    if (child.name) data.name = child.name;
-    if (child.dob) data.dob = child.dob;
-    if (child.height) data.height = child.height;
-    if (child.weight) data.weight = child.weight;
-    if (child.gender) data.gender = child.gender;
-
-    if (Object.keys(data).length == 0) {
-        callback('Nothing changed!');
-        return;
-    }
-
-    var sql = "UPDATE ?? SET ? WHERE ??=?;";
-    var insert = ['child', data, 'id', child.id];
-    sql = mysql.format(sql, insert);
-
-    // update child
-    runQuery(sql, function (err, res) {
-        if (err) {
-            callback(err);
+    getChildByName(child.user, child.name, function (err, result) {
+        if (result && child.id != result.id) {
+            callback("Another child exists with same name");
         }
         else {
-            // get updated child and return
-            getChild(child.id, callback);
+            var data = {};
+            if (child.name) data.name = child.name;
+            if (child.dob) data.dob = child.dob;
+            if (child.height) data.height = child.height;
+            if (child.weight) data.weight = child.weight;
+            if (child.gender) data.gender = child.gender;
+
+            if (Object.keys(data).length == 0) {
+                callback('Nothing changed!');
+                return;
+            }
+
+            var sql = "UPDATE ?? SET ? WHERE ??=?;";
+            var insert = ['child', data, 'id', child.id];
+            sql = mysql.format(sql, insert);
+
+            // update child
+            runQuery(sql, function (err, res) {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    // get updated child and return
+                    getChildById(child.id, callback);
+                }
+            });
         }
     });
 };
@@ -328,22 +319,22 @@ var getChildren = function (id, callback) {
  * @param id ID of the child
  * @param callback (err, res) => array of child objects
  */
-var getChild = function (id, callback) {
+var getChildById = function (id, callback) {
     var sql = "SELECT * FROM ?? WHERE ??=?";
     var insert = ['child', 'id', id];
     sql = mysql.format(sql, insert);
     runQuery(sql, callback);
 };
+
 /**
  * Gets a child by id
  * @param user User ID of the child
  * @param name Name of the child
- * @param dob DateOfBirth of the child
  * @param callback (err, res) => array of child objects
  */
-var getChildByName = function (user, name, dob, callback) {
-    var sql = "SELECT * FROM ?? WHERE ??=? AND ??=? AND ??=?";
-    var insert = ['child', 'user', user, 'name', name, 'dob', dob];
+var getChildByName = function (user, name, callback) {
+    var sql = "SELECT * FROM ?? WHERE ??=? AND ??=?";
+    var insert = ['child', 'user', user, 'name', name];
     sql = mysql.format(sql, insert);
     runQuery(sql, callback);
 };
@@ -361,6 +352,42 @@ var createVaccine = function (title, callback) {
         else {
             var sql = "INSERT INTO ?? (??) VALUES(?)";
             var inserts = ['vaccine', 'title', title];
+            sql = mysql.format(sql, inserts);
+            runQuery(sql, callback);
+        }
+    })
+};
+
+
+/**
+ * Delete the vaccine
+ * @param id ID of the vaccine
+ * @param callback
+ */
+var deleteVaccine = function (id, callback) {
+    var sql = "DELETE FROM ?? WHERE ?? = ?";
+    var selects = ['vaccine', 'id', id];
+    sql = mysql.format(sql, selects);
+    runQuery(sql, callback);
+};
+
+
+/**
+ * Updates a vaccine.
+ * @param vac Updated vaccine data
+ * @param callback (err, res)=> res = newly created vaccine object.
+ */
+var updateVaccine = function (vac, callback) {
+    getVaccine(title, function (err, res) {
+        if (res && res.id != vac.id) {
+            callback("Vaccine with similar name already exists!");
+        }
+        else {
+            var data = {};
+            if (vac.title) data.title = vac.title;
+
+            var sql = "UPDATE ?? SET ? WHERE ??=?";
+            var inserts = ['vaccine', data, 'id', vac.id];
             sql = mysql.format(sql, inserts);
             runQuery(sql, callback);
         }
@@ -413,6 +440,19 @@ var createDose = function (vaccine, name, dab, callback) {
     });
 };
 
+
+/**
+ * Delete the dose
+ * @param id ID of the dose
+ * @param callback
+ */
+var deleteDose = function (id, callback) {
+    var sql = "DELETE FROM ?? WHERE ?? = ?";
+    var selects = ['dose', 'id', id];
+    sql = mysql.format(sql, selects);
+    runQuery(sql, callback);
+};
+
 var getDose = function (dab, name, vaccine, callback) {
     var sql = "SELECT * FROM ?? WHERE (?? = ? or ?? = ?) and ?? = ?";
     var inserts = ['dose', 'dab', dab, 'name', name, 'vaccine', vaccine];
@@ -420,8 +460,27 @@ var getDose = function (dab, name, vaccine, callback) {
     runQuery(sql, callback);
 };
 
+var updateDose = function (dose, callback) {
+    getDose(dose.dab, dose.name, dose.vaccine, function (err, result) {
+        if (result && result[0].id != dose.id) {
+            callback('Similar dose already exists!');
+        }
+        else {
+            var data = {};
+            if (dose.dab) data.dab = dose.dab;
+            if (dose.name) data.name = dose.name;
+
+            var sql = "UPDATE ?? SET ? WHERE ?? = ?";
+            var inserts = ['dose', data, 'id', dose.id];
+            sql = mysql.format(sql, inserts);
+            runQuery(sql, callback);
+
+        }
+    });
+};
+
 /**
- * Gets a list of all doses of a vaccine.
+ * Gets a list of all doses.
  * @param callback (err, res)=> res = list of all dose object.
  */
 var getAllDoses = function (callback) {
@@ -431,24 +490,38 @@ var getAllDoses = function (callback) {
     runQuery(sql, callback);
 };
 
+
+/**
+ * Gets a list of all doses of a vaccine.
+ * @param vaccine Vaccine id of the vaccine.
+ * @param callback (err, res)=> res = list of all dose object.
+ */
+var getDosesOfVaccine = function (vaccine, callback) {
+    var sql = "SELECT * FROM dose WHERE vaccine=" + mysql.escape(vaccine);
+    runQuery(sql, callback);
+};
+
 module.exports.runQuery = runQuery;
 module.exports.getUserById = getUserById;
 module.exports.getUserByName = getUserByName;
 module.exports.getUserByEmail = getUserByEmail;
 module.exports.createUser = createUser;
+module.exports.deleteUser = deleteUser;
 module.exports.changePassword = changePassword;
-module.exports.getPhones = getPhones;
-module.exports.createPhone = createPhone;
 module.exports.deleteChild = deleteChild;
-module.exports.removePhone = removePhone;
+module.exports.deleteDose = deleteDose;
+module.exports.deleteVaccine = deleteVaccine;
 module.exports.updateUser = updateUser;
 module.exports.createChild = createChild;
 module.exports.getChildren = getChildren;
-module.exports.getChild = getChild;
+module.exports.getChild = getChildById;
 module.exports.updateChild = updateChild;
+module.exports.updateVaccine = updateVaccine;
 module.exports.createVaccine = createVaccine;
 module.exports.getVaccine = getVaccine;
 module.exports.getAllVaccines = getAllVaccines;
-module.exports.createDose = createDose;
-module.exports.getAllDoses = getAllDoses;
 module.exports.getDose = getDose;
+module.exports.createDose = createDose;
+module.exports.updateDose = updateDose;
+module.exports.getAllDoses = getAllDoses;
+module.exports.getDosesOfVaccine = getDosesOfVaccine;

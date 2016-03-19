@@ -30,11 +30,12 @@
         <!-- menu bar -->
         <ul class="nav navbar-left navbar-nav collapse navbar-collapse">
             <li role="separator" class="divider"></li>
-            <li><a href="#children">Children</a></li>
-            <% if(user.admin) { %>
-            <li><a href="#users">Users</a></li>
+            <% if(user.access) { %>
+            <li id="users-li"><a href="#users">All Users</a></li>
+            <li id="vaccines-li"><a href="#vaccines">All Vaccines</a></li>
+            <% } else { %>
+            <li id="children-li"><a href="#children">All Children</a></li>
             <% } %>
-            <li><a href="#vaccines">Vaccines</a></li>
         </ul>
         <!-- general user buttons -->
         <ul class="nav navbar-nav navbar-right collapse navbar-collapse">

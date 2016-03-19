@@ -31,7 +31,6 @@ router.get('/nav-bar', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) { // logged in
         property.user = data;
-        property.admin = data.access;
     } else { // not logged ni
         property.user = null;
     }
@@ -48,7 +47,6 @@ router.get('/profile', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) { // logged in
         property.user = data;
-        property.admin = data.access;
         res.render('profile', property);
     } else { // not logged in
         res.render('invalid');
@@ -60,7 +58,6 @@ router.get('/children', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) { // logged in
         property.user = data;
-        property.admin = data.access;
         res.render('children', property);
     } else { // not logged in
         res.render('invalid');
@@ -70,9 +67,8 @@ router.get('/children', function (req, res, next) {
 /* GET vaccine page. */
 router.get('/vaccines', function (req, res, next) {
     var data = session.getDataByRequest(req);
-    if (data) { // logged in as admin
+    if (data && data.access) { // logged in as admin
         property.user = data;
-        property.admin = data.access;
         res.render('vaccine', property);
     } else { // not logged in
         res.render('invalid');
@@ -84,7 +80,6 @@ router.get('/users', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access) { // logged in as admin
         property.user = data;
-        property.admin = data.access;
         res.render('users', property);
     } else { // not logged in as admin
         res.render('invalid');

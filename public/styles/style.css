@@ -43,9 +43,9 @@ html, body {
 
 .description-text {
     color: #333;
-    font-size: medium;
+    font-size: 1.1em;
     text-align: justify;
-    padding: 10px;
+    padding: 10px 15px 10px 5px;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -89,7 +89,7 @@ html, body {
 }
 
 #register-modal-content {
-    margin: 10px 0 10px 0;
+    margin-top: 5px;
     background-image: url('/images/pattern1.jpg');
 }
 

@@ -8,7 +8,7 @@
             });
         },
         errorPlacement: function (error, element) {
-            errBox.show(error);
+            errBox.text(error.text());
         },
         rules: {
             uname: {

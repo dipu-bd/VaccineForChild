@@ -33,7 +33,7 @@ $(document).ready(function () {
 function loadNavBar() {
     GlobalData.navBar.load('/nav-bar', function (data, status) {
         if (status !== 'success')
-            console.log(data);
+            console.log(data); 
     });
 }
 
@@ -107,6 +107,20 @@ function focusRegForm() {
     }
 }
 
+function hideForm() {
+    GlobalData.accessModal.modal('hide');
+}
+
+function handleModalHide() {
+    window.history.back();
+}
+
+function reloadPage() {
+    loadNavBar();
+    loadBottomBar();
+    handleHashChange();
+}
+
 function handleHashChange() {
     var anchor = (window.location.hash.match(/#[^?]+/g) || [""])[0];
     switch (anchor) {
@@ -142,20 +156,44 @@ function handleHashChange() {
             loadHomePage('home-page');
             break;
     }
+    selectNavBar(anchor);
 }
 
-function hideForm() {
-    GlobalData.accessModal.modal('hide');
+function selectNavBar(anchor) {
+    var navbar = $('#nav-bar');
+
+    if (anchor == '#children')
+        navbar.find('#children-li').addClass('active');
+    else
+        navbar.find('#children-li').removeClass('active');
+
+    if (anchor == '#users')
+        navbar.find('#users-li').addClass('active');
+    else
+        navbar.find('#users-li').removeClass('active');
+
+    if (anchor == '#vaccines')
+        navbar.find('#vaccines-li').addClass('active');
+    else
+        navbar.find('#vaccines-li').removeClass('active');
+
+
 }
 
-function handleModalHide() {
-    window.history.back();
-}
-
-function reloadPage() {
-    loadNavBar();
-    loadBottomBar();
-    handleHashChange();
+function formatSpan(span) {
+    // divide into components
+    span /= (24 * 3600 * 1000);
+    var years = Math.floor(span / 365);
+    span -= years * 365;
+    var months = Math.floor(span / 31);
+    span -= months * 31;
+    var days = Math.floor(span);
+    // calculate return value
+    var ret = "";
+    if (years > 0) ret += years + " year" + (years > 1 ? "s " : " ");
+    if (months > 0) ret += months + " month" + (months > 1 ? "s " : " ");
+    if (days > 0) ret += days + " day" + (days > 1 ? "s " : " ");
+    return ret.trim() || "0 day";
 }
 
 /**
@@ -203,20 +241,4 @@ function submitPostRequest(form, url, callback, submitText, submitButton) {
             submitButton.val(txt);
             submitButton.attr('disabled', false);
         });
-}
-
-function formatSpan(span) {
-    // divide into components
-    span /= (24 * 3600 * 1000);
-    var years = Math.floor(span / 365);
-    span -= years * 365;
-    var months = Math.floor(span / 31);
-    span -= months * 31;
-    var days = Math.floor(span);
-    // calculate return value
-    var ret = "";
-    if (years > 0) ret += years + " year" + (years > 1 ? "s " : " ");
-    if (months > 0) ret += months + " month" + (months > 1 ? "s " : " ");
-    if (days > 0) ret += days + " day" + (days > 1 ? "s " : " ");
-    return ret.trim() || "0 day";
 }
