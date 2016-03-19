@@ -60,15 +60,18 @@ html, body {
     height: 300px;
     width: 350px;;
 }
+
 .child-data .modal-body {
     height: 175px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .child-data .modal-footer {
     padding: 10px;
 }
+
 .child-data th {
     text-align: right;
     font-weight: bold;
@@ -93,6 +96,33 @@ html, body {
 #profileEditor {
     padding: 10px;
     background-image: url('/images/pattern1.jpg');
+}
+
+#general-home-page #dose {
+    font-weight: 600;
+    color: #560;
+}
+
+#general-home-page #vaccine {
+    font-weight: 700;
+    color: #006;
+}
+
+#general-home-page #child {
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#general-home-page #apply {
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#general-home-page #remaining {
+    color: #303;
+    font-size: medium;
+    font-weight: bold;;
+    font-family: "Helvetica Neue", monospace;
 }
 
 /* padding */

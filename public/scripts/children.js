@@ -15,7 +15,7 @@
             // clear previous list
             childrenList.html('');
 
-            if (status == 'success' && data && data.length > 0) {
+            if (status == 'success' && data) {
                 // add all children
                 getChildPage(function (page) {
                     for (var i = 0; i < data.length; ++i) {
@@ -104,20 +104,8 @@
      * @returns {string} return age like- "10 days" or "2 years 3 months"
      */
     function getAge(bday) {
-        var ret = "";
         var date = new Date();
-        var diffDay = (date.getTime() - bday) / 86400000;
-        var years = Math.floor(diffDay / 365);
-        diffDay -= years * 365;
-        var months = Math.floor(diffDay / 31);
-        diffDay -= months * 31;
-        var days = Math.floor(diffDay);
-        if (years > 0) ret += years + " year" + (years > 1 ? "s " : " ");
-        if (months > 0) ret += months + " month" + (months > 1 ? "s " : " ");
-        if (days > 0) ret += days + " day" + (days > 1 ? "s " : " ");
-        if (ret === "") ret = "0 day";
-        return ret.trim();
-
+        return formatSpan((date.getTime() - bday));
     }
 
 })();

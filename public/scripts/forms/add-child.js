@@ -27,7 +27,7 @@
 
     function setDates(mon, year) {
         var max = monthDays[mon];
-        if (year % 4 == 0 && mon == 2) ++max;
+        if (year && mon == 1 && year % 4 == 0) ++max;
         day.html('');
         for (var d = 1; d <= max; ++d) {
             day.append('<option value="' + d + '">' + d + '</option>');
@@ -52,7 +52,7 @@
     function setBirthDay(date) {
         year.val(date.getFullYear());
         month.val(date.getMonth());
-        day.val(date.getDay());
+        day.val(date.getDate());
     }
 
     function deserializeParam() {

@@ -2,6 +2,7 @@ var debug = require('debug')('VaccineForChild:user');
 var express = require('express');
 var session = require('../utility/session');
 var database = require('../utility/database');
+var other = require('../utility/other');
 
 var router = express.Router();
 
@@ -9,22 +10,15 @@ var router = express.Router();
 router.get('/get-children', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) {
-        if (data.children) {   // check if children already exists
-            res.send(data.children);
-        } else {
-            // get children from database
-            database.getChildren(data.id, function (err, result) {
-                if (err) { // error in database
-                    res.status(500).send(err);
-                }
-                else { // got children from database
-                    // save children in session
-                    data.children = result;
-                    // send success message
-                    res.status(200).send(result);
-                }
-            });
-        }
+        // get children from database
+        database.getChildren(data.id, function (err, result) {
+            if (err) { // error in database
+                res.status(500).send(err);
+            }
+            else { // got children from database
+                res.status(200).send(result);
+            }
+        });
     } else {
         res.status(401).end();
     }
@@ -82,13 +76,31 @@ router.post('/add-child', function (req, res, next) {
                     res.status(200).send(err);
                 }
                 else {
-                    // update in session
-                    debug(result);
-                    data.children.push(result[0]);
                     // send success message
                     res.status(200).end();
                 }
             });
+    } else {
+        res.status(401).end();
+    }
+});
+
+router.post('/update-child', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.body;
+        // calculate date of birth
+        if (child.year && child.month && child.day) {
+            child.dob = (new Date(child.year, child.month, child.day)).getTime();
+        }
+        // update child in database
+        database.updateChild(child, function (err, result) {
+            if (err) { // database returned error
+                res.status(200).send(err);
+            } else {
+                res.status(200).end();
+            }
+        });
     } else {
         res.status(401).end();
     }
@@ -103,13 +115,6 @@ router.post('/delete-child', function (req, res, next) {
             if (err) { // database returned error
                 res.status(200).send(err);
             } else {
-                //delete from session
-                for (var i = 0; i < data.children.length; ++i) {
-                    if (data.children[i].id == child.id) {
-                        data.children.splice(i, 1);
-                        break;
-                    }
-                }
                 // send success message
                 res.status(200).end();
             }
@@ -119,29 +124,15 @@ router.post('/delete-child', function (req, res, next) {
     }
 });
 
-router.post('/update-child', function (req, res, next) {
+router.get('/schedules', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) {
-        var child = req.body;
-        // update child in database
-        database.updateChild(child, function (err, result) {
-            if (err) { // database returned error
-                res.status(200).send(err);
-            } else {
-                res.status(200).end();
-                //update in session
-                for (var i = 0; i < data.children.length; ++i) {
-                    if (data.children[i].id == child.id) {
-                        data.children[i] = result[0];
-                        break;
-                    }
-                }
-            }
-        });
+        other.getSchedules(data.id, function (result) {
+            res.status(200).send(result);
+        })
     } else {
         res.status(401).end();
     }
 });
-
 
 module.exports = router;

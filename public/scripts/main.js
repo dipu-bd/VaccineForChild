@@ -171,9 +171,10 @@ function submitPostRequest(form, url, callback, submitText, submitButton) {
     var errBox = form.find('#error-box');
     if (!submitText) submitText = 'Submitting...';
     if (!submitButton) submitButton = form.find(':submit');
+    console.log(submitButton);
     // set submit button text
-    var txt = submitButton.text();
-    submitButton.text(submitText);
+    var txt = submitButton.val();
+    submitButton.val(submitText);
     submitButton.attr('disabled', true);
     // send a post request
     $.post(url, form.serialize())
@@ -199,7 +200,23 @@ function submitPostRequest(form, url, callback, submitText, submitButton) {
             }
         })
         .always(function () {
-            submitButton.text(txt);
+            submitButton.val(txt);
             submitButton.attr('disabled', false);
         });
+}
+
+function formatSpan(span) {
+    // divide into components
+    span /= (24 * 3600 * 1000);
+    var years = Math.floor(span / 365);
+    span -= years * 365;
+    var months = Math.floor(span / 31);
+    span -= months * 31;
+    var days = Math.floor(span);
+    // calculate return value
+    var ret = "";
+    if (years > 0) ret += years + " year" + (years > 1 ? "s " : " ");
+    if (months > 0) ret += months + " month" + (months > 1 ? "s " : " ");
+    if (days > 0) ret += days + " day" + (days > 1 ? "s " : " ");
+    return ret.trim() || "0 day";
 }

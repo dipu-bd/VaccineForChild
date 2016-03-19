@@ -25,13 +25,13 @@ pool.on('error', function (err) {
  * @param callback (err, result) : if no error then error is null, otherwise result is null
  */
 var runQuery = function (sql, callback) {
+    debug(sql);
     pool.getConnection(function (err, connection) {
         if (err) {
-            //debug(err);
+            debug(err);
             callback('Failed to connect with database!');
         } else {
             connection.query(sql, function (err, res) {
-                debug(sql);
                 connection.release();
                 callback(null, res);
             });
@@ -354,55 +354,84 @@ var getChildByName = function (user, name, dob, callback) {
  * @param callback (err, res)=> res = newly created vaccine object.
  */
 var createVaccine = function (title, callback) {
-
+    getVaccine(title, function (err, res) {
+        if (res && res.length > 0) {
+            callback("Vaccine has already been added");
+        }
+        else {
+            var sql = "INSERT INTO ?? (??) VALUES(?)";
+            var inserts = ['vaccine', 'title', title];
+            sql = mysql.format(sql, inserts);
+            runQuery(sql, callback);
+        }
+    })
 };
+
+/**
+ * Gets a list of all vaccines.
+ * @param title Title of the vaccine.
+ * @param callback (err, res)=> res = list of all vaccine object.
+ */
+var getVaccine = function (title, callback) {
+    var sql = "SELECT * FROM ?? WHERE ?? = ?";
+    var inserts = ['vaccine', 'title', title];
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, callback);
+};
+
 
 /**
  * Gets a list of all vaccines.
  * @param callback (err, res)=> res = list of all vaccine object.
  */
-var getVaccines = function (callback) {
-
+var getAllVaccines = function (callback) {
+    var sql = "SELECT * FROM ??";
+    var inserts = ['vaccine'];
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, callback);
 };
 
 
 /**
  * Creates a dose for vaccine.
  * @param vaccine ID of the vaccine.
+ * @param name Name of the vaccine.
  * @param dab when to apply the vaccine in days after birth.
  * @param callback (err, res)=> res = newly created vaccine object.
  */
-var createDose = function (vaccine, dab, callback) {
-    /*
-     var sql, inserts;
-     sql = "INSERT INTO ?? (??, ??) VALUES(?, ?)";
-     inserts = ['dose', 'dab', 'vaccine', dab, vaccine];
-     sql = mysql.format(sql, inserts);
-     runQuery(sql, callback);
-     */
+var createDose = function (vaccine, name, dab, callback) {
+    getDose(dab, name, vaccine, function (err, data) {
+        if (data && data.length > 0) {
+            callback("Dose is already added");
+        }
+        else {
+            var sql = "INSERT INTO ?? (??, ??, ??) VALUES(?, ?, ?)";
+            var inserts = ['dose', 'dab', 'name', 'vaccine', dab, name, vaccine];
+            sql = mysql.format(sql, inserts);
+            runQuery(sql, callback);
+        }
+    });
+};
+
+var getDose = function (dab, name, vaccine, callback) {
+    var sql = "SELECT * FROM ?? WHERE (?? = ? or ?? = ?) and ?? = ?";
+    var inserts = ['dose', 'dab', dab, 'name', name, 'vaccine', vaccine];
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, callback);
 };
 
 /**
  * Gets a list of all doses of a vaccine.
- * @param vaccine ID of the vaccine.
  * @param callback (err, res)=> res = list of all dose object.
  */
-var getDoses = function (vaccine, callback) {
-    /*
-     var sql, selects;
-     sql = "SELECT ??, ?? FROM ??, ?? WHERE ?? = ?";
-     selects = ['dose.dab', 'dose.vaccine', 'dose', 'vaccine', 'dose.vaccine',];
-     */
+var getAllDoses = function (callback) {
+    var sql =
+        "SELECT dose.id, dose.vaccine, vaccine.title, dose.name, dose.dab " +
+        "FROM dose JOIN vaccine WHERE vaccine.id = dose.vaccine";
+    runQuery(sql, callback);
 };
 
-/**
- * Gets a list of (phone_id, child_id, dose_id) object of children who needs vaccines.
- * @param callback (err, res) => res = list of object containing above information.
- */
-var childNeededVaccines = function (callback) {
-
-};
-
+module.exports.runQuery = runQuery;
 module.exports.getUserById = getUserById;
 module.exports.getUserByName = getUserByName;
 module.exports.getUserByEmail = getUserByEmail;
@@ -418,6 +447,8 @@ module.exports.getChildren = getChildren;
 module.exports.getChild = getChild;
 module.exports.updateChild = updateChild;
 module.exports.createVaccine = createVaccine;
-module.exports.getVaccines = getVaccines;
+module.exports.getVaccine = getVaccine;
+module.exports.getAllVaccines = getAllVaccines;
 module.exports.createDose = createDose;
-module.exports.childNeededVaccines = childNeededVaccines;
+module.exports.getAllDoses = getAllDoses;
+module.exports.getDose = getDose;

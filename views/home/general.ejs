@@ -1,4 +1,47 @@
-<div id="content-wrapper">
-    <h1> Welcome to <%= pageTitle %> </h1>
-    You are logged in as <%= user.uname %> &lt;<%= user.email %>&gt;
+<div class="container" id="general-home-page">
+    <div class="polaroid">
+        <div class="modal-header height-padding">
+            <h3><i class="fa fa-calendar"></i> Upcoming schedules </h3>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="text-left">
+                    <th>Date</th>
+                    <th>Task</th>
+                </tr>
+                </thead>
+                <tbody id="schedule-list">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table id="empty-list" class="hidden">
+        <tr>
+            <td colspan="2">
+                <div style="display: flex; align-items: center; justify-content: center; height:300px;">
+                    <h4> No upcoming Schedules </h4>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table id="messege-data" class="hidden">
+        <tr class="text-left">
+            <td>
+                <i class="fa fa-calendar-check-o"></i>
+                <span id="apply"></span>
+            </td>
+            <td>
+                Apply
+                <span id="dose"></span> of
+                <span id="vaccine"></span> to
+                <span id="child"></span>
+                <span id="remaining"></span> later.
+            </td>
+        </tr>
+    </table>
+
 </div>
