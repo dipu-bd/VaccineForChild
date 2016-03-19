@@ -1,6 +1,6 @@
 (function () {
     var form = $('#addVaccineForm');
-    var addMode = (window.location.hash == '#add-dose');
+    var addMode = (window.location.hash.substr(0, 4) == '#add')
 
     deserializeParam();
 
