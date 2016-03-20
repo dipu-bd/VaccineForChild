@@ -112,7 +112,8 @@ function hideForm() {
 }
 
 function handleModalHide() {
-    window.history.back();
+    window.history.go(-1);
+    document.location.reload(true);
 }
 
 function reloadPage() {
