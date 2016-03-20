@@ -52,8 +52,33 @@ router.get('/children-count', function (req, res, next) {
         if (err)
             res.status(500).send(err);
         else
-            res.status(200).end(result.length);
+            res.status(200).end(result.length.toString());
     });
+});
+
+/* POST make user admin */
+router.post('/make-admin', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data && data.access > 0) {
+        var user = {id: req.body.id, access: 1};
+        database.updateUser(user, function (err, result) {
+            res.status(200).end(err);
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* POST delete user. */
+router.post('/delete-user', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data && data.access > 0) {
+        database.deleteUser(req.body.id, function (err, result) {
+            res.status(200).end(err);
+        });
+    } else {
+        res.status(401).end();
+    }
 });
 
 /* POST add vaccine. */

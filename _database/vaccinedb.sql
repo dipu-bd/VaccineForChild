@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2016 at 04:28 PM
+-- Generation Time: Mar 20, 2016 at 03:10 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `dose` (
   `dab` int(11) NOT NULL,
   `vaccine` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `dose`
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(60) DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `user`
@@ -94,7 +94,6 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`, `phone`) VALUES
 (6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', NULL),
-(7, 'test', 'test@gmail.com', 'testtest', 0, 0, NULL, NULL, NULL),
 (9, 'polo', 'dipu.sudipto@hotmail.com', '123456', 1, 1, 'Apolo Mission', 'None what so ever.', NULL);
 
 -- --------------------------------------------------------
@@ -106,7 +105,7 @@ INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `
 CREATE TABLE IF NOT EXISTS `vaccine` (
   `id` int(11) NOT NULL,
   `title` varchar(30) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `vaccine`
@@ -164,17 +163,17 @@ ALTER TABLE `child`
 -- AUTO_INCREMENT for table `dose`
 --
 ALTER TABLE `dose`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `vaccine`
 --
 ALTER TABLE `vaccine`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --

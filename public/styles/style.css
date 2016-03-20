@@ -49,10 +49,16 @@ html, body {
     font-size: small;
     color: #330;
 }
+.user-data {
+    max-width: 350px;
+    background: url('/images/pattern3.png');
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    margin: 5px;
+}
 
 .child-data {
-    height: auto;
-    min-height: 300px;
+    max-width: 300px;
     background: url('/images/pattern3.png');
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
@@ -63,15 +69,10 @@ html, body {
     padding: 8px 15px 7px 15px;
 }
 
-.child-data .modal-body {
-    height: 175px;
+.child-data .modal-body, .user-data .modal-body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.child-data .modal-footer {
-    padding: 10px 10px 5px 10px;
 }
 
 .child-data th {
@@ -136,12 +137,15 @@ html, body {
 }
 
 /* padding */
+.no-padding {
+    padding: 0;
+}
 .width-padding {
-    padding: 0 5px 0 5px;
+    padding: 0 10px 0 10px;
 }
 
 .height-padding {
-    padding: 8px 0 5px 0;
+    padding: 10px 0 10px 0;
 }
 
 .top-pad {

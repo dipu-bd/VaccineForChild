@@ -171,7 +171,7 @@ var changePassword = function (id, old, password, callback) {
  * @param callback (err, res) where res = true on success.
  */
 var updateUser = function (user, callback) {
-    getUserByEmail(user.email, function (err, result) {
+    getUserByEmail(user.email || "", function (err, result) {
         if (result && result.length > 0 && result.id != user.id) {
             callback("Another user exists with same email!");
         }
@@ -182,6 +182,7 @@ var updateUser = function (user, callback) {
             if (user.address) data.address = user.address;
             if (user.confirmed) data.confirmed = user.confirmed;
             if (user.phone) data.phone = user.phone;
+            if (user.access) data.access = user.access;
 
             if (Object.keys(data).length == 0) {
                 callback('Nothing changed!');

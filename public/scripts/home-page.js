@@ -43,6 +43,6 @@
     }
 
     if (admin) {
-
+        $.getScript('/scripts/users.js');
     }
 })();
