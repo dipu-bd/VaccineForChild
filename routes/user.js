@@ -11,7 +11,7 @@ router.get('/get-children', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) {
         // get children from database
-        database.getChildren(data.id, function (err, result) {
+        database.getChildrenOf(data.id, function (err, result) {
             if (err) { // error in database
                 res.status(500).send(err);
             }
@@ -31,9 +31,9 @@ router.post('/update-user', function (req, res, next) {
         var user = req.body;
         // set id
         user.id = data.id;
-        // check if email changed
-        if (user.email != data.email) user.confirmed = 0;
-        else user.email = null;
+        // check if email has changed
+        if (user.email != data.email)
+            user.confirmed = 0;
         // request database to update user
         database.updateUser(user, function (err, result) {
             if (err) { // error in database
@@ -127,7 +127,7 @@ router.post('/delete-child', function (req, res, next) {
 router.get('/schedules', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) {
-        other.getSchedules(data.id, function (result) {
+        other.getSchedulesOf(data.id, function (result) {
             res.status(200).send(result);
         })
     } else {

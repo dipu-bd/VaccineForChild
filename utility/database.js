@@ -28,7 +28,7 @@ var runQuery = function (sql, callback) {
     debug(sql);
     pool.getConnection(function (err, connection) {
         if (err) {
-            debug(err);
+            //debug(err);
             callback('Failed to connect with database!');
         } else {
             connection.query(sql, function (err, res) {
@@ -303,10 +303,23 @@ var updateChild = function (child, callback) {
 
 /**
  * Gets all child under the user
+ * @param callback (err, res) => array of child objects
+ */
+var getAllChildren = function (callback) {
+    var sql, selects;
+    sql = "SELECT * FROM ??";
+    selects = ['child'];
+    sql = mysql.format(sql, selects);
+    runQuery(sql, callback);
+};
+
+
+/**
+ * Gets all child under the user
  * @param id ID of the user
  * @param callback (err, res) => array of child objects
  */
-var getChildren = function (id, callback) {
+var getChildrenOf = function (id, callback) {
     var sql, selects;
     sql = "SELECT * FROM ?? WHERE ?? = ?";
     selects = ['child', 'user', id];
@@ -402,6 +415,18 @@ var updateVaccine = function (vac, callback) {
 var getVaccine = function (title, callback) {
     var sql = "SELECT * FROM ?? WHERE ?? = ?";
     var inserts = ['vaccine', 'title', title];
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, callback);
+};
+
+
+/**
+ * Gets a list of all vaccines.
+ * @param callback (err, res)=> res = list of all vaccine object.
+ */
+var getAllUsers = function (callback) {
+    var sql = "SELECT * FROM ??";
+    var inserts = ['user'];
     sql = mysql.format(sql, inserts);
     runQuery(sql, callback);
 };
@@ -515,13 +540,15 @@ module.exports.deleteDose = deleteDose;
 module.exports.deleteVaccine = deleteVaccine;
 module.exports.updateUser = updateUser;
 module.exports.createChild = createChild;
-module.exports.getChildren = getChildren;
+module.exports.getALlChildren = getAllChildren;
+module.exports.getChildrenOf = getChildrenOf;
 module.exports.getChild = getChildById;
 module.exports.updateChild = updateChild;
 module.exports.updateVaccine = updateVaccine;
 module.exports.createVaccine = createVaccine;
 module.exports.getVaccine = getVaccine;
 module.exports.getAllVaccines = getAllVaccines;
+module.exports.getAllUsers = getAllUsers;
 module.exports.getDose = getDose;
 module.exports.createDose = createDose;
 module.exports.updateDose = updateDose;

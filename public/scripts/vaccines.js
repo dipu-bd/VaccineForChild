@@ -3,14 +3,13 @@
     var EMPTY = "<div class='flex-full'>Empty List</div>";
 
     var page = $('#vaccine-page');
-    var refreshButton = $('#refresh-list');
     var vacList = page.find('#vaccine-list');
     var vacBody = page.find('#vaccine-body');
     var doseBody = page.find('#dose-body');
 
     loadVaccineList();
 
-    if (refreshButton) refreshButton.on('click', loadVaccineList);
+    page.find('#refresh-button').on('click', loadVaccineList);
 
     function loadVaccineList() {
         $.get('/admin/vaccines').done(function (data) {

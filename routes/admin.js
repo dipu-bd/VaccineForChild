@@ -5,6 +5,17 @@ var database = require('../utility/database');
 
 var router = express.Router();
 
+/* GET list of all users */
+router.get('/users', function (req, res, next) {
+    database.getAllUsers(function (err, result) {
+        if (err)
+            res.status(500).send(err);
+        else
+            res.status(200).send(result);
+    });
+});
+
+
 /* GET list of all vaccines */
 router.get('/vaccines', function (req, res, next) {
     database.getAllVaccines(function (err, result) {
@@ -35,6 +46,16 @@ router.get('/doses-of', function (req, res, next) {
     });
 });
 
+/* GET number of children of a certain vaccine */
+router.get('/children-count', function (req, res, next) {
+    database.getChildrenOf(req.query.id, function (err, result) {
+        if (err)
+            res.status(500).send(err);
+        else
+            res.status(200).end(result.length);
+    });
+});
+
 /* POST add vaccine. */
 router.post('/add-vaccine', function (req, res, next) {
     var data = session.getDataByRequest(req);
@@ -60,6 +81,7 @@ router.post('/update-vaccine', function (req, res, next) {
         res.status(401).end();
     }
 });
+
 /* POST delete vaccine. */
 router.post('/delete-vaccine', function (req, res, next) {
     var data = session.getDataByRequest(req);

@@ -1,7 +1,7 @@
 (function () {
     var children = $('#children-page');
     var childrenList = children.find('#children-list');
-    var childPage = null;
+    var childBody = children.find('#child-body');
 
     // run at first time
     loadAllChildren();
@@ -17,36 +17,22 @@
 
             if (status == 'success' && data) {
                 // add all children
-                getChildPage(function (page) {
-                    for (var i = 0; i < data.length; ++i) {
-                        buildChildPage(page, data[i]);
-                    }
-                });
+                for (var i = 0; i < data.length; ++i) {
+                    buildChildPage(data[i]);
+                }
             }
         });
-    }
-
-    // get child-page from server
-    function getChildPage(callback) {
-        $.get('/child-page', function (data, status) {
-            if (status == 'success') {
-                childPage = data;
-                callback(childPage);
-            }
-        });
-    }
-
-    function getChildWrapper(id, page) {
-        return "<div class='form-group' id='" + id + "'>" + page + "</div>";
     }
 
     // append child page to the children list
-    function buildChildPage(page, child) {
-        // append page and find it
-        var id = "child-" + child.id;
-        var body = getChildWrapper(id, page);
-        childrenList.append(body);
-        page = childrenList.find('#' + id);
+    function buildChildPage(child) {
+        // append page
+        var wrapper = childBody.find('#child-wrapper');
+        wrapper.attr('id', "child-" + child.id);
+        childrenList.append(childBody.html());
+        wrapper.attr('id', 'child-wrapper');
+        // find page
+        var page = childrenList.find('#child-' + child.id);
         // set data
         setChildData(page, child);
         // add events
