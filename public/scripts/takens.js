@@ -1,52 +1,60 @@
 (function () {
 
-        var page = $('#takens-page');
-        var takenList = page.find('#taken-list');
-        var children = {};
-        var taken = {};
+    var page = $('#takens-page');
+    var takenList = page.find('#taken-list');
+    var children, taken;
 
-        loadValues();
+    loadValues();
 
-        function loadValues() {
-            $.get('/user/get-children').done(function (chld) {
-                children = chld;
-                $.get('/user/get-taken').done(function (tkn) {
-                    children = tkn;
-                    $.get('/admin/vaccines').done(function (data) {
-                        takenList.html('');
-                        data.forEach(function (vaccine) {
-                            addVaccine(vaccine);
-                        });
+    function loadValues() {
+        $.get('/user/get-children').done(function (chilrenRes) {
+            children = chilrenRes;
+            $.get('/user/get-taken').done(function (takenRes) {
+                taken = {};
+                takenRes.forEach(function (data) {
+                    if (!taken[data.child]) taken[data.child] = {};
+                    taken[data.child][data.dose] = true;
+                });
+
+                $.get('/admin/vaccines').done(function (data) {
+                    takenList.html('');
+                    data.forEach(function (vaccine) {
+                        addVaccine(vaccine);
                     });
                 });
             });
-        }
+        });
+    }
 
-        function addVaccine(vaccine) {
-            $.get('/admin/doses-of', {id: vaccine.id}).done(function (data) {
-                if (!data || data.length == 0) return;
+    function isTaken(childId, doseId) {
+        return (taken[childId] && taken[childId][doseId]) ? 'checked' : ' ';
+    }
 
-                var vacBody = "<tr><td rowspan='" + (data.length + 1) + "'>" + vaccine.title + "</td></tr>";
-                takenList.append(vacBody);
+    function addVaccine(vaccine) {
+        $.get('/admin/doses-of', {id: vaccine.id}).done(function (data) {
+            if (!data || data.length == 0) return;
 
-                data.forEach (function (dose) {
-                    var body = "<tr><td>" + dose.name + "</td>";
-                    children.forEach(function (child) {
-                        body += "<td><input type='checkbox' onclick='checkChange($(this))' " +
-                            "id='check-" + child.id + "-" + dose.id + "'></td>";
-                    });
-                    body += "</tr>";
-                    takenList.append(body);
+            var vacBody = "<tr><td rowspan='" + (data.length + 1) + "'>" + vaccine.title + "</td></tr>";
+            takenList.append(vacBody);
+
+            data.forEach (function (dose) {
+                var body = "<tr><td>" + dose.name + "</td>";
+                children.forEach(function (child) {
+                    body += "<td><input type='checkbox' onchange='checkChange($(this))' " +
+                        "id='check-" + child.id + "-" + dose.id + "' " + isTaken(child.id, dose.id) + "></td>";
                 });
+                body += "</tr>";
+                takenList.append(body);
             });
-        }
-    })();
+        });
+    }
+})();
 
 function checkChange(elem) {
     var id = elem.attr('id');
     var sep = id.split("-");
-    var data = {child: Number(sep[1]), dose: Number(sep[2])};
-    $.post('/user/add-taken', data).fail(function (data) {
+    var data = {child: Number(sep[1]), dose: Number(sep[2]), check: elem.is(':checked')};
+    $.post('/user/set-taken', data).fail(function (data) {
         console.log(data);
         elem.attr('checked', false);
     });

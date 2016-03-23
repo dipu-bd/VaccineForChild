@@ -188,16 +188,17 @@ router.post('/remove-phone', function (req, res, next) {
 
 
 /* GET list of all children */
-router.get('/set-taken', function (req, res, next) {
+router.post('/set-taken', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) {
+        var taken = req.body;
         // get children from database
-        database.setTaken(data.id, function (err, result) {
+        database.setTaken(taken, function (err, result) {
             if (err) { // error in database
                 res.status(500).send(err);
             }
             else { // got children from database
-                res.status(200).send(result);
+                res.status(200).end();
             }
         });
     } else {

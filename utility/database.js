@@ -551,16 +551,19 @@ var getDosesOfVaccine = function (vaccine, callback) {
     runQuery(sql, callback);
 };
 
-var setTaken = function (child, dose) {
+var setTaken = function (taken, callback) {
     var sql = "SELECT * FROM `taken` WHERE `child`=? AND `dose`=?";
-    var inserts = [child, dose];
+    var inserts = [taken.child, taken.dose];
     runQuery(mysql.format(sql, inserts), function (err, data) {
-        if (data && data.length == 0) {
+        if (data && data.length == 0 && taken.check) { // not exist but checked
             sql = "INSERT INTO `taken` (`child`, `dose`) VALUES (?, ?)";
             runQuery(mysql.format(sql, inserts), callback);
         }
+        if (data && data.length > 0 && taken.check) { // exists but not checked
+            sql = "DELETE FROM `taken` WHERE `child`=? AND `dose`=?";
+            runQuery(mysql.format(sql, inserts), callback);
+        }
     });
-
 };
 
 var getTakens = function (user, callback) {
