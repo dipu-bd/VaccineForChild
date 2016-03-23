@@ -2,6 +2,7 @@ var debug = require('debug')('VaccineForChild:index');
 var express = require('express');
 var session = require('../utility/session');
 var property = require('../utility/property')();
+var database = require('../utility/database');
 
 var router = express.Router();
 
@@ -70,6 +71,22 @@ router.get('/vaccines', function (req, res, next) {
     if (data) { // logged in
         property.user = data;
         res.render('vaccine', property);
+    } else { // not logged in
+        res.render('invalid');
+    }
+});
+
+/* GET takens page. */
+router.get('/takens', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) { // logged in
+        database.getChildrenOf(data.id, function (err, result) {
+            if (!err) {
+                property.user = data;
+                property.user.children = result;
+                res.render('takens', property);
+            }
+        });
     } else { // not logged in
         res.render('invalid');
     }

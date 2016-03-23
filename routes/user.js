@@ -178,10 +178,47 @@ router.post('/remove-phone', function (req, res, next) {
         var update = {id: data.id, phone: ""};
         database.updateUser(update, function (err, result) {
             res.status(200).end(err);
-            if(!err) data.phone = "";
+            if (!err) data.phone = "";
         });
     }
     else {
+        res.status(401).end();
+    }
+});
+
+
+/* GET list of all children */
+router.get('/set-taken', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        // get children from database
+        database.setTaken(data.id, function (err, result) {
+            if (err) { // error in database
+                res.status(500).send(err);
+            }
+            else { // got children from database
+                res.status(200).send(result);
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* GET list of all children */
+router.get('/get-taken', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        // get children from database
+        database.getTakens(data.id, function (err, result) {
+            if (err) { // error in database
+                res.status(500).send(err);
+            }
+            else { // got children from database
+                res.status(200).send(result);
+            }
+        });
+    } else {
         res.status(401).end();
     }
 });

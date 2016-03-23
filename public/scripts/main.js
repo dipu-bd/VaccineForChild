@@ -165,6 +165,9 @@ function handleHashChange() {
         case '#vaccines':
             loadHomePage('vaccines');
             break;
+        case '#takens':
+            loadHomePage('takens');
+            break;
         default:
             loadHomePage('home-page');
             break;
@@ -190,6 +193,10 @@ function selectNavBar(anchor) {
     else
         navbar.find('#vaccines-li').removeClass('active');
 
+    if (anchor == '#takens')
+        navbar.find('#takens-li').addClass('active');
+    else
+        navbar.find('#takens-li').removeClass('active');
 
 }
 
@@ -241,7 +248,7 @@ function submitPostRequest(form, url, callback, submitText, submitButton, failed
         .done(function (data) {
             if (data) {
                 errBox.text(data);
-                if(failed) failed();
+                if (failed) failed();
             } else if (callback) {
                 callback();
             }
@@ -259,7 +266,7 @@ function submitPostRequest(form, url, callback, submitText, submitButton, failed
                     errBox.text('Unknown Error!');
                     break;
             }
-            if(failed) failed();
+            if (failed) failed();
         })
         .always(function () {
             submitButton.val(txt);

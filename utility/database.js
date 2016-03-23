@@ -551,6 +551,24 @@ var getDosesOfVaccine = function (vaccine, callback) {
     runQuery(sql, callback);
 };
 
+var setTaken = function (child, dose) {
+    var sql = "SELECT * FROM `taken` WHERE `child`=? AND `dose`=?";
+    var inserts = [child, dose];
+    runQuery(mysql.format(sql, inserts), function (err, data) {
+        if (data && data.length == 0) {
+            sql = "INSERT INTO `taken` (`child`, `dose`) VALUES (?, ?)";
+            runQuery(mysql.format(sql, inserts), callback);
+        }
+    });
+
+};
+
+var getTakens = function (user, callback) {
+    var sql = "SELECT * FROM ?? WHERE ?? IN (SELECT ?? FROM ?? WHERE ??=?)";
+    var inserts = ['taken', 'child', 'id', 'child', 'user', user];
+    runQuery(mysql.format(sql, inserts), callback);
+};
+
 module.exports.runQuery = runQuery;
 module.exports.getUserById = getUserById;
 module.exports.getUserByName = getUserByName;
@@ -577,3 +595,5 @@ module.exports.createDose = createDose;
 module.exports.updateDose = updateDose;
 module.exports.getAllDoses = getAllDoses;
 module.exports.getDosesOfVaccine = getDosesOfVaccine;
+module.exports.setTaken = setTaken;
+module.exports.getTakens = getTakens;

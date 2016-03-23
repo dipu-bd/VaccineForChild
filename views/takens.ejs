@@ -1,0 +1,21 @@
+<div class="container" id="takens-page">
+    <div class="polaroid">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Vaccines</th>
+                <th>Doses</th>
+                <% for(var i = 0; i < user.children.length; ++i) { %>
+                <th>
+                    <i class="fa fa-2x fa-<%= user.children[i].gender %>"></i>
+                    <%= user.children[i].name %>
+                </th>
+                <% } %>
+            </tr>
+            </thead>
+            <tbody id="taken-list">
+
+            </tbody>
+        </table>
+    </div>
+</div>
