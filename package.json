@@ -1,6 +1,5 @@
 {
-  "name": "VaccineForChild",
-  "description": "Never forget to give vaccine to your child and keep him healthy and happy.",
+  "name": "VaccineForChild", "description": "Never forget to give vaccine to your child and keep him healthy and happy.",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,6 +15,7 @@
     "morgan": "~1.6.1",
     "mysql": "^2.10.2",
     "nodemailer": "^2.3.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "twilio": "^2.9.0"
   }
 }

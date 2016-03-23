@@ -21,6 +21,19 @@
         $('#profile-header-display').text(data.uname + " (" + data.email + ")");
     }
 
+
+    form.find('#remove-phone-button').on('click', function () {
+        if (confirm('Are you sure to remove this phone?')) {
+            $.post('/user/remove-phone').done(function (data) {
+                if (data) errBox.html(data);
+                else form.find('input[name="phone"]').val("");
+            }).fail(function (data) {
+                console.log(data);
+                errBox.html("Connection failed");
+            });
+        }
+    });
+
     form.validate({
         submitHandler: function () {
             submitPostRequest(form, '/user/update-user', function () {

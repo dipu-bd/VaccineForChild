@@ -135,4 +135,55 @@ router.get('/schedules', function (req, res, next) {
     }
 });
 
+router.post('/set-phone', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        data.temp_phone = req.body.phone;
+        session.sendConfirmSMS(data, function (err, result) {
+            res.status(200).send(err);
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+router.post('/add-phone', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var user = req.body;
+        if (data.phone_code == user.code && data.temp_phone == user.phone) {
+            var update = {id: data.id, phone: user.phone};
+            database.updateUser(update, function (err, result) {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    data.phone = user.phone;
+                    res.status(200).end();
+                    delete data.temp_phone;
+                    delete data.phone_code;
+                }
+            });
+        } else {
+            res.status(500).send('Verification failed. Code did not match or invalid number.')
+        }
+    } else {
+        res.status(401).end();
+    }
+});
+
+
+router.post('/remove-phone', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var update = {id: data.id, phone: ""};
+        database.updateUser(update, function (err, result) {
+            res.status(200).end(err);
+            if(!err) data.phone = "";
+        });
+    }
+    else {
+        res.status(401).end();
+    }
+});
+
 module.exports = router;

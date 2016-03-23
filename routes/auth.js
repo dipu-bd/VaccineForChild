@@ -52,7 +52,7 @@ router.post('/login', function (req, res, next) {
 /* POST register request. */
 router.post('/register', function (req, res, next) {
     var user = req.body;
-    database.createUser(user.uname, user.email, user.password, function (err, result) {
+    database.createUser(user.uname, user.email, user.password, user.name, function (err, result) {
         if (err) {
             res.status(200).send(err);
         }

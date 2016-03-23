@@ -75,7 +75,7 @@ var getUser = function (id, uname, email, callback) {
         if (err) {
             callback(err);
         } else if (!res || res.length === 0) {
-            callback('User not found.');
+            callback('User not found');
         }
         else {
             callback(null, res[0]);
@@ -119,19 +119,35 @@ var getUserByEmail = function (email, callback) {
  * @param uname
  * @param email
  * @param password
+ * @param name
  * @param callback (err, result) : if no error then error is null, otherwise result is null
  */
-var createUser = function (uname, email, password, callback) {
-    getUser(null, uname, email, function (err, res) {
+var createUser = function (uname, email, password, name, callback) {
+    var sql, inserts;
+    sql = "SELECT * FROM ?? WHERE ??=? OR ??=?";
+    inserts = ['user', 'uname', uname, 'email', email];
+    sql = mysql.format(sql, inserts);
+    runQuery(sql, function (err, res) {
         if (res && res.length > 0) {
-            callback("Another user exists with same username or email");
+
+            if (res.length == 1) {
+                if (res[0].uname == uname)
+                    callback("Another user exists with same user-name");
+                else
+                    callback("Another user exists with same email");
+            }
+            else {
+
+                callback("Multiple user exists with same user-name and email");
+            }
+
         } else {
-            var inserts = ['user', 'uname', 'email', 'password', uname, email, password];
-            var sql = "INSERT INTO ?? (??, ??, ??) VALUES (?, ?, ?); ";
+            sql = "INSERT INTO ?? (??, ??, ??, ??) VALUES (?, ?, ?, ?); ";
+            inserts = ['user', 'uname', 'email', 'password', 'name', uname, email, password, name];
             sql = mysql.format(sql, inserts);
-            runQuery(sql, function (err) {
-                if (err) {
-                    callback(err);
+            runQuery(sql, function (err2) {
+                if (err2) {
+                    callback(err2);
                 }
                 else {
                     getUserByName(uname, callback);
@@ -177,12 +193,18 @@ var updateUser = function (user, callback) {
         }
         else {
             var data = {};
-            if (user.email) data.email = user.email;
-            if (user.name) data.name = user.name;
-            if (user.address) data.address = user.address;
-            if (user.confirmed) data.confirmed = user.confirmed;
-            if (user.phone) data.phone = user.phone;
-            if (user.access) data.access = user.access;
+            if (user.hasOwnProperty('email'))
+                data.email = user.email;
+            if (user.hasOwnProperty('name'))
+                data.name = user.name;
+            if (user.hasOwnProperty('address'))
+                data.address = user.address;
+            if (user.hasOwnProperty('confirmed'))
+                data.confirmed = user.confirmed;
+            if (user.hasOwnProperty('phone'))
+                data.phone = user.phone;
+            if (user.hasOwnProperty('access'))
+                data.access = user.access;
 
             if (Object.keys(data).length == 0) {
                 callback('Nothing changed!');
@@ -309,7 +331,7 @@ var updateChild = function (child, callback) {
 var getAllChildren = function (callback) {
     var sql, selects;
     sql = "SELECT * FROM ??";
-    selects = ['child'];
+    selects = ['child', 'user',];
     sql = mysql.format(sql, selects);
     runQuery(sql, callback);
 };

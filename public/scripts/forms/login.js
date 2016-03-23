@@ -15,7 +15,7 @@
             },
             passwd: {
                 required: true,
-                minlength: 5,
+                minlength: 4,
                 maxlength: 25
             }
         },
@@ -27,7 +27,7 @@
             },
             passwd: {
                 required: "The password is required",
-                minlength: "Password should have at least 6 characters",
+                minlength: "Password should have at least 4 characters",
                 maxlength: "Password should not have more than 25 characters"
             }
         }

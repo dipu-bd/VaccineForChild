@@ -2,27 +2,30 @@ var debug = require('debug')('VaccineForChild:user');
 var express = require('express');
 var database = require('../utility/database');
 
-var MILLIS_IN_DAY = (24 * 3600 * 1000);
+var MILLIS_IN_DAY = (24 * 3600 * 1000); // 24 hours in millis
+var MESSAGE_INTERVAL_PERIOD = (6 * 3600 * 1000); // every 6 hours
+var NOTIFY_WITHIN_DAY = 7; // notify everyday for next 7 days
 
 /**
  * Get schedules of an specific user
  * @param id ID of the user
  * @param callback
  */
-module.exports.getSchedulesOf = function (id, callback) {
+var getSchedulesOf = function (id, callback) {
     database.getChildrenOf(id, function (err, children) {
         if (children && children.length > 0)
             processChildren(children, callback);
     });
 };
-module.exports.getSchedules = function (callback) {
+
+var getSchedules = function (maxApply, callback) {
     database.getALlChildren(function (err, result) {
         if (result && result.length > 0)
-            processChildren(result, callback);
+            processChildren(result, callback, maxApply);
     });
 };
 
-function processChildren(children, callback, maxApply) {
+function processChildren (children, callback, maxApply) {
     if (!maxApply) maxApply = Number.MAX_VALUE;
     // get all dose above minAge age
     database.getAllDoses(function (err, doses) {
@@ -57,3 +60,16 @@ function processChildren(children, callback, maxApply) {
         callback(schedules);
     });
 }
+
+var startPeriodicMesseging = function () {
+    setInterval(function () {
+        getSchedules(NOTIFY_WITHIN_DAY, function (data) {
+
+        });
+    }, MESSAGE_INTERVAL_PERIOD);
+};
+
+
+module.exports.getSchedules = getSchedules;
+module.exports.getSchedulesOf = getSchedulesOf;
+module.exports.startPeriodicMesseging = startPeriodicMesseging;

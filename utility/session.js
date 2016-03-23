@@ -1,5 +1,6 @@
 var debug = require('debug')('VaccineForChild:session');
 var mailer = require('../utility/mailer');
+var messeger = require('../utility/messeger');
 var crypto = require('crypto');
 
 var KEY_LENGTH = 16;
@@ -59,6 +60,20 @@ var sendConfirmMail = function (data, callback) {
     });
 };
 
+var sendConfirmSMS = function(data, callback) {
+    data.phone_code = getConfirmCode();
+    var sms = "Use " + data.phone_code + " as your verification code for VaccineForChild.";
+    messeger.sendSms(data.temp_phone,sms, function (err, message) {
+        if(err){
+            debug(err);
+            callback('Could not send SMS.');
+        } else{
+            callback(null);
+        }
+    } )
+
+};
+
 module.exports.SESSION_ID_COOKIE = SESSION_ID_COOKIE;
 module.exports.getDataByRequest = getDataByRequest;
 module.exports.addSession = addSession;
@@ -66,4 +81,5 @@ module.exports.getSession = getSession;
 module.exports.removeSession = removeSession;
 module.exports.getConfirmCode = getConfirmCode;
 module.exports.sendConfirmMail = sendConfirmMail;
+module.exports.sendConfirmSMS = sendConfirmSMS;
 

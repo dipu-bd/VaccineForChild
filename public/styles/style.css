@@ -29,6 +29,11 @@ html, body {
     margin: 5px;
 }
 
+
+.vaccine-body {
+    background: url('/images/pattern5.png') #fff;
+}
+
 .description-title {
     padding: 0 0 5px 0;
     border-bottom: ridge;

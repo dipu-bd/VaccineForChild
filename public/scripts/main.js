@@ -113,13 +113,11 @@ function hideForm() {
 
 function handleModalHide() {
     window.history.go(-1);
-    document.location.reload(true);
+    reloadPage();
 }
 
 function reloadPage() {
-    loadNavBar();
-    loadBottomBar();
-    handleHashChange();
+    document.location.reload(true);
 }
 
 function handleHashChange() {
@@ -227,13 +225,13 @@ function formatSpan(span) {
  * @param callback gets called when success
  * @param submitButton The submit button element
  * @param submitText Text to display when sending submit request
+ * @param failed Method to call on failure
  */
-function submitPostRequest(form, url, callback, submitText, submitButton) {
+function submitPostRequest(form, url, callback, submitText, submitButton, failed) {
     // gather elements
     var errBox = form.find('#error-box');
     if (!submitText) submitText = 'Submitting...';
     if (!submitButton) submitButton = form.find(':submit');
-    console.log(submitButton);
     // set submit button text
     var txt = submitButton.val();
     submitButton.val(submitText);
@@ -243,6 +241,7 @@ function submitPostRequest(form, url, callback, submitText, submitButton) {
         .done(function (data) {
             if (data) {
                 errBox.text(data);
+                if(failed) failed();
             } else if (callback) {
                 callback();
             }
@@ -260,6 +259,7 @@ function submitPostRequest(form, url, callback, submitText, submitButton) {
                     errBox.text('Unknown Error!');
                     break;
             }
+            if(failed) failed();
         })
         .always(function () {
             submitButton.val(txt);
