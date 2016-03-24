@@ -637,32 +637,33 @@ var getSchedulesOf = function (user, callback) {
         " FROM" +
         "   child, dose, vaccine, user" +
         " WHERE" +
-        "   user.id = ? AND" +
-        "   child.user = user.id AND" +
-        "   dose.vaccine = vaccine.id AND" +
-        "   NOT EXISTS (SELECT * FROM taken WHERE taken.child = child.id AND taken.dose = dose.id)";
+        "   user.id = ?" +
+        "   AND child.user = user.id" +
+        "   AND dose.vaccine = vaccine.id" +
+        "   AND NOT EXISTS (SELECT * FROM taken WHERE taken.child = child.id AND taken.dose = dose.id)";
     runQuery(mysql.format(sql, [user]), callback);
 };
 
 var getMessageSchedule = function (callback) {
     var sql =
         " SELECT" +
-        "   child.id as 'id'," +
         "   child.name as 'child'," +
         "   dose.name as 'dose'," +
         "   vaccine.title as 'vaccine'," +
         "   (child.dob + dose.dab) as 'from'," +
         "   (child.dob + dose.dab + dose.period) as 'to'" +
+        "   user.email as 'email'," +
+        "   user.phone as 'phone'," +
+        "   user.id as 'user'," +
         " FROM" +
         "   child, dose, vaccine, user" +
         " WHERE" +
-        "   child.user = user.id AND" +
-        "   dose.vaccine = vaccine.id AND" +
-        "   user.informed < (UNIX_TIMESTAMP() + 24 * 3600 * 1000) AND" +
-        "   ((UNIX_TIMESTAMP() * 1000)" +
-        "       BETWEEN (child.dob + dose.dab - 2 * 24 * 3600 * 1000)" +
-        "       AND (child.dob + dose.dab + dose.period)) AND" +
-        "   NOT EXISTS (SELECT * FROM taken WHERE taken.child = child.id AND taken.dose = dose.id)";
+        "   child.user = user.id" +
+        "   AND dose.vaccine = vaccine.id" +
+        "   AND user.informed < (UNIX_TIMESTAMP() + 24 * 3600) * 1000" +
+        "   AND (child.dob + dose.dab - 2 * 24 * 3600 * 1000) < UNIX_TIMESTAMP() * 1000" +
+        "   AND (child.dob + dose.dab + dose.period)) > UNIX_TIMESTAMP() * 1000" +
+        "   AND NOT EXISTS (SELECT * FROM taken WHERE taken.child = child.id AND taken.dose = dose.id)";
     runQuery(sql, callback);
 };
 

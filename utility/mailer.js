@@ -12,6 +12,24 @@ var smtpInfo = {
     }
 };
 
+module.exports.sendEmail = function (email, messege, callback) {
+    // create reusable transporter object using the default SMTP transport
+    var transporter = nodemailer.createTransport(smtpInfo);
+
+    // create e-mail body
+    var mailOptions = {
+        from: "vaccinebd@gmail.com",
+        to: email,
+        subject: "Confirmation code",
+        //html: '',
+        text: messege
+    };
+
+    // send an email
+    transporter.sendMail(mailOptions, callback);
+};
+
+
 module.exports.sendConfirmCode = function (email, code, callback) {
     // create reusable transporter object using the default SMTP transport
     var transporter = nodemailer.createTransport(smtpInfo);
