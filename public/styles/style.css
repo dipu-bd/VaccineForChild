@@ -30,8 +30,9 @@ html, body {
 }
 
 .vaccine-body {
-    background: url('/images/pattern5.png') #fff;
+    background: url('/images/pattern5.jpg') #fff;
     margin: 15px;
+    font-family: "Montserrat", sans-serif;
 }
 
 .description-title {

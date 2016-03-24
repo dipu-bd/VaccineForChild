@@ -62,7 +62,7 @@
         gender.attr('class', 'fa fa-2x fa-' + child.gender);
         // taken doses
         $.get('/user/child-dose', {id: child.id}).done(function (data) {
-            taken.text(data); 
+            taken.text(data);
         });
     }
 
