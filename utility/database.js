@@ -611,7 +611,7 @@ var getTakens = function (user, callback) {
  * @param callback
  */
 var childTaken = function (child, callback) {
-    var sql = "SELECT COUNT(*) FROM ?? WHERE ??=?";
+    var sql = "SELECT * FROM ?? WHERE ??=?";
     var inserts = ['taken', 'child', child];
     runQuery(mysql.format(sql, inserts), callback);
 };

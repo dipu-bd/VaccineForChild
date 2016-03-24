@@ -10,7 +10,10 @@ var forms = require('./routes/forms');
 var auth = require('./routes/auth');
 var user = require('./routes/user');
 var admin = require('./routes/admin');
-var other = require('./utility/other');
+
+// start periodic task check user
+var scheduledTask = require('./utility/scheduled-task');
+scheduledTask.startPeriodicMesseging();
 
 var app = express();
 
@@ -63,6 +66,5 @@ app.use(function (err, req, res, next) {
     });
 });
 
-other.startPeriodicMesseging();
 
 module.exports = app;

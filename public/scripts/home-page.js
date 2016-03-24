@@ -46,7 +46,6 @@
             message.find('#to').html(data.to.toDateString());
             if (data.to < new Date()) {
                 message.find('#past').addClass('hidden');
-                console.log(message.html());
                 downlist.append(message.html());
             } else {
                 message.find('#past').removeClass('hidden');

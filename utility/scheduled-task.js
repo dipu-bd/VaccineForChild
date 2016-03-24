@@ -1,10 +1,10 @@
-var debug = require('debug')('VaccineForChild:user');
+var debug = require('debug')('VaccineForChild:scheduled-task');
 var express = require('express');
 var database = require('../utility/database');
 var messeger = require('../utility/messeger');
 var mailer = require('../utility/mailer');
 
-var MESSAGE_INTERVAL_PERIOD = (6 * 3600 * 1000); // every 6 hours
+var MESSAGE_INTERVAL_PERIOD = (12 * 3600 * 1000); // every 12 hours
 
 var startPeriodicMesseging = function () {
     checkAndInformAll();

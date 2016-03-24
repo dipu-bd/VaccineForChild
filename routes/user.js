@@ -2,7 +2,7 @@ var debug = require('debug')('VaccineForChild:user');
 var express = require('express');
 var session = require('../utility/session');
 var database = require('../utility/database');
-var other = require('../utility/other');
+var other = require('../utility/scheduled-task');
 
 var router = express.Router();
 
@@ -217,14 +217,14 @@ router.get('/get-taken', function (req, res, next) {
 router.get('/child-dose', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) {
-        var child = req.search;
+        var child = req.query;
         // get children from database
         database.childTaken(child.id, function (err, result) {
             if (err) { // error in database
                 res.status(500).send(err);
             }
             else { // got children from database
-                res.status(200).send(result.toString());
+                res.status(200).send(result.length.toString() || "0");
             }
         });
     } else {
