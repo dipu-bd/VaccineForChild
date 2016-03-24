@@ -651,19 +651,20 @@ var getMessageSchedule = function (callback) {
         "   dose.name as 'dose'," +
         "   vaccine.title as 'vaccine'," +
         "   (child.dob + dose.dab) as 'from'," +
-        "   (child.dob + dose.dab + dose.period) as 'to'" +
+        "   (child.dob + dose.dab + dose.period) as 'to'," +
         "   user.email as 'email'," +
         "   user.phone as 'phone'," +
-        "   user.id as 'user'," +
+        "   user.id as 'user'" +
         " FROM" +
         "   child, dose, vaccine, user" +
         " WHERE" +
         "   child.user = user.id" +
         "   AND dose.vaccine = vaccine.id" +
-        "   AND user.informed < (UNIX_TIMESTAMP() + 24 * 3600) * 1000" +
-        "   AND (child.dob + dose.dab - 2 * 24 * 3600 * 1000) < UNIX_TIMESTAMP() * 1000" +
-        "   AND (child.dob + dose.dab + dose.period)) > UNIX_TIMESTAMP() * 1000" +
+        "   AND user.informed < (UNIX_TIMESTAMP() - 24 * 3600) * 1000" +
+        "   AND (child.dob + dose.dab - ?) < UNIX_TIMESTAMP() * 1000" +
+        "   AND (child.dob + dose.dab + dose.period) > UNIX_TIMESTAMP() * 1000" +
         "   AND NOT EXISTS (SELECT * FROM taken WHERE taken.child = child.id AND taken.dose = dose.id)";
+    sql = mysql.format(sql, [2 * 24 * 3600 * 1000]);
     runQuery(sql, callback);
 };
 
