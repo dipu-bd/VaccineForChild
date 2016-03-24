@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2016 at 03:02 PM
+-- Generation Time: Mar 24, 2016 at 04:39 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`, `phone`, `informed`) VALUES
-(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', '+8801759687204', 0),
+(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', '+8801759687204', 1458831138460),
 (9, 'polo', 'dipu.sudipto@hotmail.com', '123456', 1, 1, 'Apolo Mission', 'None what so ever.', NULL, 0);
 
 -- --------------------------------------------------------
