@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2016 at 07:46 PM
+-- Generation Time: Mar 24, 2016 at 03:02 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -57,19 +57,19 @@ CREATE TABLE IF NOT EXISTS `dose` (
   `period` bigint(20) NOT NULL DEFAULT '86400000',
   `vaccine` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `dose`
 --
 
 INSERT INTO `dose` (`id`, `dab`, `period`, `vaccine`, `name`) VALUES
-(1, 0, 0, 1, 'Dose 1'),
-(2, 28, 0, 1, 'Dose 2'),
-(3, 112, 0, 1, 'Dose 3'),
-(4, 42, 0, 2, 'Dose 1'),
-(5, 70, 0, 2, 'Dose 2'),
-(6, 98, 0, 2, 'Dose 3');
+(1, 0, 86400000, 1, 'Dose 1'),
+(2, 2419200000, 86400000, 1, 'Dose 2'),
+(3, 9676800000, 86400000, 1, 'Dose 3'),
+(4, 3628800000, 86400000, 2, 'Dose 1'),
+(5, 6048000000, 86400000, 2, 'Dose 2'),
+(6, 8467200000, 86400000, 2, 'Dose 3');
 
 -- --------------------------------------------------------
 
@@ -81,7 +81,16 @@ CREATE TABLE IF NOT EXISTS `taken` (
   `id` int(11) NOT NULL,
   `child` int(11) NOT NULL,
   `dose` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `taken`
+--
+
+INSERT INTO `taken` (`id`, `child`, `dose`) VALUES
+(33, 8, 2),
+(34, 8, 1),
+(35, 8, 4);
 
 -- --------------------------------------------------------
 
@@ -98,16 +107,17 @@ CREATE TABLE IF NOT EXISTS `user` (
   `access` int(11) DEFAULT '0',
   `name` varchar(60) DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL
+  `phone` varchar(20) DEFAULT NULL,
+  `informed` bigint(20) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`, `phone`) VALUES
-(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', NULL),
-(9, 'polo', 'dipu.sudipto@hotmail.com', '123456', 1, 1, 'Apolo Mission', 'None what so ever.', NULL);
+INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`, `phone`, `informed`) VALUES
+(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', '+8801759687204', 0),
+(9, 'polo', 'dipu.sudipto@hotmail.com', '123456', 1, 1, 'Apolo Mission', 'None what so ever.', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -118,7 +128,7 @@ INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `
 CREATE TABLE IF NOT EXISTS `vaccine` (
   `id` int(11) NOT NULL,
   `title` varchar(30) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `vaccine`
@@ -184,12 +194,12 @@ ALTER TABLE `child`
 -- AUTO_INCREMENT for table `dose`
 --
 ALTER TABLE `dose`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `taken`
 --
 ALTER TABLE `taken`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -199,7 +209,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `vaccine`
 --
 ALTER TABLE `vaccine`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --

@@ -654,7 +654,7 @@ var getMessageSchedule = function (callback) {
         "   (child.dob + dose.dab) as 'from'," +
         "   (child.dob + dose.dab + dose.period) as 'to'" +
         " FROM" +
-        "   child, dose, vaccine, user, taken" +
+        "   child, dose, vaccine, user" +
         " WHERE" +
         "   child.user = user.id AND" +
         "   dose.vaccine = vaccine.id AND" +
@@ -666,8 +666,15 @@ var getMessageSchedule = function (callback) {
     runQuery(sql, callback);
 };
 
-var setInformed = function (user, callback) {
-
+/**
+ * Set the informed time of an user
+ * @param userid ID of the user
+ * @param callback
+ */
+var setInformed = function (userid, callback) {
+    var sql = "UPDATE ?? SET ??=? WHERE ??=?;";
+    var insert = ['user', 'informed', (new Date()).getTime(), 'id', userid];
+    runQuery(mysql.format(sql, insert), callback);
 };
 
 /**************************************************************
@@ -712,3 +719,4 @@ module.exports.childTaken = childTaken;
 
 module.exports.getSchedulesOf = getSchedulesOf;
 module.exports.getMessageSchedule = getMessageSchedule;
+module.exports.setInformed = setInformed;
