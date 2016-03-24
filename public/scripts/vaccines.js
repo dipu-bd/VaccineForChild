@@ -59,7 +59,8 @@
     function buildDosePage(doseList, data) {
         var body = doseList.find('#dose-' + data.id);
         body.find('#name').html(data.name);
-        body.find('#dab').html(formatSpan(data.dab * (24 * 3600 * 1000)));
+        body.find('#dab').html(data.dab ? formatSpan(data.dab) : "At birth");
+        body.find('#period').html(formatSpan(data.period));
         attachDoseEvent(body, data);
     }
 

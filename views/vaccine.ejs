@@ -1,5 +1,6 @@
 <div class="container" id="vaccine-page">
-    <div class="navbar navbar-default">
+
+    <div class="navbar navbar-default polaroid">
         <div class="container-fluid">
             <div class="navbar-brand">
                 List of all Vaccines
@@ -18,12 +19,13 @@
             </div>
         </div>
     </div>
+
     <div id="vaccine-list">
         <div class="flex-full">Empty List</div>
     </div>
 
     <div id="vaccine-body" class="hidden">
-        <div class="thumbnail vaccine-body" id="vaccine-wrapper">
+        <div class="modal-content vaccine-body" id="vaccine-wrapper">
             <div class="modal-header">
                 <h4 class="modal-title">
                     <i class="fa fa-medkit"></i>
@@ -67,6 +69,7 @@
         <tr id="dose-wrapper">
             <td id="name">Dose 3</td>
             <td id="dab">3 weeks</td>
+            <td id="period">1 day</td>
             <% if(user.access > 0) { %>
             <td class="text-center">
                 <div class="btn-group">

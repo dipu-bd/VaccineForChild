@@ -519,16 +519,17 @@ var getDose = function (dab, name, vaccine, callback) {
  * @param vaccine ID of the vaccine.
  * @param name Name of the vaccine.
  * @param dab when to apply the vaccine in days after birth.
+ * @param period valid time range to apply.
  * @param callback (err, res)=> res = newly created vaccine object.
  */
-var createDose = function (vaccine, name, dab, callback) {
+var createDose = function (vaccine, name, dab, period, callback) {
     getDose(dab, name, vaccine, function (err, data) {
         if (data && data.length > 0) {
             callback("Dose is already added");
         }
         else {
-            var sql = "INSERT INTO ?? (??, ??, ??) VALUES(?, ?, ?)";
-            var inserts = ['dose', 'dab', 'name', 'vaccine', dab, name, vaccine];
+            var sql = "INSERT INTO ?? (??, ??, ??, ??) VALUES(?, ?, ?, ?)";
+            var inserts = ['dose', 'dab', 'period', 'name', 'vaccine', dab, period, name, vaccine];
             sql = mysql.format(sql, inserts);
             runQuery(sql, callback);
         }
@@ -546,12 +547,10 @@ var updateDose = function (dose, callback) {
             callback('Similar dose already exists!');
         }
         else {
-            var data = {};
-            if (dose.dab) data.dab = dose.dab;
-            if (dose.name) data.name = dose.name;
-
+            var id = dose.id;
+            delete dose.id;
             var sql = "UPDATE ?? SET ? WHERE ?? = ?";
-            var inserts = ['dose', data, 'id', dose.id];
+            var inserts = ['dose', dose, 'id', id];
             sql = mysql.format(sql, inserts);
             runQuery(sql, callback);
 

@@ -8,6 +8,8 @@
         // set default values
         var data = getDataFromUrl();
         if (data) {
+            data.dab /= (24 * 3600 * 1000);
+            data.period /= (24 * 3600 * 1000);
             Object.keys(data).forEach(function (key) {
                 var elem = form.find('input[name="' + key + '"]');
                 if (elem) elem.val(data[key]);

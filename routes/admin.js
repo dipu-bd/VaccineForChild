@@ -125,7 +125,9 @@ router.post('/add-dose', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
         var dose = req.body;
-        database.createDose(dose.vaccine, dose.name, dose.dab, function (err, result) {
+        dose.dab = (dose.dab || 0) * (24 * 3600 * 1000);
+        dose.period = (dose.period || 1) * (24 * 3600 * 1000);
+        database.createDose(dose.vaccine, dose.name, dose.dab, dose.period, function (err, result) {
             res.status(200).send(err);
         });
     } else {
@@ -139,6 +141,8 @@ router.post('/update-dose', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data && data.access > 0) {
         var dose = req.body;
+        dose.dab = (dose.dab || 0) * (24 * 3600 * 1000);
+        dose.period = (dose.period || 1) * (24 * 3600 * 1000);
         database.updateDose(dose, function (err, result) {
             res.status(200).send(err);
         });

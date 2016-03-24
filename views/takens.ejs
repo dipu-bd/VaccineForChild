@@ -1,21 +1,28 @@
 <div class="container" id="takens-page">
-    <div class="polaroid">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Vaccines</th>
-                <th>Doses</th>
-                <% for(var i = 0; i < user.children.length; ++i) { %>
-                <th>
-                    <i class="fa fa-2x fa-<%= user.children[i].gender %>"></i>
-                    <%= user.children[i].name %>
-                </th>
-                <% } %>
-            </tr>
-            </thead>
-            <tbody id="taken-list">
+    <div class="modal-content polaroid">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                List of all taken doses
+            </h2>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Vaccines</th>
+                    <th>Doses</th>
+                    <% for(var i = 0; i < user.children.length; ++i) { %>
+                    <th>
+                        <i class="fa fa-2x fa-<%= user.children[i].gender %>"></i>
+                        <%= user.children[i].name %>
+                    </th>
+                    <% } %>
+                </tr>
+                </thead>
+                <tbody id="taken-list">
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
