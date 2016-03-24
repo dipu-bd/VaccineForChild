@@ -129,16 +129,15 @@ html, body {
     font-family: 'Montserrat', sans-serif;
 }
 
-#general-home-page #apply {
-    color: #333;
+#general-home-page #from, #general-home-page #fromd {
+    color: #336;
+    font-weight: bold;;
     font-family: 'Montserrat', sans-serif;
 }
-
-#general-home-page #remaining {
-    color: #303;
-    font-size: medium;
+#general-home-page #to, #general-home-page #tod {
+    color: #330;
     font-weight: bold;;
-    font-family: "Helvetica Neue", monospace;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* padding */

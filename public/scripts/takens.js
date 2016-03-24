@@ -40,8 +40,11 @@
             data.forEach (function (dose) {
                 var body = "<tr><td>" + dose.name + "</td>";
                 children.forEach(function (child) {
-                    body += "<td><input type='checkbox' onchange='checkChange($(this))' " +
-                        "id='check-" + child.id + "-" + dose.id + "' " + isTaken(child.id, dose.id) + "></td>";
+                    body +=
+                        '<td><input type="checkbox" ' +
+                        'onchange="checkChange($(this))" ' +
+                        'id="check-' + child.id + '-' + dose.id + '" '
+                        + isTaken(child.id, dose.id) + '> taken</td>';
                 });
                 body += "</tr>";
                 takenList.append(body);
@@ -57,5 +60,6 @@ function checkChange(elem) {
     $.post('/user/set-taken', data).fail(function (data) {
         console.log(data);
         elem.attr('checked', false);
+        taken[data.child][data.dose] = true;
     });
 }

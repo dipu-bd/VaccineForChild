@@ -21,8 +21,8 @@ module.exports.sendConfirmCode = function (email, code, callback) {
         from: "vaccinebd@gmail.com",
         to: email,
         subject: "Confirmation code",
-        text: "Your email confirmation code is: " + code + ". Thanks!"
-        //html: '<html><body><h1>Vaccine For Child</h1><br/> Your confirmation code is: <br/><code>' + code + '</code></body></html>'
+        //html: '',
+        text: "Please use " + code + " as your confirmation code in VaccineForChild. \n\n Thanks!"
     };
 
     // send an email

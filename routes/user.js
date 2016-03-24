@@ -124,17 +124,6 @@ router.post('/delete-child', function (req, res, next) {
     }
 });
 
-router.get('/schedules', function (req, res, next) {
-    var data = session.getDataByRequest(req);
-    if (data) {
-        other.getSchedulesOf(data.id, function (result) {
-            res.status(200).send(result);
-        })
-    } else {
-        res.status(401).end();
-    }
-});
-
 router.post('/set-phone', function (req, res, next) {
     var data = session.getDataByRequest(req);
     if (data) {
@@ -223,5 +212,38 @@ router.get('/get-taken', function (req, res, next) {
         res.status(401).end();
     }
 });
+
+/* GET number of doses taken by a child */
+router.get('/child-dose', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.search;
+        // get children from database
+        database.childTaken(child.id, function (err, result) {
+            if (err) { // error in database
+                res.status(500).send(err);
+            }
+            else { // got children from database
+                res.status(200).send(result.toString());
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* GET all schedules of an user */
+router.get('/schedules', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        database.getSchedulesOf(data.id, function (err, result) {
+            if (err) res.status(500).end(err);
+            else res.status(200).send(result);
+        })
+    } else {
+        res.status(401).end();
+    }
+});
+
 
 module.exports = router;

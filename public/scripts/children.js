@@ -52,6 +52,7 @@
         var height = page.find('#height');
         var weight = page.find('#weight');
         var gender = page.find('#gender');
+        var taken = page.find('#taken');
         // set data to elements
         name.text(child.name);
         dob.text(new Date(child.dob).toDateString());
@@ -59,6 +60,10 @@
         height.text(child.height + "\"");
         weight.text(child.weight + "kg");
         gender.attr('class', 'fa fa-2x fa-' + child.gender);
+        // taken doses
+        $.get('/user/child-dose', {id: child.id}).done(function (data) {
+            taken.txt(data);
+        });
     }
 
     function editClicked(child) {

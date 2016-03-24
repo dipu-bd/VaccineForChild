@@ -1,3 +1,4 @@
+var debug = require('debug')('VaccineForChild:messeger');
 var twilio = require('twilio');
 
 var sendSms = function (number, sms, callback) {

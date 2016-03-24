@@ -18,6 +18,25 @@
         </div>
     </div>
 
+    <div class="polaroid">
+        <div class="modal-header height-padding">
+            <h3><i class="fa fa-calendar"></i> Past schedules </h3>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="text-left">
+                    <th>Date</th>
+                    <th>Task</th>
+                </tr>
+                </thead>
+                <tbody id="past-schedule-list">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <table id="empty-list" class="hidden">
         <tr>
             <td colspan="2">
@@ -26,20 +45,24 @@
         </tr>
     </table>
 
-    <table id="messege-data" class="hidden">
+    <table class="hidden">
+        <tbody id="messege-data">
         <tr class="text-left">
             <td>
                 <i class="fa fa-calendar-check-o"></i>
-                <span id="apply"></span>
+                <span id="fromd"></span> to
+                <span id="tod"></span>
             </td>
             <td>
-                Apply
+                <span id="past">Apply</span>
                 <span id="dose"></span> of
                 <span id="vaccine"></span> to
-                <span id="child"></span>
-                <span id="remaining"></span> later.
+                <span id="child"></span>, from
+                <span id="from"></span> to
+                <span id="to"></span>.
             </td>
         </tr>
+        </tbody>
     </table>
 
 </div>

@@ -5,23 +5,33 @@
 
     if (general) {
 
-        var list = general.find('#schedule-list');
+        var EMPTY = '<tr><td colspan="2"><div class="flex-full">Empty List</div></td></tr>';
+
+        var uplist = general.find('#schedule-list');
+        var downlist = general.find('#past-schedule-list');
         var message = general.find('#messege-data');
-        var empty = "<div class='flex-full'>Empty List</div>";
 
         loadSchedules();
 
         function loadSchedules() {
             $.get('/user/schedules').done(function (data) {
                 if (data) {
-                    if (data.length == 0) {
-                        list.html(empty);
+                    // clear list
+                    uplist.html('');
+                    downlist.html('');
+                    // sort data
+                    data.sort(function (a, b) {
+                        return (a.from - b.from) || (a.to - b.to);
+                    });
+                    // add data
+                    for (var i = 0; i < data.length; ++i) {
+                        data[i].from = new Date(data[i].from);
+                        data[i].to = new Date(data[i].to);
+                        buildSchedule(data[i]);
                     }
-                    else {
-                        list.html('');
-                        for (var i = 0; i < data.length; ++i)
-                            buildSchedule(data[i]);
-                    }
+                    // check if empty
+                    if (!uplist.text()) uplist.html(EMPTY);
+                    if (!downlist.text()) downlist.html(EMPTY);
                 }
             });
         }
@@ -30,15 +40,18 @@
             message.find('#dose').html(data.dose);
             message.find('#child').html(data.child);
             message.find('#vaccine').html(data.vaccine);
-            message.find('#apply').html((new Date(data.apply)).toDateString());
-            var cur = (new Date()).getTime();
-            var rem = Math.abs(data.apply - (new Date()).getTime());
-            message.find('#remaining').html(formatSpan(rem));
-            if (rem < 7 * 24 * 3600 * 1000)
-                message.find('tr').addClass('info');
-            else
-                message.find('tr').removeClass('info');
-            list.append(message.find('tbody').html());
+            message.find('#fromd').html(data.from.toDateString());
+            message.find('#from').html(data.from.toDateString());
+            message.find('#tod').html(data.to.toDateString());
+            message.find('#to').html(data.to.toDateString());
+            if (data.to < new Date()) {
+                message.find('#past').addClass('hidden');
+                console.log(message.html());
+                downlist.append(message.html());
+            } else {
+                message.find('#past').removeClass('hidden');
+                uplist.append(message.html());
+            }
         }
     }
 
