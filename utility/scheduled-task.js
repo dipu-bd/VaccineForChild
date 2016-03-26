@@ -12,26 +12,34 @@ var startPeriodicMesseging = function () {
 };
 
 function checkAndInformAll() {
+    // check if time is correct
+    var curHour = (new Date()).getHours();
+    if (!(curHour >= 8 && curHour <= 21)) // 9am to 10pm
+    {
+        debug('Time is not right for this task. - ' + curHour);
+        return;
+    }
+    // query database and start sending messege
     database.getMessageSchedule(function (err, result) {
         if (err) debug(err);
-        if(err || !result) return null;
+        if (err || !result) return null;
 
         result.forEach(function (data) {
-            // messege to send
-            var messege = data.child + " needs " + data.dose + " of " + data.vaccine
+            // message to send
+            var message = data.child + " needs " + data.dose + " of " + data.vaccine
                 + ",  within " + (new Date(data.from)).toDateString() +
                 " to " + (new Date(data.to)).toDateString() + "\n --VaccineForChild.";
 
-            debug(messege.length);
-            debug(messege);
+            debug(message.length);
+            debug(message);
 
             // send an email
-            mailer.sendEmail(data.email, messege, function (err, res) {
+            mailer.sendEmail(data.email, message, function (err, res) {
                 if (err) debug(err);
             });
 
             // send an sms
-            messeger.sendSms(data.phone, messege, function (err, res) {
+            messeger.sendSms(data.phone, message, function (err, res) {
                 if (err) debug(err);
                 else {
                     database.setInformed(data.user, function (errors) {

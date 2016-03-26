@@ -55,6 +55,7 @@ html, body {
     font-size: small;
     color: #330;
 }
+
 .user-data {
     max-width: 350px;
     background: url('/images/pattern3.png');
@@ -92,6 +93,20 @@ html, body {
     justify-content: center;
     height: 150px;
     font-size: large;
+}
+
+.bottom-nav {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.taken-table {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.taken-table th, .taken-table td {
+    text-align: center;
+    vertical-align: middle;
 }
 
 /* id */
@@ -135,6 +150,7 @@ html, body {
     font-weight: bold;;
     font-family: 'Montserrat', sans-serif;
 }
+
 #general-home-page #to, #general-home-page #tod {
     color: #330;
     font-weight: bold;;
@@ -145,6 +161,7 @@ html, body {
 .no-padding {
     padding: 0;
 }
+
 .width-padding {
     padding: 0 10px 0 10px;
 }
