@@ -14,6 +14,11 @@ html, body {
     background: #0f0f0f url("/images/pattern2.jpg");
 }
 
+.ct-chart {
+    width: 810px;
+    height: 410px;
+}
+
 /* class */
 .navbar-inverse {
     background: url('/images/pattern4.png');
@@ -23,14 +28,14 @@ html, body {
 }
 
 .polaroid {
-    background: url('/images/pattern3.png') #fffbf3;
+    background: #fffbf3;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
     margin: 5px;
 }
 
 .vaccine-body {
-    background: url('/images/pattern5.jpg') #fff;
+    background: #eff;
     margin: 15px;
     font-family: "Montserrat", sans-serif;
 }
@@ -58,7 +63,7 @@ html, body {
 
 .user-data {
     max-width: 350px;
-    background: url('/images/pattern3.png');
+    background: #def;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
     margin: 5px;
@@ -66,7 +71,7 @@ html, body {
 
 .child-data {
     max-width: 300px;
-    background: url('/images/pattern3.png');
+    background: #dfe;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
     margin: 5px;
@@ -81,6 +86,7 @@ html, body {
     align-items: center;
     justify-content: center;
 }
+
 
 .child-data th {
     text-align: right;
@@ -109,11 +115,19 @@ html, body {
     vertical-align: middle;
 }
 
+#view-child-page {
+    min-height: 400px;
+}
+
 /* id */
 #bottom-panel {
     margin: 5px 0 0 0;
     padding: 15px;
     background: #8c8c9c;
+}
+
+#children-list {
+    min-height: 400px;
 }
 
 #submit-button {

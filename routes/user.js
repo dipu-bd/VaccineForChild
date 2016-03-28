@@ -69,7 +69,7 @@ router.post('/add-child', function (req, res, next) {
             user.dob = (new Date(user.year, user.month, user.day)).getTime();
         }
         // create child in the database
-        database.createChild(data.id, user.name, user.dob, user.height, user.weight, user.gender,
+        database.createChild(data.id, user.name, user.dob, user.gender,
             function (err, result) {
                 if (err) { // database returned error
                     debug(err);
@@ -231,6 +231,162 @@ router.get('/child-dose', function (req, res, next) {
         res.status(401).end();
     }
 });
+
+/* POST add height to a child */
+router.post('/add-height', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.body;
+        // get children from database
+        child.date = (new Date(child.date)).getTime();
+        database.setHeight(child.id, child.date, child.value, function (err, result) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.status(200).end();
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+
+/* POST add weight to a child */
+router.post('/add-weight', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.body;
+        // get children from database
+        child.date = (new Date(child.date)).getTime();
+        database.setWeight(child.id, child.date, child.value, function (err, result) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.status(200).end();
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* POST delete height to a child */
+router.post('/delete-height', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.body;
+        // get children from database
+        database.deleteHeight(child.id, child.age, child.value, function (err, result) {
+            if (err) {
+                res.status(200).send(err);
+            }
+            else {
+                res.status(200).end();
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* POST delete weight to a child */
+router.post('/delete-weight', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.body;
+        // get children from database
+        database.deleteHeight(child.id, child.age, child.value, function (err, result) {
+            if (err) {
+                res.status(200).send(err);
+            }
+            else {
+                res.status(200).end();
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* Get latest height to a child */
+router.get('/last-height', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.query;
+        // get children from database
+        database.getLatestHeight(child.id, function (err, result) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.status(200).send(result[0]);
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* Get latest weight to a child */
+router.get('/last-weight', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.query;
+        // get children from database
+        database.getLatestWeight(child.id, function (err, result) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.status(200).send(result[0]);
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* Get all heights of a child */
+router.get('/get-heights', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.query;
+        // get children from database
+        database.getAllHeight(child.id, function (err, result) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.status(200).send(result);
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
+/* Get all weights of a child */
+router.get('/get-weights', function (req, res, next) {
+    var data = session.getDataByRequest(req);
+    if (data) {
+        var child = req.query;
+        // get children from database
+        database.getAllWeight(child.id, function (err, result) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.status(200).send(result);
+            }
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
 
 /* GET all schedules of an user */
 router.get('/schedules', function (req, res, next) {

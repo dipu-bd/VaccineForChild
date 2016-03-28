@@ -1,0 +1,102 @@
+<div class="container thumbnail" id="view-child-page" xmlns="http://www.w3.org/1999/html"
+     xmlns="http://www.w3.org/1999/html">
+    <ul class="nav nav-tabs" role="tablist">
+        <% children.forEach(function (child) { %>
+        <li role="presentation" id="child-li-<%= child.id %>">
+            <a href="#child-tab-<%= child.id %>"
+               aria-controls="child-tab-<%= child.id %>"
+               role="tab" data-toggle="tab">
+                <i class="fa fa-2x fa-<%= child.gender %>"></i>
+                <%= child.name %>
+            </a>
+        </li>
+        <% }); %>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <% children.forEach(function (child) { %>
+        <div role="tabpanel" class="tab-pane fade child-tab-pane" id="child-tab-<%= child.id %>">
+            <section>
+                <div class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-text">
+                            Growth of <%= child.name %> in different age
+                        </div>
+                        <div class="navbar-form navbar-right">
+                            <form class="form-inline" id="add-height-form-<%= child.id %>">
+                                <div class="hidden">
+                                    <input type="text" name="id" value="<%= child.id %>" title="child-id">
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input type="date" class="form-control" name="date" placeholder="Date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" min="0" class="form-control" name="value"
+                                               placeholder="Height">
+                                        <span class="input-group-addon">inches</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn-default btn" value="Add Height">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="chart">
+                    <div class="ct-chart ct-golden-section" id="height-chart-<%= child.id %>"></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-text">
+                            Weight of <%= child.name %> in different age
+                        </div>
+                        <div class="navbar-form navbar-right">
+                            <form class="form-inline" id="add-weight-form-<%= child.id %>">
+                                <div class="hidden">
+                                    <input type="text" name="id" value="<%= child.id %>" title="child-id">
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                                class="fa fa-calendar"></i></span>
+                                        <input type="date" class="form-control" name="date"
+                                               placeholder="Date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" min="0" class="form-control" name="value"
+                                               placeholder="Weight">
+                                        <span class="input-group-addon">inches</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn-default btn" value="Add Weight">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="chart">
+                    <div class="ct-chart ct-golden-section" id="weight-chart-<%= child.id %>"></div>
+                </div>
+            </section>
+        </div>
+        <% }); %>
+    </div>
+</div>

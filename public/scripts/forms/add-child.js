@@ -1,6 +1,6 @@
 (function () {
     var form = $('#addChildForm');
-    var addMode = (window.location.hash.substr(0, 4) == '#add')
+    var addMode = (window.location.hash.substr(0, 4) == '#add');
     var year = form.find('select[name="year"]');
     var month = form.find('select[name="month"]');
     var day = form.find('select[name="day"]');

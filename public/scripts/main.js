@@ -159,6 +159,9 @@ function handleHashChange() {
         case '#children':
             loadHomePage('children');
             break;
+        case '#view-child':
+            loadHomePage('view-child');
+            break;
         case '#users':
             loadHomePage('users');
             break;
@@ -198,6 +201,10 @@ function selectNavBar(anchor) {
     else
         navbar.find('#takens-li').removeClass('active');
 
+    if(anchor == '#view-child')
+        navbar.find('#view-child-li').addClass('active');
+    else
+        navbar.find('#view-child-li').removeClass('active');
 }
 
 // Read a page's GET URL variables and return them as an associative array.

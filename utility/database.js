@@ -3,7 +3,7 @@ var mysql = require('mysql');
 
 var options = {
     connectionLimit: 100,   // important - limit the number of simultaneous connection
-         host: "localhost",      // database address url
+    host: "localhost",      // database address url
     port: "3306",   // port of the database
     user: "root",   // username
     password: "",   // password
@@ -326,8 +326,7 @@ var createChild = function (user, name, dob, height, weight, gender, callback) {
         else {
             var sql, inserts;
             sql = "INSERT INTO ?? (??,??,??,??,??,??) VALUES (?,?,?,?,?,?)";
-            inserts = ['child', 'user', 'name', 'dob', 'height', 'weight', 'gender',
-                user, name, dob, height, weight, gender];
+            inserts = ['child', 'user', 'name', 'dob', 'gender', user, name, dob, gender];
             sql = mysql.format(sql, inserts);
             runQuery(sql, function (err, result) {
                 if (err) {
@@ -366,8 +365,6 @@ var updateChild = function (child, callback) {
             var data = {};
             if (child.name) data.name = child.name;
             if (child.dob) data.dob = child.dob;
-            if (child.height) data.height = child.height;
-            if (child.weight) data.weight = child.weight;
             if (child.gender) data.gender = child.gender;
 
             if (Object.keys(data).length == 0) {
@@ -392,6 +389,51 @@ var updateChild = function (child, callback) {
         }
     });
 };
+
+/**************************************************************
+ * CRUD for HEIGHT and WEIGHT of child.
+ ***************************************************************/
+
+var getLatestHeight = function (child, callback) {
+    var sql = "SELECT value, MAX(date) AS date FROM height WHERE child=?";
+    runQuery(mysql.format(sql, [child]), callback);
+};
+
+var getLatestWeight = function (child, callback) {
+    var sql = "SELECT value, MAX(date) AS date FROM weight WHERE child=?";
+    runQuery(mysql.format(sql, [child]), callback);
+};
+
+var getAllHeight = function (child, callback) {
+    var sql = "SELECT * FROM height WHERE child = ? ORDER BY date";
+    runQuery(mysql.format(sql, [child]), callback);
+};
+
+var getAllWeight = function (child, callback) {
+    var sql = "SELECT * FROM weight WHERE child = ? ORDER BY date";
+    runQuery(mysql.format(sql, [child]), callback);
+};
+
+var setHeight = function (child, date, value, callback) {
+    var sql = "INSERT INTO `vaccinedb`.`height` (`child`, `date`, `value`) VALUES (?, ?, ?)";
+    runQuery(mysql.format(sql, [child, date, value]), callback);
+};
+
+var setWeight = function (child, date, value, callback) {
+    var sql = "INSERT INTO `vaccinedb`.`weight` (`child`, `date`, `value`) VALUES (?, ?, ?)";
+    runQuery(mysql.format(sql, [child, date, value]), callback);
+};
+
+var deleteHeight = function (child, date, value, callback) {
+    var sql = "DELETE FROM `vaccinedb`.`height` WHERE `child`=? and `date`=? and `value`=?";
+    runQuery(mysql.format(sql, [child, date, value]), callback);
+};
+
+var deleteWeight = function (child, date, value, callback) {
+    var sql = "DELETE FROM `vaccinedb`.`weight` WHERE `child`=? and `date`=? and `value`=?";
+    runQuery(mysql.format(sql, [child, date, value]), callback);
+};
+
 
 /**************************************************************
  * CRUD for VACCINE table
@@ -640,7 +682,9 @@ var getSchedulesOf = function (user, callback) {
         "   user.id = ?" +
         "   AND child.user = user.id" +
         "   AND dose.vaccine = vaccine.id" +
-        "   AND NOT EXISTS (SELECT * FROM taken WHERE taken.child = child.id AND taken.dose = dose.id)";
+        "   AND NOT EXISTS (SELECT * FROM taken WHERE taken.child = child.id AND taken.dose = dose.id)" +
+        " ORDER BY " +
+        "   vaccine.title";
     runQuery(mysql.format(sql, [user]), callback);
 };
 
@@ -722,3 +766,12 @@ module.exports.childTaken = childTaken;
 module.exports.getSchedulesOf = getSchedulesOf;
 module.exports.getMessageSchedule = getMessageSchedule;
 module.exports.setInformed = setInformed;
+
+module.exports.getLatestHeight = getLatestHeight;
+module.exports.getLatestWeight = getLatestWeight;
+module.exports.getAllHeight = getAllHeight;
+module.exports.getAllWeight = getAllWeight;
+module.exports.setHeight = setHeight;
+module.exports.setWeight = setWeight;
+module.exports.deleteHeight = deleteHeight;
+module.exports.deleteWeight = deleteWeight;
