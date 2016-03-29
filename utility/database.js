@@ -3,7 +3,7 @@ var mysql = require('mysql');
 
 var options = {
     connectionLimit: 100,   // important - limit the number of simultaneous connection
-    host: "localhost",      // database address url
+    host: "127.4.129.2",      // database address url
     port: "3306",   // port of the database
     user: "admin5uWq9VY",   // username
     password: "DdzW-pE2EhF6",   // password

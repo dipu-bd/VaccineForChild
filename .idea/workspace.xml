@@ -57,8 +57,8 @@
       <file leaf-file-name="database.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utility/database.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="19.467312">
-              <caret line="402" column="23" selection-start-line="402" selection-start-column="23" selection-end-line="402" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.33898306">
+              <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -338,7 +338,13 @@
       <option name="project" value="LOCAL" />
       <updated>1459251375246</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="database login option updated for openshift">
+      <created>1459256047016</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1459256047016</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -381,7 +387,8 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="database file updated. view-child labels added." />
-    <option name="LAST_COMMIT_MESSAGE" value="database file updated. view-child labels added." />
+    <MESSAGE value="database login option updated for openshift" />
+    <option name="LAST_COMMIT_MESSAGE" value="database login option updated for openshift" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -700,8 +707,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utility/database.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="19.467312">
-          <caret line="402" column="23" selection-start-line="402" selection-start-column="23" selection-end-line="402" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.33898306">
+          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
           <folding />
         </state>
       </provider>
