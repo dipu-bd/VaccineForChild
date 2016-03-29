@@ -76,6 +76,7 @@
                     x: new Date(height.date),
                     y: height.value
                 });
+                data.labels.push((new Date(height.date)).toDateString());
             });
 
             //set data to chart
@@ -102,6 +103,7 @@
                     x: new Date(weight.date),
                     y: weight.value
                 });
+                data.labels.push((new Date(weight.date)).toDateString());
             });
 
             // set data to canvas

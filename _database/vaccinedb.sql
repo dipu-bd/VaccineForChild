@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2016 at 09:49 PM
+-- Generation Time: Mar 29, 2016 at 01:35 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -31,21 +31,17 @@ CREATE TABLE IF NOT EXISTS `child` (
   `dob` bigint(20) NOT NULL,
   `name` varchar(60) DEFAULT NULL,
   `gender` varchar(10) NOT NULL DEFAULT 'male',
-  `height` decimal(12,2) DEFAULT NULL,
-  `weight` decimal(12,2) DEFAULT NULL,
   `user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `child`
 --
 
-INSERT INTO `child` (`id`, `dob`, `name`, `gender`, `height`, `weight`, `user`) VALUES
-(8, 1426874400000, 'Amrito Das Tipu', 'male', '9.15', '3.30', 6),
-(11, 1455645600000, 'Mehedi Hasan Nirob', 'male', '10.65', '3.00', 6),
-(16, 1458237600000, 'Node JS', 'female', '4.00', '1.00', 6),
-(17, 1455991200000, 'my child', 'female', '100.00', '25.00', 12),
-(18, 1459015200000, 'hello', 'male', '34.00', '34.00', 12);
+INSERT INTO `child` (`id`, `dob`, `name`, `gender`, `user`) VALUES
+(8, 1426874400000, 'Amrito Das Tipu', 'male', 6),
+(11, 1443636000000, 'Mehedi Hasan Nirob', 'male', 6),
+(16, 1458237600000, 'Node JS', 'female', 6);
 
 -- --------------------------------------------------------
 
@@ -89,6 +85,36 @@ INSERT INTO `dose` (`id`, `dab`, `period`, `vaccine`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `height`
+--
+
+CREATE TABLE IF NOT EXISTS `height` (
+  `child` int(11) NOT NULL,
+  `date` bigint(20) NOT NULL,
+  `value` decimal(12,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `height`
+--
+
+INSERT INTO `height` (`child`, `date`, `value`) VALUES
+(8, 1439337600000, '11.00'),
+(8, 1440547200000, '14.00'),
+(8, 1451952000000, '16.00'),
+(8, 1452729600000, '25.00'),
+(11, 1452038400000, '23.00'),
+(11, 1452556800000, '24.00'),
+(11, 1462060800000, '23.00'),
+(16, 1452988800000, '30.00'),
+(16, 1458172800000, '34.00'),
+(16, 1475193600000, '28.00'),
+(16, 1476662400000, '30.00'),
+(16, 1479340800000, '30.00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `taken`
 --
 
@@ -96,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `taken` (
   `id` int(11) NOT NULL,
   `child` int(11) NOT NULL,
   `dose` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `taken`
@@ -105,8 +131,7 @@ CREATE TABLE IF NOT EXISTS `taken` (
 INSERT INTO `taken` (`id`, `child`, `dose`) VALUES
 (33, 8, 2),
 (34, 8, 1),
-(35, 8, 4),
-(36, 17, 1);
+(35, 8, 4);
 
 -- --------------------------------------------------------
 
@@ -125,18 +150,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   `address` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `informed` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=ucs2;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=ucs2;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `uname`, `email`, `password`, `confirmed`, `access`, `name`, `address`, `phone`, `informed`) VALUES
-(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', '+8801759687204', 1459068739334),
-(9, 'polo', 'dipu.sudipto@hotmail.com', '123456', 1, 1, 'Apolo Mission', 'None what so ever.', NULL, 0),
-(10, 'bishwa', 'bishwa420@gmail.com', '00000', 0, 0, 'Bishwa', NULL, '+8801621924710', 0),
-(11, 'talha', 'talhaqc@gmail.com', 'talha', 0, 0, 'talha', NULL, NULL, 0),
-(12, 'Biswa', 'biswapriyo.chakrabarty@gmail.com', 'ajaj', 1, 0, 'Biswa', '', '+8801612300990', 1459069811399);
+(6, 'dipu', 'dipu.sudipta@gmail.com', '112358', 1, 0, 'Sudipto Chandra', 'Moyna Monjil, Modina Market, Sylhet, Bangladesh', '+8801759687204', 1459176086654),
+(9, 'admin', '', 'root', 1, 1, 'Administrator sama', 'Dimaria Chronos Yesta', NULL, 0),
+(10, 'bishwa', 'bishwa420@gmail.com', '00000', 0, 0, 'Bishwa', NULL, '+8801621924710', 0);
 
 -- --------------------------------------------------------
 
@@ -157,8 +180,6 @@ INSERT INTO `vaccine` (`id`, `title`) VALUES
 (1, 'Hepatitis B (HepB)'),
 (2, 'Rotavirus (RV)'),
 (3, 'Diphtheria (DTaP)'),
-(4, 'Haemophilus influenzae b (Hib)'),
-(5, 'Pneumococcal conjugate (PCV13)'),
 (6, 'Inactivated poliovirus'),
 (7, 'Influenza'),
 (8, 'Mumps'),
@@ -167,6 +188,39 @@ INSERT INTO `vaccine` (`id`, `title`) VALUES
 (11, 'Tetanus'),
 (12, 'acellular pertussis'),
 (13, 'Human papillomavirus');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weight`
+--
+
+CREATE TABLE IF NOT EXISTS `weight` (
+  `child` int(11) NOT NULL,
+  `date` bigint(20) NOT NULL,
+  `value` decimal(12,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `weight`
+--
+
+INSERT INTO `weight` (`child`, `date`, `value`) VALUES
+(8, 1437350400000, '3.00'),
+(8, 1440028800000, '4.00'),
+(8, 1457481600000, '7.00'),
+(8, 1458864000000, '10.00'),
+(11, 1453334400000, '15.00'),
+(11, 1455148800000, '16.00'),
+(11, 1456876800000, '19.00'),
+(11, 1458000000000, '23.00'),
+(16, 1456272000000, '15.00'),
+(16, 1456272000000, '17.00'),
+(16, 1456531200000, '19.00'),
+(16, 1456704000000, '23.00'),
+(16, 1456790400000, '19.00'),
+(16, 1457049600000, '21.00'),
+(16, 1457481600000, '23.00');
 
 --
 -- Indexes for dumped tables
@@ -186,6 +240,13 @@ ALTER TABLE `child`
 ALTER TABLE `dose`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_dose__vaccine` (`vaccine`);
+
+--
+-- Indexes for table `height`
+--
+ALTER TABLE `height`
+  ADD PRIMARY KEY (`child`,`date`,`value`),
+  ADD KEY `child` (`child`);
 
 --
 -- Indexes for table `taken`
@@ -212,6 +273,13 @@ ALTER TABLE `vaccine`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `weight`
+--
+ALTER TABLE `weight`
+  ADD PRIMARY KEY (`child`,`date`,`value`),
+  ADD KEY `child` (`child`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -219,7 +287,7 @@ ALTER TABLE `vaccine`
 -- AUTO_INCREMENT for table `child`
 --
 ALTER TABLE `child`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `dose`
 --
@@ -229,12 +297,12 @@ ALTER TABLE `dose`
 -- AUTO_INCREMENT for table `taken`
 --
 ALTER TABLE `taken`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `vaccine`
 --
@@ -257,11 +325,23 @@ ALTER TABLE `dose`
   ADD CONSTRAINT `fk_dose__vaccine` FOREIGN KEY (`vaccine`) REFERENCES `vaccine` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `height`
+--
+ALTER TABLE `height`
+  ADD CONSTRAINT `fk_height_child` FOREIGN KEY (`child`) REFERENCES `child` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `taken`
 --
 ALTER TABLE `taken`
   ADD CONSTRAINT `fk_taken_child` FOREIGN KEY (`child`) REFERENCES `child` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_taken_dose` FOREIGN KEY (`dose`) REFERENCES `dose` (`id`);
+
+--
+-- Constraints for table `weight`
+--
+ALTER TABLE `weight`
+  ADD CONSTRAINT `fk_weight_child` FOREIGN KEY (`child`) REFERENCES `child` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
