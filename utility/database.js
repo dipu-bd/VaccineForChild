@@ -5,9 +5,9 @@ var options = {
     connectionLimit: 100,   // important - limit the number of simultaneous connection
     host: "localhost",      // database address url
     port: "3306",   // port of the database
-    user: "root",   // username
-    password: "",   // password
-    database: "vaccinedb",   // name of the database
+    user: "admin5uWq9VY",   // username
+    password: "DdzW-pE2EhF6",   // password
+    database: "vaccineforchild",   // name of the database
     debug: false    // true to show all outputs
 };
 
@@ -395,42 +395,42 @@ var updateChild = function (child, callback) {
  ***************************************************************/
 
 var getLatestHeight = function (child, callback) {
-    var sql = "SELECT value, MAX(date) AS date FROM height WHERE child=?";
+    var sql = "SELECT `value`, MAX(`date`) AS `date` FROM `height` WHERE `child` = ?";
     runQuery(mysql.format(sql, [child]), callback);
 };
 
 var getLatestWeight = function (child, callback) {
-    var sql = "SELECT value, MAX(date) AS date FROM weight WHERE child=?";
+    var sql = "SELECT `value`, MAX(`date`) AS `date` FROM `weight` WHERE `child` = ?";
     runQuery(mysql.format(sql, [child]), callback);
 };
 
 var getAllHeight = function (child, callback) {
-    var sql = "SELECT * FROM height WHERE child = ? ORDER BY date";
+    var sql = "SELECT * FROM `height` WHERE `child` = ? ORDER BY `date`";
     runQuery(mysql.format(sql, [child]), callback);
 };
 
 var getAllWeight = function (child, callback) {
-    var sql = "SELECT * FROM weight WHERE child = ? ORDER BY date";
+    var sql = "SELECT * FROM `weight` WHERE `child` = ? ORDER BY `date`";
     runQuery(mysql.format(sql, [child]), callback);
 };
 
 var setHeight = function (child, date, value, callback) {
-    var sql = "INSERT INTO `vaccinedb`.`height` (`child`, `date`, `value`) VALUES (?, ?, ?)";
+    var sql = "INSERT INTO `height` (`child`, `date`, `value`) VALUES (?, ?, ?)";
     runQuery(mysql.format(sql, [child, date, value]), callback);
 };
 
 var setWeight = function (child, date, value, callback) {
-    var sql = "INSERT INTO `vaccinedb`.`weight` (`child`, `date`, `value`) VALUES (?, ?, ?)";
+    var sql = "INSERT INTO `weight` (`child`, `date`, `value`) VALUES (?, ?, ?)";
     runQuery(mysql.format(sql, [child, date, value]), callback);
 };
 
 var deleteHeight = function (child, date, value, callback) {
-    var sql = "DELETE FROM `vaccinedb`.`height` WHERE `child`=? and `date`=? and `value`=?";
+    var sql = "DELETE FROM `height` WHERE `child`=? and `date`=? and `value`=?";
     runQuery(mysql.format(sql, [child, date, value]), callback);
 };
 
 var deleteWeight = function (child, date, value, callback) {
-    var sql = "DELETE FROM `vaccinedb`.`weight` WHERE `child`=? and `date`=? and `value`=?";
+    var sql = "DELETE FROM `weight` WHERE `child`=? and `date`=? and `value`=?";
     runQuery(mysql.format(sql, [child, date, value]), callback);
 };
 
