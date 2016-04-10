@@ -41,7 +41,7 @@
         });
         page.find('#delete').on('click', function () {
             deleteClicked(child);
-        })
+        });
     }
 
     function setChildData(page, child) {
@@ -60,6 +60,8 @@
         $.get('/user/child-dose', {id: child.id}).done(function (data) {
             taken.text(data);
         });
+        // set view destination
+        page.find('#view').attr('href', '#view-child?'+JSON.stringify({id: child.id}));
     }
 
     function editClicked(child) {
@@ -79,16 +81,6 @@
                 }
             })
         }
-    }
-
-    /**
-     * Calculate age from birthday
-     * @param bday Birthday in unix timestamp
-     * @returns {string} return age like- "10 days" or "2 years 3 months"
-     */
-    function getAge(bday) {
-        var date = new Date();
-        return formatSpan((date.getTime() - bday));
     }
 
 })();

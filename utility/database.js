@@ -3,7 +3,7 @@ var mysql = require('mysql');
 
 var options = {
     connectionLimit: 100,   // important - limit the number of simultaneous connection
-    host: "localhost",      // database address url
+    host: "127.0.0.1",      // database address url
     port: "3306",   // port of the database
     user: "root",   // username
     password: "",   // password
@@ -28,7 +28,7 @@ var runQuery = function (sql, callback) {
     debug(sql);
     pool.getConnection(function (err, connection) {
         if (err) {
-            //debug(err);
+            debug(err);
             callback('Failed to connect with database!');
         } else {
             connection.query(sql, function (err, res) {
@@ -313,19 +313,17 @@ var getAllChildren = function (callback) {
  * @param user ID of user this child belongs to
  * @param name Name of the child
  * @param dob Date of birth
- * @param height Height of the child
- * @param weight Weight of the child
  * @param gender Gender of the child
  * @param callback (err, res) => res = newly created child object
  */
-var createChild = function (user, name, dob, height, weight, gender, callback) {
+var createChild = function (user, name, dob, gender, callback) {
     getChildByName(user, name, function (err, data) {
         if (data && data.length > 0) {
             callback("This child has already been added");
         }
         else {
             var sql, inserts;
-            sql = "INSERT INTO ?? (??,??,??,??,??,??) VALUES (?,?,?,?,?,?)";
+            sql = "INSERT INTO ?? (??,??,??,??) VALUES (?,?,?,?)";
             inserts = ['child', 'user', 'name', 'dob', 'gender', user, name, dob, gender];
             sql = mysql.format(sql, inserts);
             runQuery(sql, function (err, result) {
@@ -691,6 +689,7 @@ var getSchedulesOf = function (user, callback) {
 var getMessageSchedule = function (callback) {
     var sql =
         " SELECT" +
+        "   child.id as 'id'" +
         "   child.name as 'child'," +
         "   dose.name as 'dose'," +
         "   vaccine.title as 'vaccine'," +

@@ -280,3 +280,14 @@ function submitPostRequest(form, url, callback, submitText, submitButton, failed
             submitButton.attr('disabled', false);
         });
 }
+
+
+/**
+ * Calculate age from birthday
+ * @param bday Birthday in unix timestamp
+ * @returns {string} return age like- "10 days" or "2 years 3 months"
+ */
+function getAge(bday) {
+    var date = new Date();
+    return formatSpan((date.getTime() - bday));
+}

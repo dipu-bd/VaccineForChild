@@ -87,7 +87,6 @@ html, body {
     justify-content: center;
 }
 
-
 .child-data th {
     text-align: right;
     font-weight: bold;
@@ -113,6 +112,12 @@ html, body {
 .taken-table th, .taken-table td {
     text-align: center;
     vertical-align: middle;
+}
+
+.taken-body {
+    min-height: 500px;
+    min-width: 450px;
+    background: #fff5f5;
 }
 
 #view-child-page {

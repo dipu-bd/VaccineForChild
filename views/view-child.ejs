@@ -15,8 +15,44 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <% children.forEach(function (child) { %>
+        <% if(children.length == 0) { %>
+		<div class="flex-full text-center" style="height:400px">
+			<h3> 
+				No child information is available <br/>
+				<small>Please <a href="/#children">register you children</a> now!</small>
+			</h3>			
+		</div>
+		<div role="">
+		<%} else { children.forEach(function (child) { %>
         <div role="tabpanel" class="tab-pane fade child-tab-pane" id="child-tab-<%= child.id %>">
+
+            <section>
+                <div class='well' id='child-wrapper'>
+                    <div class="modal-title">
+                        <h3>
+                            <i id="gender" class="fa fa-2x fa-child"></i>
+                            <span id="name">Child Name</span>
+                        </h3>
+                    </div>
+                    <div class="modal-body text-left">
+                        <table class="table table-responsive">
+                            <tr>
+                                <th>Age: <i class="fa fa-clock-o"></i></th>
+                                <td id="age">10 days old</td>
+                            </tr>
+                            <tr>
+                                <th>Birthday: <i class="fa fa-calendar"></i></th>
+                                <td id="dob">Thu 17 Mar, 2016</td>
+                            </tr>
+                            <tr>
+                                <th>Dose Taken: <i class="fa fa-medkit"></i></th>
+                                <td id="taken">2.5kg</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
             <section>
                 <div class="navbar navbar-default">
                     <div class="container-fluid">
@@ -97,6 +133,6 @@
                 </div>
             </section>
         </div>
-        <% }); %>
+        <% }); } %>
     </div>
 </div>

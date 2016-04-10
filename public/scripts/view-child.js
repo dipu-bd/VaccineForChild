@@ -48,9 +48,29 @@
     function loadGraphs() {
         getChildren(function (children) {
             children.forEach(function (child) {
+                setData(child);
                 setHeights(child.id);
                 setWeights(child.id);
             });
+        });
+    }
+
+    function setData(child) {
+        var body = page.find('#child-tab-'+ child.id);
+        // gather elements
+        var name = body.find('#name');
+        var dob = body.find('#dob');
+        var age = body.find('#age');
+        var gender = body.find('#gender');
+        var taken = body.find('#taken');
+        // set data to elements
+        name.text(child.name);
+        dob.text(new Date(child.dob).toDateString());
+        age.text(getAge(child.dob));
+        gender.attr('class', 'fa fa-2x fa-' + child.gender);
+        // taken doses
+        $.get('/user/child-dose', {id: child.id}).done(function (data) {
+            taken.text(data);
         });
     }
 

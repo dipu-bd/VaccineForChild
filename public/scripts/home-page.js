@@ -38,7 +38,9 @@
 
         function buildSchedule(data) {
             message.find('#dose').html(data.dose);
-            message.find('#child').html(data.child);
+            var child = message.find('#child');
+            child.html(data.child);
+            child.attr('href', '#view-child?'+JSON.stringify({id: data.id}));
             message.find('#vaccine').html(data.vaccine);
             message.find('#fromd').html(data.from.toDateString());
             message.find('#from').html(data.from.toDateString());

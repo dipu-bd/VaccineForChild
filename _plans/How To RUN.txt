@@ -1,0 +1,38 @@
+----------------------------------------------------------------------------------------------------
+ Follow the following step to run the project:
+----------------------------------------------------------------------------------------------------
+
+
+* Download and install Node from https://nodejs.org/en/
+* Download and install XAMPP from https://www.apachefriends.org/index.html
+* Open XAMPP and start Apache and MySQL server.
+
+* Go to web browser and browse http://localhost/phpmyadmin
+* Create a database named "vaccinedb", using "utf8-general-ci" collation. 
+  [using collation is not important]  
+* Import "vaccinedb.sql" file from "_vaccine" folder located inside the project folder a.k.a. "VaccineForChild" folder.
+* Database is set up and ready to use.
+* Now open console and goto project folder by using "cd" command. 
+  [In windows, you can simply "Shift+RightClick" inside project folder and select 'Open Command window here' option]
+  
+* Execute "npm install" command in command prompt. 
+  [This won't work if you did not install Node properly or did not set node environment variables.]
+* Execute "npm install -g bower"
+* Execute "cd public" and Execute "bower install"
+* Execute "cd .." to go back to root folder.
+* Now run "npm start" to start the project.
+* The project should start at port 3000. Browse to http://localhost:3000/ to view the website.
+
+Thank you!
+
+----------------------------------------------------------------------------------------------------
+
+Sudipto Chandra Das      Bishwajit Purkaystha 
+   2012331019                 2012331013
+
+
+
+
+
+
+ 
